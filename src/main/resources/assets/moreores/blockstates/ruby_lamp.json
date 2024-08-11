@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "lit=false": {
+      "model": "moreores:block/ruby_lamp_off"
+    },
+    "lit=true": {
+      "model": "moreores:block/ruby_lamp_on"
+    }
+  }
+}
