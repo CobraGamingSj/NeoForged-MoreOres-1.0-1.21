@@ -53,7 +53,30 @@ public class MoreOres {
         if ((event.getTabKey() == CreativeModeTabs.INGREDIENTS)) {
             ItemStack diamond = new ItemStack(Items.DIAMOND);
             ItemStack ruby = new ItemStack(ModItems.RUBY.get());
+            ItemStack radiant = new ItemStack(ModItems.RADIANT.get());
+            ItemStack sapphire = new ItemStack(ModItems.SAPPHIRE.get());
+            ItemStack green_sapphire = new ItemStack(ModItems.GREEN_SAPPHIRE.get());
+            ItemStack blue_garnet = new ItemStack(ModItems.BLUE_GARNET.get());
+            ItemStack pink_garnet = new ItemStack(ModItems.PINK_GARNET.get());
+            ItemStack green_garnet = new ItemStack(ModItems.GREEN_GARNET.get());
+            ItemStack topaz = new ItemStack(ModItems.TOPAZ.get());
+            ItemStack white_topaz = new ItemStack(ModItems.WHITE_TOPAZ.get());
+            ItemStack peridot = new ItemStack(ModItems.PERIDOT.get());
+            ItemStack jade = new ItemStack(ModItems.JADE.get());
+            ItemStack pyrope = new ItemStack(ModItems.PYROPE.get());
+
             event.insertAfter(diamond, ruby, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(ruby, radiant, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(radiant, sapphire, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(sapphire, green_sapphire, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(green_sapphire, blue_garnet, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(blue_garnet, pink_garnet, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(pink_garnet, green_garnet, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(green_garnet, topaz, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(topaz, white_topaz, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(white_topaz, peridot, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(peridot, jade, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(jade, pyrope, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
         }
     }
 
