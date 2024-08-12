@@ -4,6 +4,7 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.moreores.block.ModBlocks;
 import net.moreores.item.ModItems;
 import org.slf4j.Logger;
 
@@ -35,6 +36,8 @@ public class MoreOres {
         NeoForge.EVENT_BUS.register(this);
 
         ModItems.register(modEventBus);
+
+        ModBlocks.register(modEventBus);
 
         modEventBus.addListener(this::addCreative);
 
