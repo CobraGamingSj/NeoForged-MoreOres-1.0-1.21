@@ -1,7 +1,11 @@
 package net.moreores.block;
 
+import net.minecraft.util.valueproviders.UniformInt;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.DropExperienceBlock;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
 import net.moreores.MoreOres;
@@ -13,25 +17,55 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import java.util.function.Supplier;
 
 public class ModBlocks {
+    public static final DeferredRegister.Blocks BLOCKS =
+            DeferredRegister.createBlocks(MoreOres.MOD_ID);
 
-    public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(MoreOres.MOD_ID);
+    public static final DeferredBlock<Block> ENERGY_BLOCK = register("energy_block",
+            () -> new EnergyBlock(BlockBehaviour.Properties.of()
+                    .strength(256f).strength(512f, 256f)));
+    public static final DeferredBlock<Block> RUBY_BLOCK = register("ruby_block",
+            () -> new Block(BlockBehaviour.Properties.of()
+                    .strength(5f).strength(5f, 5f).mapColor(MapColor.COLOR_RED).requiresCorrectToolForDrops()));
+    public static final DeferredBlock<Block> RADIANT_BLOCK = register("radiant_block",
+            () -> new Block(BlockBehaviour.Properties.of()
+                    .strength(5f).strength(5f, 5f).mapColor(MapColor.COLOR_RED).requiresCorrectToolForDrops()));
+    public static final DeferredBlock<Block> SAPPHIRE_BLOCK = register("sapphire_block",
+            () -> new Block(BlockBehaviour.Properties.of()
+                    .strength(5f).strength(5f, 5f).mapColor(MapColor.COLOR_BLUE).requiresCorrectToolForDrops()));
+    public static final DeferredBlock<Block> GREEN_SAPPHIRE_BLOCK = register("green_sapphire_block",
+            () -> new Block(BlockBehaviour.Properties.of()
+                    .strength(5f).strength(5f, 5f).mapColor(MapColor.COLOR_GREEN).requiresCorrectToolForDrops()));
+    public static final DeferredBlock<Block> BLUE_GARNET_BLOCK = register("blue_garnet_block",
+            () -> new Block(BlockBehaviour.Properties.of()
+                    .strength(5f).strength(5f, 5f).mapColor(MapColor.COLOR_LIGHT_BLUE).requiresCorrectToolForDrops().sound(SoundType.AMETHYST_CLUSTER)));
+    public static final DeferredBlock<Block> PINK_GARNET_BLOCK = register("pink_garnet_block",
+            () -> new Block(BlockBehaviour.Properties.of()
+                    .strength(5f).strength(5f, 5f).mapColor(MapColor.COLOR_PINK).requiresCorrectToolForDrops().sound(SoundType.AMETHYST_CLUSTER)));
+    public static final DeferredBlock<Block> GREEN_GARNET_BLOCK = register("green_garnet_block",
+            () -> new Block(BlockBehaviour.Properties.of()
+                    .strength(5f).strength(5f, 5f).mapColor(MapColor.COLOR_LIGHT_GREEN).requiresCorrectToolForDrops().sound(SoundType.AMETHYST_CLUSTER)));
 
-    public static final DeferredBlock<Block> RUBY_BLOCK = register("ruby_block", () -> new Block(BlockBehaviour.Properties.of()
-            .strength(5.0f).strength(5.0f, 5.0f).mapColor(MapColor.COLOR_RED).requiresCorrectToolForDrops()));
 
-    private static<T extends Block>DeferredBlock<T> register(String id, Supplier<T> block) {
+    public static final DeferredBlock<Block> RUBY_ORE = register("ruby_ore",
+            () -> new DropExperienceBlock(UniformInt.of(3, 5), BlockBehaviour.Properties.of()
+                    .strength(5.5f).strength(5.5f, 5.5f).mapColor(MapColor.COLOR_GRAY).requiresCorrectToolForDrops()));
+    public static final DeferredBlock<Block> DEEPSLATE_RUBY_ORE = register("deepslate_ruby_ore",
+            () -> new DropExperienceBlock(UniformInt.of(2, 4), BlockBehaviour.Properties.of()
+                    .strength(6f).strength(6f, 6f).mapColor(MapColor.COLOR_BLACK).requiresCorrectToolForDrops()));
+
+
+    private static <T extends Block> DeferredBlock<T> register(String id, Supplier<T> block) {
         DeferredBlock<T> toReturn = BLOCKS.register(id, block);
-        register(id, toReturn);
+        registerBlockItem(id, toReturn);
         return toReturn;
     }
 
-    private static<T extends Block> void register(String id, DeferredBlock<T> block) {
-        ModItems.ITEMS.register(id, () -> new Item(new Item.Properties()));
+    private static <T extends Block> void registerBlockItem(String id, DeferredBlock<T> block) {
+        ModItems.ITEMS.register(id, () -> new BlockItem(block.get(), new Item.Properties()));
     }
 
     public static void register(IEventBus eventBus) {
-       BLOCKS.register(eventBus);
-       MoreOres.LOGGER.info("Loading ModBlocks for " + MoreOres.MOD_ID + " mod.");
+        BLOCKS.register(eventBus);
+        MoreOres.LOGGER.info("Loading ModBlocks for" + MoreOres.MOD_ID + " mod.");
     }
-
 }

@@ -23,6 +23,7 @@ public class ModItems {
     public static final DeferredItem<Item> PERIDOT = ITEMS.register("peridot", () -> new Item(new Item.Properties().rarity(Rarity.RARE)));
     public static final DeferredItem<Item> JADE = ITEMS.register("jade", () -> new Item(new Item.Properties().rarity(Rarity.RARE)));
     public static final DeferredItem<Item> PYROPE = ITEMS.register("pyrope", () -> new Item(new Item.Properties().rarity(Rarity.RARE)));
+    public static final DeferredItem<Item> ENERGY_INGOT = ITEMS.register("energy_ingot", () -> new EnergyIngotItem(new Item.Properties()));
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);

@@ -4,7 +4,9 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Blocks;
 import net.moreores.block.ModBlocks;
+import net.moreores.item.ModCreativeModeTabs;
 import net.moreores.item.ModItems;
 import org.slf4j.Logger;
 
@@ -39,6 +41,8 @@ public class MoreOres {
 
         ModBlocks.register(modEventBus);
 
+        ModCreativeModeTabs.register(modEventBus);
+
         modEventBus.addListener(this::addCreative);
 
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
@@ -50,7 +54,7 @@ public class MoreOres {
 
 
     private void addCreative(BuildCreativeModeTabContentsEvent event) {
-        if ((event.getTabKey() == CreativeModeTabs.INGREDIENTS)) {
+        if (event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
             ItemStack diamond = new ItemStack(Items.DIAMOND);
             ItemStack ruby = new ItemStack(ModItems.RUBY.get());
             ItemStack radiant = new ItemStack(ModItems.RADIANT.get());
@@ -77,6 +81,19 @@ public class MoreOres {
             event.insertAfter(white_topaz, peridot, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
             event.insertAfter(peridot, jade, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
             event.insertAfter(jade, pyrope, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+        }
+        if (event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS) {
+            ItemStack netherite_block = new ItemStack(Blocks.NETHERITE_BLOCK);
+            ItemStack ruby_block = new ItemStack(ModBlocks.RUBY_BLOCK);
+            event.insertAfter(netherite_block, ruby_block, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+        }
+        if (event.getTabKey() == CreativeModeTabs.NATURAL_BLOCKS) {
+            ItemStack deepslateDiamondOre = new ItemStack(Blocks.DEEPSLATE_DIAMOND_ORE);
+            ItemStack rubyOre = new ItemStack(ModBlocks.RUBY_ORE);
+            ItemStack deepslateRubyOre = new ItemStack(ModBlocks.DEEPSLATE_RUBY_ORE);
+
+            event.insertAfter(deepslateDiamondOre, rubyOre, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(rubyOre, deepslateRubyOre, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
         }
     }
 
