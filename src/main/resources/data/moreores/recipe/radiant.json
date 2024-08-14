@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    {
+      "item": "moreores:radiant_block"
+    }
+  ],
+  "result": {
+    "id": "moreores:radiant",
+    "count": 9
+  }
+}

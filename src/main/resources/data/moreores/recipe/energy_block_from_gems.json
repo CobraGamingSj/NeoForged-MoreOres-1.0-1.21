@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "aaa",
+    "ata",
+    "aaa"
+  ],
+  "key": {
+    "a": {
+      "item": "moreores:radiant"
+    },
+    "t": {
+      "item": "minecraft:tnt"
+    }
+  },
+  "result": {
+    "id": "moreores:energy_block",
+    "count": 1
+  }
+}

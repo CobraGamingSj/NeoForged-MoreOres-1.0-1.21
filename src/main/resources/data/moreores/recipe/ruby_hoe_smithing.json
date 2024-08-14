@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:smithing_transform",
+  "template": {
+    "item": "moreores:ruby_upgrade_smithing_template"
+  },
+  "base": {
+    "item": "minecraft:netherite_hoe"
+  },
+  "addition": {
+    "item": "moreores:ruby"
+  },
+  "result": {
+    "id": "moreores:ruby_hoe",
+    "count": 1
+  }
+}

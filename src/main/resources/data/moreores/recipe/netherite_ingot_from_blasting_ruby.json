@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:blasting",
+  "category": "misc",
+  "ingredient": {
+    "item": "moreores:ruby"
+  },
+  "result": {
+    "id": "minecraft:netherite_ingot"
+  },
+  "experience": 1,
+  "cookingtime": 300
+}

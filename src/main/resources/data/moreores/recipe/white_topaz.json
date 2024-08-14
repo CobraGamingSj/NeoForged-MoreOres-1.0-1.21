@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    {
+      "item": "moreores:white_topaz_block"
+    }
+  ],
+  "result": {
+    "id": "moreores:white_topaz",
+    "count": 9
+  }
+}

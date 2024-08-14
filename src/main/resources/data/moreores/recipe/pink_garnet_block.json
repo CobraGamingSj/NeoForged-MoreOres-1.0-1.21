@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "aaa",
+    "aaa",
+    "aaa"
+  ],
+  "key": {
+    "a": {
+      "item": "moreores:pink_garnet"
+    }
+  },
+  "result": {
+    "id": "moreores:pink_garnet_block",
+    "count": 1,
+    "components": {
+      "minecraft:map_id": 6
+    }
+  }
+}

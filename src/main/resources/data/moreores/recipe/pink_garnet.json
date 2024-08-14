@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    {
+      "item": "moreores:pink_garnet_block"
+    }
+  ],
+  "result": {
+    "id": "moreores:pink_garnet",
+    "count": 9
+  }
+}

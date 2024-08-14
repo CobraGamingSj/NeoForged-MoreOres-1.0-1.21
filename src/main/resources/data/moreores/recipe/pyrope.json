@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    {
+      "item": "moreores:pyrope_block"
+    }
+  ],
+  "result": {
+    "id": "moreores:pyrope",
+    "count": 9
+  }
+}

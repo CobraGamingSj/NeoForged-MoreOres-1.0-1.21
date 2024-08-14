@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    {
+      "item": "moreores:green_sapphire_block"
+    }
+  ],
+  "result": {
+    "id": "moreores:green_sapphire",
+    "count": 9
+  }
+}

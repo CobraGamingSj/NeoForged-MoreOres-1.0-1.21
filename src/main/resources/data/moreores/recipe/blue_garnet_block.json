@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "aaa",
+    "aaa",
+    "aaa"
+  ],
+  "key": {
+    "a": {
+      "item": "moreores:blue_garnet"
+    }
+  },
+  "result": {
+    "id": "moreores:blue_garnet_block",
+    "count": 1,
+    "components": {
+      "minecraft:map_id": 3
+    }
+  }
+}

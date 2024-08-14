@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "aa",
+    "aa"
+  ],
+  "key": {
+    "a": {
+      "item": "moreores:energy_ingot"
+    }
+  },
+  "result": {
+    "id": "moreores:energy_block",
+    "count": 1,
+    "components": {
+      "minecraft:map_id": 3
+    }
+  }
+}

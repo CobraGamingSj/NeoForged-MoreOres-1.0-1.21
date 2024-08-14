@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "aaa",
+    "aaa",
+    "aaa"
+  ],
+  "key": {
+    "a": {
+      "item": "moreores:radiant"
+    }
+  },
+  "result": {
+    "id": "moreores:radiant_block",
+    "count": 1,
+    "components": {
+      "minecraft:map_id": 4
+    }
+  }
+}
