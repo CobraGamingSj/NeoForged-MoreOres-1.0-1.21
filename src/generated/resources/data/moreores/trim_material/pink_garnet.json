@@ -1,0 +1,9 @@
+{
+  "asset_name": "pink_garnet",
+  "description": {
+    "color": "#F000C4",
+    "translate": "trim_material.moreores.pink_garnet"
+  },
+  "ingredient": "moreores:pink_garnet",
+  "item_model_index": 0.56
+}

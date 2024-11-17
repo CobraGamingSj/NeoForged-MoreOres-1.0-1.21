@@ -1,0 +1,9 @@
+{
+  "asset_name": "green_sapphire",
+  "description": {
+    "color": "#00B82E",
+    "translate": "trim_material.moreores.green_sapphire"
+  },
+  "ingredient": "moreores:green_sapphire",
+  "item_model_index": 0.54
+}

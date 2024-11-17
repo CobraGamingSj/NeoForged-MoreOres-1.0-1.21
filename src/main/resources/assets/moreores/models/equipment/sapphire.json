@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "minecraft:sapphire"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "minecraft:sapphire"
+      }
+    ]
+  }
+}

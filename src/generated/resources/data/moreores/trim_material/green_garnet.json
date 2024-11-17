@@ -1,0 +1,9 @@
+{
+  "asset_name": "green_garnet",
+  "description": {
+    "color": "#25DB00",
+    "translate": "trim_material.moreores.green_garnet"
+  },
+  "ingredient": "moreores:green_garnet",
+  "item_model_index": 0.57
+}

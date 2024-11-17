@@ -1,8 +1,7 @@
 {
   "item.moreores.ruby": "Ruby",
   "item.moreores.energy_ingot": "Energy Ingot",
-  "item.moreores.titanium_ingot": "Titanium Ingot",
-  "item.moreores.radiant": "Radiant",
+  "item.moreores.radiant": "§1Radiant§r",
   "item.moreores.sapphire": "Sapphire",
   "item.moreores.green_sapphire": "Green Sapphire",
   "item.moreores.blue_garnet": "Blue Garnet",
@@ -13,6 +12,18 @@
   "item.moreores.white_topaz": "White Topaz",
   "item.moreores.pyrope": "Pyrope",
   "item.moreores.jade": "Jade",
+
+  "item.moreores.raw_ruby": "Raw Ruby",
+  "item.moreores.raw_sapphire": "Raw Sapphire",
+  "item.moreores.raw_green_sapphire": "Raw Green Sapphire",
+  "item.moreores.raw_blue_garnet": "Raw Blue Garnet",
+  "item.moreores.raw_pink_garnet": "Raw Pink Garnet",
+  "item.moreores.raw_green_garnet": "Raw Green Garnet",
+  "item.moreores.raw_topaz": "Raw Topaz",
+  "item.moreores.raw_peridot": "Raw Peridot",
+  "item.moreores.raw_white_topaz": "Raw White Topaz",
+  "item.moreores.raw_pyrope": "Raw Pyrope",
+  "item.moreores.raw_jade": "Raw Jade",
 
   "item.moreores.tomato_seeds": "Tomato Seeds",
   "item.moreores.pineapple_seeds": "Pineapple Seeds",
@@ -32,11 +43,23 @@
   "block.moreores.topaz_block": "Topaz Block",
   "block.moreores.white_topaz_block": "White Topaz Block",
   "block.moreores.pyrope_block": "Pyrope Block",
+  "block.moreores.peridot_block": "Peridot Block",
   "block.moreores.jade_block": "Jade Block",
+
+  "block.moreores.raw_ruby_block": "Raw Ruby Block",
+  "block.moreores.raw_sapphire_block": "Raw Sapphire Block",
+  "block.moreores.raw_green_sapphire_block": "Raw Green Sapphire Block",
+  "block.moreores.raw_blue_garnet_block": "Raw Blue Garnet Block",
+  "block.moreores.raw_pink_garnet_block": "Raw Pink Garnet Block",
+  "block.moreores.raw_green_garnet_block": "Raw Green Garnet Block",
+  "block.moreores.raw_topaz_block": "Raw Topaz Block",
+  "block.moreores.raw_white_topaz_block": "Raw White Topaz Block",
+  "block.moreores.raw_pyrope_block": "Raw Pyrope Block",
+  "block.moreores.raw_peridot_block": "Raw Peridot Block",
+  "block.moreores.raw_jade_block": "Raw Jade Block",
   "block.moreores.ruby_lamp": "Ruby Lamp",
 
   "block.moreores.gem_polisher_block": "Gem Polisher",
-  "block.moreores.gem_polisher_block.tooltip": "Converts one gem into another by using Energy.",
 
   "block.moreores.ruby_ore": "Ruby Ore",
   "block.moreores.deepslate_ruby_ore": "Deepslate Ruby Ore",
@@ -62,6 +85,7 @@
   "block.moreores.deepslate_jade_ore": "Deepslate Jade Ore",
 
   "item.moreores.ruby_upgrade_smithing_template": "Smithing Template",
+  "item.moreores.guardian_armor_trim_smithing_template": "Guardian Armor Trim",
 
   "item.moreores.ruby_pickaxe": "Ruby Pickaxe",
   "item.moreores.ruby_sword": "Ruby Sword",
@@ -82,12 +106,18 @@
   "item.moreores.sapphire_chestplate": "Sapphire Chestplate",
   "item.moreores.sapphire_leggings": "Sapphire Leggings",
   "item.moreores.sapphire_boots": "Sapphire Boots",
+  "item.moreores.topaz_helmet": "Topaz Helmet",
+  "item.moreores.topaz_chestplate": "Topaz Chestplate",
+  "item.moreores.topaz_leggings": "Topaz Leggings",
+  "item.moreores.topaz_boots": "Topaz Boots",
+  "item.moreores.green_garnet_helmet": "Green Garnet Helmet",
+  "item.moreores.green_garnet_chestplate": "Green Garnet Chestplate",
+  "item.moreores.green_garnet_leggings": "Green Garnet Leggings",
+  "item.moreores.green_garnet_boots": "Green Garnet Boots",
 
   "item.moreores.radiant_sword": "Radiant Sword",
 
   "item.moreores.wood_pellet": "Wood Pellet",
-
-  "creativeModeTab.moreores.gemstones": "Gemstones",
 
   "item.moreores.music_disc_taswell": "Music Disc",
   "item.moreores.music_disc_dreiton": "Music Disc",
@@ -109,14 +139,14 @@
   "jukebox_song.moreores.deeper": "Lena Raine - Deeper",
   "jukebox_song.moreores.watcher": "Lena Raine - Watcher",
 
-  "tooltip.moreores.radioactive_ingot.tooltip": "Right Click to get Powerful Effects. Press Shift know more!",
-  "tooltip.moreores.energy_ingot.tooltip": "Press Control Key to remove effects",
-  "tooltip.moreores.energy_block": "This block kills you when you step on it!",
+  "tooltip.moreores.energy_block": "Gives you Poison, Blindness and Levitation",
+  "moreores.tooltip.gem": "Gem",
+  "tooltip.moreores.gem_polisher": "Polish gemstones",
 
   "upgrade.moreores.ruby_upgrade": "Ruby Upgrade",
-  "item.moreores.smithing_template.applies_to": "Applies to",
+  "item.moreores.smithing_template.applies_to": "Applies to:",
   "item.moreores.smithing_template.ruby_upgrade.applies_to": "Netherite Equipment",
-  "item.moreores.smithing_template.ingredients": "Ingredients",
+  "item.moreores.smithing_template.ingredients": "Ingredients:",
   "item.moreores.smithing_template.ruby_upgrade.ingredients": "Ruby",
 
   "advancement.moreores.gems": "Is that a gem?",
@@ -126,7 +156,22 @@
   "advancement.moreores.radiant_sword": "Overpowered!",
   "advancement.moreores.radiant_sword.desc": "Get a Radiant Sword",
   "advancement.moreores.gems_all": "The gems?",
-  "advancement.moreores.gems_all.desc": "Collect every single gemstone",
+  "advancement.moreores.gems_all.desc": "Collect every gemstone",
 
-  "entity.minecraft.villager.jeweller": "Jeweller"
+  "entity.minecraft.villager.jeweller": "Jeweller",
+
+  "trim_pattern.moreores.guardian": "Guardian Armor Trim",
+  "trim_material.moreores.blue_garnet": "Blue Garnet Material",
+  "trim_material.moreores.green_garnet": "Green Garnet Material",
+  "trim_material.moreores.green_sapphire": "Green Sapphire Material",
+  "trim_material.moreores.sapphire": "Sapphire Material",
+  "trim_material.moreores.ruby": "Ruby Material",
+  "trim_material.moreores.radiant": "Radiant Material",
+  "trim_material.moreores.pyrope": "Pyrope Material",
+  "trim_material.moreores.jade": "Jade Material",
+  "trim_material.moreores.peridot": "Peridot Material",
+  "trim_material.moreores.topaz": "Topaz Material",
+  "trim_material.moreores.white_topaz": "White Topaz Material",
+  "trim_material.moreores.pink_garnet": "Pink Garnet Material",
+  "creativeModeTab.moreores.gemstones": "Gemstones"
 }

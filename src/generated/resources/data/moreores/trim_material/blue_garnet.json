@@ -1,0 +1,9 @@
+{
+  "asset_name": "blue_garnet",
+  "description": {
+    "color": "#2600E6",
+    "translate": "trim_material.moreores.blue_garnet"
+  },
+  "ingredient": "moreores:blue_garnet",
+  "item_model_index": 0.55
+}

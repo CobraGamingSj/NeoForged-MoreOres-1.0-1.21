@@ -1,0 +1,9 @@
+{
+  "asset_name": "topaz",
+  "description": {
+    "color": "#CC3D00",
+    "translate": "trim_material.moreores.topaz"
+  },
+  "ingredient": "moreores:topaz",
+  "item_model_index": 0.58
+}

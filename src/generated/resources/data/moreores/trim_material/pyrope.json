@@ -1,0 +1,9 @@
+{
+  "asset_name": "pyrope",
+  "description": {
+    "color": "#E00000",
+    "translate": "trim_material.moreores.pyrope"
+  },
+  "ingredient": "moreores:pyrope",
+  "item_model_index": 0.63
+}

@@ -1,0 +1,9 @@
+{
+  "asset_name": "peridot",
+  "description": {
+    "color": "#00FF22",
+    "translate": "trim_material.moreores.peridot"
+  },
+  "ingredient": "moreores:peridot",
+  "item_model_index": 0.61
+}
