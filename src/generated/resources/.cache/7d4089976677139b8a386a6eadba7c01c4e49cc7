@@ -1,0 +1,9 @@
+// 1.21.3	2025-11-09T19:38:36.6992019	Tags for minecraft:item mod id moreores
+3b5308f1795af94c87851c83a646a2612fb86e4d data/minecraft/tags/item/trimmable_armor.json
+3f070f2014886d68e4bbcf7289029201ce371b75 data/minecraft/tags/item/trim_materials.json
+5cc17ab8457e0edbc07640383e94a128c8cd1a17 data/minecraft/tags/item/trim_templates.json
+5d2a820931b96c79629532fb07209e7016eceb85 data/moreores/tags/item/is_metal.json
+3f070f2014886d68e4bbcf7289029201ce371b75 data/moreores/tags/item/rare/is_gemstone.json
+b77cb944c305727f565a77ea12a71feb0134c41d data/moreores/tags/item/rare/is_rare.json
+0cd1c5407fc97fbb30184927ce8513d2d612100b data/moreores/tags/item/repairs_ruby_armor.json
+bc0ad363d6d6c898d6e5649d6bb9d0d142c28fd9 data/moreores/tags/item/repairs_sapphire_armor.json

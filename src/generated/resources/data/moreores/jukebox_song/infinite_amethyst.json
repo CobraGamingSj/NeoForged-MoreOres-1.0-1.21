@@ -4,5 +4,5 @@
     "translate": "jukebox_song.moreores.infinite_amethyst"
   },
   "length_in_seconds": 271.0,
-  "sound_event": "moreores:infinite_amethyst"
+  "sound_event": "moreores:music_disc.infinite_amethyst"
 }

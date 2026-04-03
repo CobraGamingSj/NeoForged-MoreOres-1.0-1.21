@@ -1,18 +1,14 @@
 package net.cobra.moreores;
 
-import com.google.common.collect.Maps;
 import com.mojang.logging.LogUtils;
 import net.cobra.moreores.block.ModBlocks;
+import net.cobra.moreores.block.entity.ModBlockEntityType;
 import net.cobra.moreores.item.ModCreativeModeTabs;
 import net.cobra.moreores.item.ModItems;
 import net.cobra.moreores.sound.ModSoundEvents;
-import net.minecraft.client.gui.screens.MenuScreens;
-import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.gui.screens.inventory.MenuAccess;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.cobra.moreores.world.inventory.GemPolisherScreen;
+import net.cobra.moreores.world.inventory.ModMenuType;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.ItemStack;
@@ -27,51 +23,34 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import org.slf4j.Logger;
 
 import java.util.Locale;
-import java.util.Map;
 
 @Mod(MoreOresModLoader.MOD_ID)
 public class MoreOresModLoader {
     public static final String MOD_ID = "moreores";
-    private static final Map<MenuType<?>, MenuScreens.ScreenConstructor<?, ?>> SCREENS = Maps.newHashMap();
     public static final Logger LOGGER = LogUtils.getLogger();
-
 
     public MoreOresModLoader(IEventBus modEventBus, ModContainer modContainer) {
         modEventBus.addListener(this::commonSetup);
-
         NeoForge.EVENT_BUS.register(this);
-
         ModItems.register(modEventBus);
-
         ModBlocks.register(modEventBus);
-
         ModCreativeModeTabs.register(modEventBus);
-
         ModSoundEvents.register(modEventBus);
-
-//        ModBlockEntityType.register(modEventBus);
-
-//        ModMenuType.register(modEventBus);
-
+        ModBlockEntityType.register(modEventBus);
+        ModMenuType.register(modEventBus);
         modEventBus.addListener(this::addCreative);
-
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }
 
-    public static ResourceLocation prefix(String path) {
-        return ResourceLocation.fromNamespaceAndPath(MOD_ID, path.toLowerCase(Locale.ROOT));
-    }
-
     private void commonSetup(final FMLCommonSetupEvent event) {
-
     }
-
 
     private void addCreative(BuildCreativeModeTabContentsEvent event) {
         if (event.getTabKey() == CreativeModeTabs.TOOLS_AND_UTILITIES) {
@@ -96,11 +75,10 @@ public class MoreOresModLoader {
             event.insertAfter(deeper, watcher, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
         }
 
-
-
         if (event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
             ItemStack netherite= new ItemStack(Items.NETHERITE_INGOT);
             ItemStack energy_ingot= new ItemStack(ModItems.ENERGY_INGOT.get());
+
             ItemStack diamond = new ItemStack(Items.DIAMOND);
             ItemStack ruby = new ItemStack(ModItems.RUBY.get());
             ItemStack radiant = new ItemStack(ModItems.RADIANT.get());
@@ -132,7 +110,9 @@ public class MoreOresModLoader {
         if (event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS) {
             ItemStack netherite_block = new ItemStack(Blocks.NETHERITE_BLOCK);
             ItemStack ruby_block = new ItemStack(ModBlocks.RUBY_BLOCK);
+            ItemStack energy_block = new ItemStack(ModBlocks.ENERGY_BLOCK);
             event.insertAfter(netherite_block, ruby_block, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertBefore(netherite_block, energy_block, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
         }
         if (event.getTabKey() == CreativeModeTabs.NATURAL_BLOCKS) {
             ItemStack deepslateDiamondOre = new ItemStack(Blocks.DEEPSLATE_DIAMOND_ORE);
@@ -144,24 +124,21 @@ public class MoreOresModLoader {
         }
     }
 
-    private static <M extends AbstractContainerMenu, U extends Screen & MenuAccess<M>> void register(MenuType<? extends M> type, MenuScreens.ScreenConstructor<M, U> factory) {
-        MenuScreens.ScreenConstructor<?, ?> screenconstructor = SCREENS.put(type, factory);
-        if (screenconstructor != null) {
-            throw new IllegalStateException("Duplicate registration for " + String.valueOf(BuiltInRegistries.MENU.getKey(type)));
-        }
-    }
-
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event) {
 
     }
 
-
-    @EventBusSubscriber(modid = MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+    @EventBusSubscriber(modid = MOD_ID, value = Dist.CLIENT)
     public static class ClientModEvents {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
-//            register(ModMenuType.GEM_POLISHER_MENU.get(), GemPolisherScreen::new);
+//
+        }
+
+        @SubscribeEvent
+        public static void regBlockEntityScreen(RegisterMenuScreensEvent event) {
+            event.register(ModMenuType.GEM_POLISHER_MENU.get(), GemPolisherScreen::new);
         }
     }
 }

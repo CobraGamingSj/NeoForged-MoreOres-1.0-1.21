@@ -76,7 +76,7 @@ public class ItemModelGen extends ItemModelProvider {
                         ResourceLocation.fromNamespaceAndPath(MoreOresModLoader.MOD_ID, "item/" + item.getId().getPath()));
     }
 
-    private void trimmedArmorItem(DeferredItem<Item> itemDeferredItem) {
+    private void trimmedArmorItem(DeferredItem<ArmorItem> itemDeferredItem) {
         final String MOD_ID = MoreOresModLoader.MOD_ID; // Change this to your mod id
 
         if(itemDeferredItem.get() instanceof ArmorItem armorItem) {

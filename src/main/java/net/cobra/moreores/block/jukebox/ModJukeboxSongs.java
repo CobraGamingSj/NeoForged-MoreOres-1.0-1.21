@@ -38,11 +38,11 @@ public interface ModJukeboxSongs {
     }
 
     private static ResourceKey<JukeboxSong> of(String id) {
-        return ResourceKey.create(Registries.JUKEBOX_SONG, MoreOresModLoader.prefix(id));
+        return ResourceKey.create(Registries.JUKEBOX_SONG, ResourceLocation.fromNamespaceAndPath(MoreOresModLoader.MOD_ID, id));
     }
 
-    private static void register(BootstrapContext<JukeboxSong> context, ResourceKey<JukeboxSong> key, Holder<SoundEvent> soundEvent, int lengthInSeconds, int comparatorOutput) {
-        context.register(key, new JukeboxSong(soundEvent, Component.translatable(Util.makeDescriptionId("jukebox_song", key.location())), (float)lengthInSeconds, comparatorOutput));
+    private static void register(BootstrapContext<JukeboxSong> context, ResourceKey<JukeboxSong> key, Supplier<SoundEvent> soundEvent, int lengthInSeconds, int comparatorOutput) {
+        context.register(key, new JukeboxSong((Holder<SoundEvent>) soundEvent, Component.translatable(Util.makeDescriptionId("jukebox_song", key.location())), (float)lengthInSeconds, comparatorOutput));
     }
 
 }

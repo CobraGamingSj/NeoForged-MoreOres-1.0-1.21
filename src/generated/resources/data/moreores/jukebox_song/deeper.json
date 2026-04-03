@@ -4,5 +4,5 @@
     "translate": "jukebox_song.moreores.deeper"
   },
   "length_in_seconds": 198.0,
-  "sound_event": "moreores:deeper"
+  "sound_event": "moreores:music_disc.deeper"
 }

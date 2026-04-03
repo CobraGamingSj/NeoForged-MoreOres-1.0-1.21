@@ -4,5 +4,5 @@
     "translate": "jukebox_song.moreores.endless"
   },
   "length_in_seconds": 402.0,
-  "sound_event": "moreores:endless"
+  "sound_event": "moreores:music_disc.endless"
 }

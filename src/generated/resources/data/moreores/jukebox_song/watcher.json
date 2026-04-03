@@ -4,5 +4,5 @@
     "translate": "jukebox_song.moreores.watcher"
   },
   "length_in_seconds": 344.0,
-  "sound_event": "moreores:watcher"
+  "sound_event": "moreores:music_disc.watcher"
 }
