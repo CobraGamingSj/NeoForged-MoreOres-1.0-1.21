@@ -11,19 +11,19 @@ public class ModItems {
 
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(MoreOres.MOD_ID);
 
-    public static final DeferredItem<Item> RUBY = ITEMS.register("ruby", () -> new Item(new Item.Properties().rarity(Rarity.RARE)));
-    public static final DeferredItem<Item> RADIANT = ITEMS.register("radiant", () -> new Item(new Item.Properties().rarity(Rarity.RARE)));
-    public static final DeferredItem<Item> SAPPHIRE = ITEMS.register("sapphire", () -> new Item(new Item.Properties().rarity(Rarity.RARE)));
-    public static final DeferredItem<Item> GREEN_SAPPHIRE = ITEMS.register("green_sapphire", () -> new Item(new Item.Properties().rarity(Rarity.RARE)));
-    public static final DeferredItem<Item> BLUE_GARNET = ITEMS.register("blue_garnet", () -> new Item(new Item.Properties().rarity(Rarity.RARE)));
-    public static final DeferredItem<Item> PINK_GARNET = ITEMS.register("pink_garnet", () -> new Item(new Item.Properties().rarity(Rarity.RARE)));
-    public static final DeferredItem<Item> GREEN_GARNET = ITEMS.register("green_garnet", () -> new Item(new Item.Properties().rarity(Rarity.RARE)));
-    public static final DeferredItem<Item> TOPAZ = ITEMS.register("topaz", () -> new Item(new Item.Properties().rarity(Rarity.RARE)));
-    public static final DeferredItem<Item> WHITE_TOPAZ = ITEMS.register("white_topaz", () -> new Item(new Item.Properties().rarity(Rarity.RARE)));
-    public static final DeferredItem<Item> PERIDOT = ITEMS.register("peridot", () -> new Item(new Item.Properties().rarity(Rarity.RARE)));
-    public static final DeferredItem<Item> JADE = ITEMS.register("jade", () -> new Item(new Item.Properties().rarity(Rarity.RARE)));
-    public static final DeferredItem<Item> PYROPE = ITEMS.register("pyrope", () -> new Item(new Item.Properties().rarity(Rarity.RARE)));
-    public static final DeferredItem<Item> ENERGY_INGOT = ITEMS.register("energy_ingot", () -> new EnergyIngotItem(new Item.Properties()));
+    public static final DeferredItem<Item> RUBY = ITEMS.registerItem("ruby", GemItem::new);
+    public static final DeferredItem<Item> RADIANT = ITEMS.registerItem("radiant", GemItem::new);
+    public static final DeferredItem<Item> SAPPHIRE = ITEMS.registerItem("sapphire", GemItem::new);
+    public static final DeferredItem<Item> GREEN_SAPPHIRE = ITEMS.registerItem("green_sapphire", GemItem::new);
+    public static final DeferredItem<Item> BLUE_GARNET = ITEMS.registerItem("blue_garnet", GemItem::new);
+    public static final DeferredItem<Item> PINK_GARNET = ITEMS.registerItem("pink_garnet", GemItem::new);
+    public static final DeferredItem<Item> GREEN_GARNET = ITEMS.registerItem("green_garnet", GemItem::new);
+    public static final DeferredItem<Item> TOPAZ = ITEMS.registerItem("topaz", GemItem::new);
+    public static final DeferredItem<Item> WHITE_TOPAZ = ITEMS.registerItem("white_topaz", GemItem::new);
+    public static final DeferredItem<Item> PERIDOT = ITEMS.registerItem("peridot", GemItem::new);
+    public static final DeferredItem<Item> JADE = ITEMS.registerItem("jade", GemItem::new);
+    public static final DeferredItem<Item> PYROPE = ITEMS.registerItem("pyrope", GemItem::new);
+    public static final DeferredItem<Item> ENERGY_INGOT = ITEMS.registerItem("energy_ingot", EnergyIngotItem::new);
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);

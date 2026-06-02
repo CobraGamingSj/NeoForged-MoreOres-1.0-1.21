@@ -16,10 +16,10 @@ public class EnergyBlock extends Block {
 
     @Override
     public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity) {
-       if (!level.isClientSide && entity instanceof LivingEntity livingEntity) {
+       if (!level.isClientSide() && entity instanceof LivingEntity livingEntity) {
            livingEntity.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 20, 2));
-           livingEntity.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 20, 2));
-           livingEntity.addEffect(new MobEffectInstance(MobEffects.HARM, 20, 2));
+           livingEntity.addEffect(new MobEffectInstance(MobEffects.NAUSEA, 20, 2));
+           livingEntity.addEffect(new MobEffectInstance(MobEffects.INSTANT_DAMAGE, 20, 2));
        }
         super.stepOn(level, pos, state, entity);
     }

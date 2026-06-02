@@ -1,13 +1,18 @@
 package net.moreores;
 
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
 import net.moreores.block.ModBlocks;
+import net.moreores.block.client.menu.GemPurifierScreen;
+import net.moreores.block.client.menu.ModMenuType;
+import net.moreores.block.entity.ModBlockEntityType;
 import net.moreores.item.ModCreativeModeTabs;
 import net.moreores.item.ModItems;
+import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -28,22 +33,28 @@ import net.neoforged.neoforge.event.server.ServerStartingEvent;
 @Mod(MoreOres.MOD_ID)
 public class MoreOres {
     public static final String MOD_ID = "moreores";
-
     public static final Logger LOGGER = LogUtils.getLogger();
 
+    public static Identifier id(String id) {
+        return Identifier.fromNamespaceAndPath(MOD_ID, id);
+    }
 
-    public MoreOres(IEventBus modEventBus, ModContainer modContainer) {
-        modEventBus.addListener(this::commonSetup);
+    public MoreOres(IEventBus schoolBus, ModContainer modContainer) {
+        schoolBus.addListener(this::commonSetup);
 
         NeoForge.EVENT_BUS.register(this);
 
-        ModItems.register(modEventBus);
+        ModItems.register(schoolBus);
 
-        ModBlocks.register(modEventBus);
+        ModBlocks.register(schoolBus);
 
-        ModCreativeModeTabs.register(modEventBus);
+        ModCreativeModeTabs.register(schoolBus);
 
-        modEventBus.addListener(this::addCreative);
+        ModBlockEntityType.register(schoolBus);
+
+        ModMenuType.register(schoolBus);
+
+        schoolBus.addListener(this::addCreative);
 
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }
@@ -51,7 +62,6 @@ public class MoreOres {
     private void commonSetup(final FMLCommonSetupEvent event) {
 
     }
-
 
     private void addCreative(BuildCreativeModeTabContentsEvent event) {
         if (event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
@@ -103,11 +113,15 @@ public class MoreOres {
     }
 
 
-    @EventBusSubscriber(modid = MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+    @EventBusSubscriber(modid = MOD_ID, value = Dist.CLIENT)
     public static class ClientModEvents {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
-
+           
+        }
+        @SubscribeEvent
+        public static void registerScreens(RegisterMenuScreensEvent event) {
+            event.register(ModMenuType.GEM_PURIFIER.get(), GemPurifierScreen::new);
         }
     }
 }
