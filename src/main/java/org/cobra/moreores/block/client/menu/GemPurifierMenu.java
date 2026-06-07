@@ -1,12 +1,14 @@
 package org.cobra.moreores.block.client.menu;
 
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.neoforged.neoforge.transfer.energy.SimpleEnergyHandler;
 import org.cobra.moreores.block.ModBlocks;
 import org.cobra.moreores.block.entity.gem.GemPurifierBlockEntity;
 import org.cobra.moreores.item.ModItems;
@@ -65,6 +67,18 @@ public class GemPurifierMenu extends AbstractContainerMenu {
         addDataSlots(data);
     }
 
+    public boolean isPurifying() {
+        return data.get(0) > 0;
+    }
+
+    public int progressGetter() {
+        int progress = this.data.get(0); //Progress
+        int maxProgress = this.data.get(1); //Max Progress
+        int progressArrowSize = 27; //Height of progress arrow
+
+        return maxProgress != 0 && progress != 0 ? progress * progressArrowSize/ maxProgress : 0;
+    }
+    
     public void addPlayerGenericInventory(Inventory playerInventory) {
         for (int i = 0; i < 3; ++i) {
             for (int l = 0; l < 9; ++l) {
@@ -78,19 +92,6 @@ public class GemPurifierMenu extends AbstractContainerMenu {
             this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 173));
         }
     }
-
-//    public void addFirstAdditionalInventory(Inventory playerInventory) {
-//        for (int i = 0; i < 8; ++i) {
-//            this.addSlot(new ResourceHandlerSlot(handler, 4 + i, 26 + i * 18, 95));
-//        }
-//    }
-
-//    public void addSecondAdditionalInventory(Inventory playerInventory) {
-//        for (int i = 0; i < 4; ++i) {
-//            this.addSlot(new Slot(playerInventory, 12 +  i, 179, 115 + i * 18));
-//        }
-//    }
-    
     @Override
     public ItemStack quickMoveStack(Player player, int i) {
         return ItemStack.EMPTY;
@@ -99,5 +100,15 @@ public class GemPurifierMenu extends AbstractContainerMenu {
     @Override
     public boolean stillValid(Player player) {
         return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()), player, ModBlocks.GEM_PURIFIER_BLOCK.get());
+    }
+
+    public float getEnergyPercent() {
+        SimpleEnergyHandler energyHandler = this.blockEntity.energyHandler;
+        int energy = energyHandler.getAmountAsInt();
+        int maxEnergy = energyHandler.getCapacityAsInt();
+        if (maxEnergy == 0 || energy == 0)
+            return 0.0F;
+
+        return Mth.clamp((float) energy / (float) maxEnergy, 0.0F, 1.0F);
     }
 }

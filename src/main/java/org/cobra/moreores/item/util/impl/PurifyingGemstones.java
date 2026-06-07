@@ -8,7 +8,7 @@ import org.cobra.moreores.block.ModBlocks;
 import org.cobra.moreores.item.ModItems;
 import org.cobra.moreores.item.util.GemCategory;
 
-public enum PurifyingGemstones implements IGem, StringRepresentable {
+public enum PurifyingGemstones implements IGemstone, StringRepresentable {
     NONE("empty", Items.AIR),
     RUBY("ruby", ModItems.RUBY.get(), ModBlocks.RUBY_BLOCK.get().asItem()),
     SAPPHIRE("sapphire", ModItems.SAPPHIRE.get(), ModBlocks.SAPPHIRE_BLOCK.get().asItem()),

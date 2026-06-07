@@ -15,6 +15,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeHolder;
@@ -32,11 +33,12 @@ import net.neoforged.neoforge.transfer.transaction.Transaction;
 import org.cobra.moreores.block.ModBlocks;
 import org.cobra.moreores.block.client.menu.GemPurifierMenu;
 import org.cobra.moreores.block.entity.ModBlockEntityType;
-import org.cobra.moreores.item.util.impl.IGem;
+import org.cobra.moreores.item.util.impl.IGemstone;
 import org.cobra.moreores.item.util.impl.PurifyingGemstones;
 import org.cobra.moreores.recipe.GemPurifierRecipe;
 import org.cobra.moreores.recipe.ModRecipeType;
 import org.cobra.moreores.recipe.input.GemPurifyingRecipeInput;
+import org.cobra.moreores.registry.ModItemTags;
 import org.jspecify.annotations.Nullable;
 
 import java.util.Optional;
@@ -69,13 +71,14 @@ public class GemPurifierBlockEntity extends AbstractGemBlockEntity {
     public static final int ENERGY_SLOT = 2;
     public static final int WATER_SLOT = 3;
     
-    public final FluidStacksResourceHandler fluidHandler = new FluidStacksResourceHandler(1, 10_000);
+    public final FluidStacksResourceHandler fluidHandler = new FluidStacksResourceHandler(4, 10_000);
     
 //    private int progress = 0;
     private int maxProgress = 400;
     
     public GemPurifierBlockEntity(BlockPos pos, BlockState blockState) {
         super(ModBlockEntityType.GEM_PURIFIER.get(), pos, blockState);
+        this.gem = PurifyingGemstones.NONE;
         this.data = new ContainerData() {
             @Override
             public int get(int i) {
@@ -103,7 +106,14 @@ public class GemPurifierBlockEntity extends AbstractGemBlockEntity {
 
     @Override
     protected boolean hasRecipe() {
-        return false;
+        Optional<RecipeHolder<GemPurifierRecipe>> recipe = getCurrentRecipe();
+        if(recipe.isEmpty()) {
+            return false;
+        }
+
+        ItemStack result = recipe.get().value().assemble(new GemPurifyingRecipeInput(stack.getResource(INGREDIENT_SLOT).toStack()));
+
+        return canInsertCountIntoResultSlot(result) && canInsertItemIntoResultSlot(result.getItem()) && hasEnoughEnergy() && hasEnoughWater();
     }
 
     @Override
@@ -157,19 +167,22 @@ public class GemPurifierBlockEntity extends AbstractGemBlockEntity {
     @Override
     protected void saveAdditional(ValueOutput output) {
         super.saveAdditional(output);
-        output.putString("GemType", gem.getName());
+        output.store("GemType", PurifyingGemstones.CODEC, gemstone());
+        output.store("FluidState", FluidState.CODEC, fluidState);
     }
 
     @Override
     protected void loadAdditional(ValueInput input) {
         super.loadAdditional(input);
-        input.getStringOr("GemType", gemstone().name());
+        gem = input.read("GemType", PurifyingGemstones.CODEC).orElse(PurifyingGemstones.NONE);
+        fluidState =  input.read("FluidState", FluidState.CODEC).orElse(FluidState.IDLE);
+        
     }
 
     @Override
     public PurifyingGemstones gemstone() {
-        IGem gem = super.gemstone();
-        if(gem instanceof PurifyingGemstones c) {
+        IGemstone gemstone = super.gemstone();
+        if(gemstone instanceof PurifyingGemstones c) {
             return c;
         }
         return PurifyingGemstones.NONE;
@@ -196,7 +209,7 @@ public class GemPurifierBlockEntity extends AbstractGemBlockEntity {
     }
 
     public FluidStack fluid() {
-        return new FluidStack(fluidHandler.getResource(ENERGY_SLOT).getFluid(), fluidHandler.getAmountAsInt(ENERGY_SLOT));
+        return new FluidStack(fluidHandler.getResource(WATER_SLOT).getFluid(), fluidHandler.getAmountAsInt(WATER_SLOT));
     }
     
     public int fluidAmount() {
@@ -248,7 +261,7 @@ public class GemPurifierBlockEntity extends AbstractGemBlockEntity {
 
     private Optional<RecipeHolder<GemPurifierRecipe>> getCurrentRecipe() {
         return ((ServerLevel) level).recipeAccess()
-                .getRecipeFor(ModRecipeType.GEM_OURIFIER.get(),
+                .getRecipeFor(ModRecipeType.GEM_PURIFIER.get(),
                         new GemPurifyingRecipeInput(stack.getResource(INGREDIENT_SLOT).toStack()), level);
     }
     
@@ -342,6 +355,15 @@ public class GemPurifierBlockEntity extends AbstractGemBlockEntity {
             transaction.commit();
         }
         fluidState = FluidState.EMPTYING;
+    }
+
+    private boolean canInsertItemIntoResultSlot(Item item) {
+        return this.resultStack().getItem() == item || this.resultStack().isEmpty() || this.resultStack().is(ModItemTags.GEMSTONE)
+                || this.resultStack().is(ModItemTags.RAW_GEMSTONE);
+    }
+
+    private boolean canInsertCountIntoResultSlot(ItemStack result) {
+        return this.resultStack().getCount() + result.getCount() <= this.resultStack().getMaxStackSize();
     }
     
     private boolean hasWaterBucket() {

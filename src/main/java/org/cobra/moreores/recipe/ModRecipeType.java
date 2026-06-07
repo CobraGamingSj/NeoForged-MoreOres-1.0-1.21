@@ -8,20 +8,18 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import org.cobra.moreores.MoreOres;
 
 public class ModRecipeType {
-
     public static final DeferredRegister<RecipeType<?>> TYPES =
             DeferredRegister.create(Registries.RECIPE_TYPE, MoreOres.MOD_ID);
     
-    public static final DeferredHolder<RecipeType<?>, RecipeType<GemPurifierRecipe>> GEM_OURIFIER =
-            TYPES.register("crystallizing", () -> new RecipeType<GemPurifierRecipe>() {
+    public static final DeferredHolder<RecipeType<?>, RecipeType<GemPurifierRecipe>> GEM_PURIFIER =
+            TYPES.register("gem_purifying", () -> new RecipeType<GemPurifierRecipe>() {
                 @Override
                 public String toString() {
-                    return "crystallizing";
+                    return "gem_purifying";
                 }
             });
 
     public static void register(IEventBus schoolBus) {
         TYPES.register(schoolBus);
     }
-    
 }

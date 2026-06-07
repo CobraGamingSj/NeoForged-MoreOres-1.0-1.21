@@ -22,7 +22,7 @@ import java.util.Optional;
 public record GemPurifierRecipe(Ingredient ingredient, ItemStackTemplate output) implements Recipe<GemPurifyingRecipeInput> {
    
     @Nullable
-    private static PlacementInfo ingredientPlacement;
+    private static PlacementInfo placementInfo;
 
     public static final MapCodec<GemPurifierRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             Ingredient.CODEC.fieldOf("ingredientGem").forGetter(GemPurifierRecipe::ingredient),
@@ -47,7 +47,7 @@ public record GemPurifierRecipe(Ingredient ingredient, ItemStackTemplate output)
 
     @Override
     public String group() {
-        return "Purifying";
+        return "Gem Purifying";
     }
 
     public ItemStack result() {
@@ -71,7 +71,7 @@ public record GemPurifierRecipe(Ingredient ingredient, ItemStackTemplate output)
 
     @Override
     public RecipeType<? extends Recipe<GemPurifyingRecipeInput>> getType() {
-        return ModRecipeType.GEM_OURIFIER.get();
+        return ModRecipeType.GEM_PURIFIER.get();
     }
 
     @Override
@@ -87,10 +87,10 @@ public record GemPurifierRecipe(Ingredient ingredient, ItemStackTemplate output)
 
     @Override
     public PlacementInfo placementInfo() {
-        if (ingredientPlacement == null) {
-            ingredientPlacement = PlacementInfo.create(this.ingredient);
+        if (placementInfo == null) {
+            placementInfo = PlacementInfo.create(this.ingredient);
         }
-        return ingredientPlacement;
+        return placementInfo;
     }
 
     @Override

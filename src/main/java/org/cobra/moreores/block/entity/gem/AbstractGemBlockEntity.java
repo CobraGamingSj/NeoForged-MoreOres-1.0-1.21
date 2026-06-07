@@ -12,7 +12,7 @@ import net.neoforged.neoforge.transfer.item.ItemStacksResourceHandler;
 import net.neoforged.neoforge.transfer.transaction.Transaction;
 import org.cobra.moreores.block.ModBlocks;
 import org.cobra.moreores.item.ModItems;
-import org.cobra.moreores.item.util.impl.IGem;
+import org.cobra.moreores.item.util.impl.IGemstone;
 
 public abstract class AbstractGemBlockEntity extends BlockEntity implements MenuProvider {
 
@@ -21,7 +21,7 @@ public abstract class AbstractGemBlockEntity extends BlockEntity implements Menu
     
     protected CurrentGemState currentGemState = CurrentGemState.IDLE;
     protected EnergyState energyState = EnergyState.IDLE;
-    protected IGem gem = IGem.NONE;
+    protected IGemstone gem = IGemstone.NONE;
     
     protected int initialProgressTicks = 0;
     
@@ -76,8 +76,8 @@ public abstract class AbstractGemBlockEntity extends BlockEntity implements Menu
         energyState = EnergyState.EXTRACTING;
     }
     
-    public IGem gemstone() {
-        return IGem.NONE;
+    public IGemstone gemstone() {
+        return IGemstone.NONE;
     }
 
     protected void increaseProgressTicks() {
