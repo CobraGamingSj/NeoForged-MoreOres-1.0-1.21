@@ -2,6 +2,7 @@ package org.cobra.moreores.recipe.book;
 
 
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.crafting.RecipeBookCategory;
 import org.cobra.moreores.MoreOres;
@@ -12,7 +13,7 @@ public class ModRecipeBookCategories {
     public static final RecipeBookCategory GEM_CRYSTALLIZER = register("gem_crystallizer");
 
     public static RecipeBookCategory register(String id) {
-        return Registry.register(Registries.RECIPE_BOOK_CATEGORY, MoreOres.id(id), new RecipeBookCategory());
+        return Registry.register(BuiltInRegistries.RECIPE_BOOK_CATEGORY, MoreOres.id(id), new RecipeBookCategory());
     }
 
     public static void register() {
