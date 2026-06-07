@@ -13,6 +13,8 @@ import org.cobra.moreores.block.entity.ModBlockEntityType;
 import org.cobra.moreores.item.ModCreativeModeTabs;
 import org.cobra.moreores.item.ModItems;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
+import org.cobra.moreores.recipe.ModRecipeSerializer;
+import org.cobra.moreores.recipe.ModRecipeType;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -53,6 +55,9 @@ public class MoreOres {
         ModBlockEntityType.register(schoolBus);
 
         ModMenuType.register(schoolBus);
+
+        ModRecipeSerializer.register(schoolBus);
+        ModRecipeType.register(schoolBus);
 
         schoolBus.addListener(this::addCreative);
 

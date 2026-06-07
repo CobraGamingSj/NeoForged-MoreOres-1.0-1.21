@@ -2,10 +2,10 @@ package org.cobra.moreores.recipe;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.item.crafting.display.RecipeDisplay;
 import net.minecraft.world.item.crafting.display.SlotDisplay;
@@ -19,25 +19,39 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Optional;
 
-public class GemPurifierRecipe implements Recipe<GemPurifyingRecipeInput> {
-    public final Ingredient ingredient;
-    public final ItemStack output;
-
+public record GemPurifierRecipe(Ingredient ingredient, ItemStackTemplate output) implements Recipe<GemPurifyingRecipeInput> {
+   
     @Nullable
-    private PlacementInfo ingredientPlacement;
+    private static PlacementInfo ingredientPlacement;
 
-    public GemPurifierRecipe(Ingredient ingredient, ItemStack result) {
-        this.ingredient = ingredient;
-        this.output = result;
+    public static final MapCodec<GemPurifierRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+            Ingredient.CODEC.fieldOf("ingredientGem").forGetter(GemPurifierRecipe::ingredient),
+            ItemStackTemplate.CODEC.fieldOf("resultGem").forGetter(GemPurifierRecipe::output)
+    ).apply(instance, GemPurifierRecipe::new));
+    
+    public static final StreamCodec<RegistryFriendlyByteBuf, GemPurifierRecipe> STREAM_CODEC = StreamCodec.composite(
+            Ingredient.CONTENTS_STREAM_CODEC, GemPurifierRecipe::getIngredient,
+            ItemStackTemplate.STREAM_CODEC, GemPurifierRecipe::output,
+            GemPurifierRecipe::new
+    );
+    
+    @Override
+    public ItemStack assemble(GemPurifyingRecipeInput input) {
+        return result().copy();
     }
 
     @Override
-    public ItemStack assemble(GemPurifyingRecipeInput input, HolderLookup.Provider lookup) {
-        return this.output.copy();
+    public boolean showNotification() {
+        return true;
     }
 
-    public ItemStack getResult() {
-        return this.output;
+    @Override
+    public String group() {
+        return "Purifying";
+    }
+
+    public ItemStack result() {
+        return this.output.create();
     }
 
     public Ingredient getIngredient() {
@@ -52,12 +66,12 @@ public class GemPurifierRecipe implements Recipe<GemPurifyingRecipeInput> {
 
     @Override
     public RecipeSerializer<? extends Recipe<GemPurifyingRecipeInput>> getSerializer() {
-        return Serializer.INSTANCE;
+        return ModRecipeSerializer.GEM_PURIFIER.get();
     }
 
     @Override
     public RecipeType<? extends Recipe<GemPurifyingRecipeInput>> getType() {
-        return Type.INSTANCE;
+        return ModRecipeType.GEM_OURIFIER.get();
     }
 
     @Override
@@ -73,10 +87,10 @@ public class GemPurifierRecipe implements Recipe<GemPurifyingRecipeInput> {
 
     @Override
     public PlacementInfo placementInfo() {
-        if (this.ingredientPlacement == null) {
-            this.ingredientPlacement = PlacementInfo.create(this.ingredient);
+        if (ingredientPlacement == null) {
+            ingredientPlacement = PlacementInfo.create(this.ingredient);
         }
-        return this.ingredientPlacement;
+        return ingredientPlacement;
     }
 
     @Override
@@ -86,46 +100,5 @@ public class GemPurifierRecipe implements Recipe<GemPurifyingRecipeInput> {
 
     public Ingredient getIngredients() {
         return this.ingredient;
-    }
-
-    public static class Type implements RecipeType<GemPurifierRecipe> {
-
-        //RECIPE PROPERTIES
-        public static final Type INSTANCE = new Type();
-        public static final String ID = "gem_polishing"; //Recipe ID
-    }
-
-    public static class Serializer implements RecipeSerializer<GemPurifierRecipe> {
-
-        //RECIPE PROPERTIES
-        public static final Serializer INSTANCE = new Serializer();
-        public static final String ID = "gem_polishing"; //Recipe ID
-
-        //CODEC
-        private static final MapCodec<GemPurifierRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-                Ingredient.CODEC.fieldOf("ingredientGem").forGetter(GemPurifierRecipe::getIngredient),
-                ItemStack.STRICT_CODEC.fieldOf("resultGem").forGetter(GemPurifierRecipe::getResult)
-        ).apply(instance, GemPurifierRecipe::new));
-
-        @Override
-        public MapCodec<GemPurifierRecipe> codec() {
-            return CODEC;
-        }
-
-        @Override
-        public StreamCodec<RegistryFriendlyByteBuf, GemPurifierRecipe> streamCodec() {
-            return StreamCodec.of(Serializer::write, Serializer::read);
-        }
-
-        private static void write(RegistryFriendlyByteBuf buf, GemPurifierRecipe recipe) {
-            Ingredient.CONTENTS_STREAM_CODEC.encode(buf, recipe.getIngredient());
-            ItemStack.STREAM_CODEC.encode(buf, recipe.getResult());
-        }
-
-        private static GemPurifierRecipe read(RegistryFriendlyByteBuf buf) {
-            Ingredient ingredient = Ingredient.CONTENTS_STREAM_CODEC.decode(buf);
-            ItemStack result = ItemStack.STREAM_CODEC.decode(buf);
-            return new GemPurifierRecipe(ingredient, result);
-        }
     }
 }

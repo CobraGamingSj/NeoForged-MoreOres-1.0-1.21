@@ -35,6 +35,7 @@ import org.cobra.moreores.block.entity.ModBlockEntityType;
 import org.cobra.moreores.item.util.impl.IGem;
 import org.cobra.moreores.item.util.impl.PurifyingGemstones;
 import org.cobra.moreores.recipe.GemPurifierRecipe;
+import org.cobra.moreores.recipe.ModRecipeType;
 import org.cobra.moreores.recipe.input.GemPurifyingRecipeInput;
 import org.jspecify.annotations.Nullable;
 
@@ -247,13 +248,13 @@ public class GemPurifierBlockEntity extends AbstractGemBlockEntity {
 
     private Optional<RecipeHolder<GemPurifierRecipe>> getCurrentRecipe() {
         return ((ServerLevel) level).recipeAccess()
-                .getRecipeFor(GemPurifierRecipe.Type.INSTANCE,
+                .getRecipeFor(ModRecipeType.GEM_OURIFIER.get(),
                         new GemPurifyingRecipeInput(stack.getResource(INGREDIENT_SLOT).toStack()), level);
     }
     
     private void getPurifiedGemstone() {
         Optional<RecipeHolder<GemPurifierRecipe>> recipe = getCurrentRecipe();
-        ItemStack output = recipe.get().value().getResult();
+        ItemStack output = recipe.get().value().result();
 
         try(Transaction transaction = Transaction.openRoot()) {
             ItemAccess itemAccess = ItemAccess.forHandlerIndex(stack, RESULT_SLOT);
