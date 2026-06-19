@@ -8,17 +8,12 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import org.cobra.moreores.MoreOres;
-import org.jline.utils.Colors;
-
-import java.awt.*;
 
 public class GemPurifierScreen extends AbstractContainerScreen<GemPurifierMenu> {
     public static final Identifier THIS_IS_GUI_TEXTURE_FOR_MY_BLOCK_XD = MoreOres.id("textures/gui/container/gem_purifier/gem_purifier_gui.png");
     
     public GemPurifierScreen(GemPurifierMenu menu, Inventory playerInventory, Component title) {
-        super(menu, playerInventory, title);
-        this.imageWidth = 196;
-        this.imageHeight = 207;
+        super(menu, playerInventory, title, 207, 196);
     }
     
     @Override

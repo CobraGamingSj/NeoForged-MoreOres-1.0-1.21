@@ -4,18 +4,19 @@ import com.mojang.serialization.Codec;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
-import org.cobra.moreores.block.ModBlocks;
 import org.cobra.moreores.item.ModItems;
 import org.cobra.moreores.item.util.GemCategory;
 
+import java.util.function.Supplier;
+
 public enum PurifyingGemstones implements IGemstone, StringRepresentable {
-    NONE("empty", Items.AIR),
-    RUBY("ruby", ModItems.RUBY.get(), ModBlocks.RUBY_BLOCK.get().asItem()),
-    SAPPHIRE("sapphire", ModItems.SAPPHIRE.get(), ModBlocks.SAPPHIRE_BLOCK.get().asItem()),
-    GREEN_SAPPHIRE("green_sapphire", ModItems.GREEN_SAPPHIRE.get(), ModBlocks.GREEN_SAPPHIRE_BLOCK.get().asItem()),
-    BLUE_GARNET("blue_garnet", ModItems.BLUE_GARNET.get(), ModBlocks.BLUE_GARNET_BLOCK.get().asItem()),
-    PINK_GARNET("pink_garnet", ModItems.PINK_GARNET.get(), ModBlocks.PINK_GARNET_BLOCK.get().asItem()),
-    GREEN_GARNET("green_garnet", ModItems.GREEN_GARNET.get(), ModBlocks.GREEN_GARNET_BLOCK.get().asItem());
+    EMPTY("empty", () -> new Item[]{Items.AIR}),
+    RUBY("ruby", () -> new Item[]{ModItems.RUBY.get()}),
+    SAPPHIRE("sapphire", () -> new Item[]{ModItems.SAPPHIRE.get()}),
+    GREEN_SAPPHIRE("green_sapphire", () -> new Item[]{ModItems.GREEN_SAPPHIRE.get()}),
+    BLUE_GARNET("blue_garnet", () -> new Item[]{ModItems.BLUE_GARNET.get()}),
+    PINK_GARNET("pink_garnet", () -> new Item[]{ModItems.PINK_GARNET.get()}),
+    GREEN_GARNET("green_garnet", () -> new Item[]{ModItems.GREEN_GARNET.get()});
 //    KYAWTHUITE("kyawthuite", ModItems.KYAWTHUITE, ModBlocks.KYAWTHUITE_BLOCK.get().asItem()),
 //    TOPAZ("topaz", ModItems.TOPAZ, ModBlocks.TOPAZ_BLOCK.get().asItem()),
 //    WHITE_TOPAZ("white_topaz", ModItems.WHITE_TOPAZ, ModBlocks.WHITE_TOPAZ_BLOCK.get().asItem()),
@@ -24,11 +25,11 @@ public enum PurifyingGemstones implements IGemstone, StringRepresentable {
 //    PYROPE("pyrope", ModItems.PYROPE, ModBlocks.PYROPE_BLOCK.get().asItem());
     
     private final String name;
-    private final Item[] items;
+    private final Supplier<Item[]> items;
 
     public static final Codec<PurifyingGemstones> CODEC = StringRepresentable.fromValues(PurifyingGemstones::values);
     
-    PurifyingGemstones(String name, Item... items) {
+    PurifyingGemstones(String name, Supplier<Item[]> items) {
         this.name = name;
         this.items = items;
     }
@@ -44,7 +45,7 @@ public enum PurifyingGemstones implements IGemstone, StringRepresentable {
     }
 
     @Override
-    public Item[] items() {
+    public Supplier<Item[]> items() {
         return items;
     }
 

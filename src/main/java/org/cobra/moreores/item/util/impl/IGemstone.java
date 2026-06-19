@@ -5,10 +5,12 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import org.cobra.moreores.item.util.GemCategory;
 
+import java.util.function.Supplier;
+
 public interface IGemstone {
     String getName();
     GemCategory category();
-    Item[] items();
+    Supplier<Item[]> items();
     
     IGemstone NONE = new IGemstone() {
         @Override
@@ -22,8 +24,8 @@ public interface IGemstone {
         }
 
         @Override
-        public Item[] items() {
-            return new Item[]{Items.AIR};
+        public Supplier<Item[]> items() {
+            return () -> new Item[]{Items.AIR};
         }
     };
 }

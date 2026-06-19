@@ -11,6 +11,7 @@ public class ModItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(MoreOres.MOD_ID);
 
     public static final DeferredItem<Item> RUBY = ITEMS.registerItem("ruby", GemItem::new);
+    public static final DeferredItem<Item> RAW_RUBY = ITEMS.registerItem("raw_ruby", GemItem::new);
     public static final DeferredItem<Item> RADIANT = ITEMS.registerItem("radiant", GemItem::new);
     public static final DeferredItem<Item> SAPPHIRE = ITEMS.registerItem("sapphire", GemItem::new);
     public static final DeferredItem<Item> GREEN_SAPPHIRE = ITEMS.registerItem("green_sapphire", GemItem::new);

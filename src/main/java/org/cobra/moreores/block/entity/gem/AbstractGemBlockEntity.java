@@ -18,8 +18,7 @@ public abstract class AbstractGemBlockEntity extends BlockEntity implements Menu
 
     public final ItemStacksResourceHandler main;
     
-    
-    protected CurrentGemState currentGemState = CurrentGemState.IDLE;
+    protected MachineState machineState = MachineState.IDLE;
     protected EnergyState energyState = EnergyState.IDLE;
     protected IGemstone gem = IGemstone.NONE;
     

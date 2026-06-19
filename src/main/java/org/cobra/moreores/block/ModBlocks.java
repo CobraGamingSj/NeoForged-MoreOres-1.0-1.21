@@ -45,7 +45,7 @@ public class ModBlocks {
                     .strength(5f).strength(5f, 5f).mapColor(MapColor.COLOR_LIGHT_GREEN).requiresCorrectToolForDrops().sound(SoundType.AMETHYST_CLUSTER)));
     
     public static final DeferredBlock<Block> GEM_PURIFIER_BLOCK = registerBlock("gem_purifier_block",
-            p -> new GemPurifierBlock(p.requiresCorrectToolForDrops()));
+            p -> new GemPurifierBlock(p.requiresCorrectToolForDrops().noOcclusion()));
     
     public static final DeferredBlock<Block> RUBY_ORE = registerBlock("ruby_ore",
             p -> new DropExperienceBlock(UniformInt.of(3, 5), p

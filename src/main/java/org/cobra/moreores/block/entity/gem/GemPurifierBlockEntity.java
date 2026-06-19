@@ -30,6 +30,7 @@ import net.neoforged.neoforge.transfer.fluid.FluidStacksResourceHandler;
 import net.neoforged.neoforge.transfer.item.ItemResource;
 import net.neoforged.neoforge.transfer.item.ItemStacksResourceHandler;
 import net.neoforged.neoforge.transfer.transaction.Transaction;
+import org.cobra.moreores.MoreOres;
 import org.cobra.moreores.block.ModBlocks;
 import org.cobra.moreores.block.client.menu.GemPurifierMenu;
 import org.cobra.moreores.block.entity.ModBlockEntityType;
@@ -64,7 +65,7 @@ public class GemPurifierBlockEntity extends AbstractGemBlockEntity {
     private long previousFluidMilestone = 0;
     private FluidState fluidState = FluidState.IDLE;
     
-    private final ContainerData data;
+    protected final ContainerData containerData;
     
     public static final int INGREDIENT_SLOT = 0;
     public static final int RESULT_SLOT = 1;
@@ -73,16 +74,15 @@ public class GemPurifierBlockEntity extends AbstractGemBlockEntity {
     
     public final FluidStacksResourceHandler fluidHandler = new FluidStacksResourceHandler(4, 10_000);
     
-//    private int progress = 0;
     private int maxProgress = 400;
     
     public GemPurifierBlockEntity(BlockPos pos, BlockState blockState) {
         super(ModBlockEntityType.GEM_PURIFIER.get(), pos, blockState);
-        this.gem = PurifyingGemstones.NONE;
-        this.data = new ContainerData() {
+        this.gem = PurifyingGemstones.EMPTY;
+        this.containerData = new ContainerData() {
             @Override
-            public int get(int i) {
-                return switch (i) {
+            public int get(int index) {
+                return switch (index) {
                     case 1 -> GemPurifierBlockEntity.this.initialProgressTicks;
                     case 2 -> GemPurifierBlockEntity.this.maxProgress;
                     default -> 0;
@@ -90,8 +90,8 @@ public class GemPurifierBlockEntity extends AbstractGemBlockEntity {
             }
 
             @Override
-            public void set(int i, int value) {
-                switch (i) {
+            public void set(int index, int value) {
+                switch (index) {
                     case 0: GemPurifierBlockEntity.this.initialProgressTicks = value;
                     case 1: GemPurifierBlockEntity.this.maxProgress = value;
                 }
@@ -108,6 +108,7 @@ public class GemPurifierBlockEntity extends AbstractGemBlockEntity {
     protected boolean hasRecipe() {
         Optional<RecipeHolder<GemPurifierRecipe>> recipe = getCurrentRecipe();
         if(recipe.isEmpty()) {
+            MoreOres.LOGGER.info("No recipe found: {}", recipe.get().id());
             return false;
         }
 
@@ -158,7 +159,7 @@ public class GemPurifierBlockEntity extends AbstractGemBlockEntity {
     public void drops() {
         SimpleContainer inv = new SimpleContainer(stack.size());
         for (int i = 0; i < stack.size(); i++) {
-            ItemAccess itemAccess = ItemAccess.forHandlerIndex(stack, 0);
+            ItemAccess itemAccess = ItemAccess.forHandlerIndex(stack, i);
             inv.setItem(i, new ItemStack(itemAccess.getResource().getItem(), itemAccess.getAmount()));
         }
         Containers.dropContents(this.level, this.worldPosition, inv);
@@ -174,9 +175,8 @@ public class GemPurifierBlockEntity extends AbstractGemBlockEntity {
     @Override
     protected void loadAdditional(ValueInput input) {
         super.loadAdditional(input);
-        gem = input.read("GemType", PurifyingGemstones.CODEC).orElse(PurifyingGemstones.NONE);
-        fluidState =  input.read("FluidState", FluidState.CODEC).orElse(FluidState.IDLE);
-        
+        gem = input.read("GemType", PurifyingGemstones.CODEC).orElse(PurifyingGemstones.EMPTY);
+        fluidState = input.read("FluidState", FluidState.CODEC).orElse(FluidState.IDLE);
     }
 
     @Override
@@ -185,7 +185,7 @@ public class GemPurifierBlockEntity extends AbstractGemBlockEntity {
         if(gemstone instanceof PurifyingGemstones c) {
             return c;
         }
-        return PurifyingGemstones.NONE;
+        return PurifyingGemstones.EMPTY;
     }
     
     @Override
@@ -195,7 +195,7 @@ public class GemPurifierBlockEntity extends AbstractGemBlockEntity {
 
     @Override
     public @Nullable AbstractContainerMenu createMenu(int containerId, Inventory inventory, Player player) {
-        return new GemPurifierMenu(containerId, inventory, this, this.stack, data);
+        return new GemPurifierMenu(containerId, inventory, this, this.stack, containerData);
     }
 
     @Override
@@ -221,7 +221,7 @@ public class GemPurifierBlockEntity extends AbstractGemBlockEntity {
             return;
         }
 
-        if(currentGemState == CurrentGemState.RUNNING) {
+        if(machineState == MachineState.RUNNING) {
             energyState = EnergyState.EXTRACTING;
             if (isResultSlotAvailable() && hasRecipe() && hasEnoughEnergy() && hasEnoughWater()) {
                 this.increaseProgressTicks();
@@ -234,10 +234,10 @@ public class GemPurifierBlockEntity extends AbstractGemBlockEntity {
                 setChanged(level, pos, state);
             } else {
                 this.clearProgress();
-                this.currentGemState = CurrentGemState.IDLE;
+                this.machineState = MachineState.IDLE;
                 setChanged(level, pos, state);
             }
-        } else if (currentGemState.isPaused()) {
+        } else if (machineState.isPaused()) {
             energyState = EnergyState.INSERTING;
             fluidState = FluidState.FILLING;
             insertEnergy();
@@ -272,7 +272,7 @@ public class GemPurifierBlockEntity extends AbstractGemBlockEntity {
         try(Transaction transaction = Transaction.openRoot()) {
             ItemAccess itemAccess = ItemAccess.forHandlerIndex(stack, RESULT_SLOT);
 
-            stack.extract(stack.getResource(INGREDIENT_SLOT), 1, transaction);
+            stack.extract(stack.getResourceFrom(ingredientStack()), 1, transaction);
             stack.set(RESULT_SLOT, ItemResource.of(output), itemAccess.getAmount() + output.getCount());
 
             transaction.commit();
@@ -326,7 +326,7 @@ public class GemPurifierBlockEntity extends AbstractGemBlockEntity {
     }
 
     @Override
-    protected void increaseProgressTicks() {
+    public void increaseProgressTicks() {
         if(this.level.hasNeighborSignal(getBlockPos())) {
             initialProgressTicks += 5;
         } else {
