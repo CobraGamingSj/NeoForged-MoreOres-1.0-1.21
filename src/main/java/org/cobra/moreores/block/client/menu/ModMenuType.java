@@ -17,6 +17,9 @@ public class ModMenuType {
     public static final DeferredHolder<MenuType<?>, MenuType<GemPurifierMenu>> GEM_PURIFIER = registerMenuType(
             "gem_purifier", GemPurifierMenu::new
     );
+    public static final DeferredHolder<MenuType<?>, MenuType<GemCrystallizerMenu>> GEM_CRYSTALLIZER = registerMenuType(
+            "gem_crystallizer", GemCrystallizerMenu::new
+    );
 
     private static <T extends AbstractContainerMenu> DeferredHolder<MenuType<?>, MenuType<T>> registerMenuType(String name,
                                                                                                                IContainerFactory<T> factory) {

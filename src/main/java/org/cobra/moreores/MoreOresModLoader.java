@@ -11,6 +11,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.block.Blocks;
 import org.cobra.moreores.block.ModBlocks;
+import org.cobra.moreores.block.client.menu.GemCrystallizerScreen;
 import org.cobra.moreores.block.client.menu.GemPurifierScreen;
 import org.cobra.moreores.block.client.menu.ModMenuType;
 import org.cobra.moreores.block.entity.ModBlockEntityType;
@@ -154,6 +155,7 @@ public class MoreOresModLoader {
         @SubscribeEvent
         public static void registerScreens(RegisterMenuScreensEvent event) {
             event.register(ModMenuType.GEM_PURIFIER.get(), GemPurifierScreen::new);
+            event.register(ModMenuType.GEM_CRYSTALLIZER.get(), GemCrystallizerScreen::new);
         }
     }
 }

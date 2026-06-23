@@ -36,21 +36,21 @@ public class GemPurifierMenu extends AbstractContainerMenu {
         this.addSlot(new ResourceHandlerSlot(handler, handler::set, 0, 79, 11) {
             @Override
             public boolean mayPlace(ItemStack stack) {
-                return stack.is(ModItemTags.RAW_GEMSTONE) || stack.is(ModItemTags.RAW_GEMSTONE_BLOCKS) || stack.is(ModItems.RAW_RUBY);
+                return stack.is(ModItemTags.RAW_GEMSTONE) || stack.is(ModItemTags.RAW_GEMSTONE_BLOCKS) || stack.is(ModItems.RAW_RUBY.get());
             }
         }); // Input
         
         this.addSlot(new ResourceHandlerSlot(handler, handler::set, 1, 79, 61) {
             @Override
             public boolean mayPlace(ItemStack stack) {
-                return stack.is(ModItemTags.GEMSTONE) || stack.is(ModItemTags.GEMSTONE_BLOCKS) || stack.is(ModItems.RUBY);
+                return stack.is(ModItemTags.GEMSTONE) || stack.is(ModItemTags.GEMSTONE_BLOCKS) || stack.is(ModItems.RUBY.get());
             }
         }); // Result
         
         this.addSlot(new ResourceHandlerSlot(handler, handler::set, 2, 40, 20) {
             @Override
             public boolean mayPlace(ItemStack stack) {
-                return stack.is(ModItems.ENERGY_INGOT) || stack.is(ModBlocks.ENERGY_BLOCK.asItem());
+                return stack.is(ModItems.ENERGY_INGOT.get()) || stack.is(ModBlocks.ENERGY_BLOCK.get().asItem());
             }
         }); // Energy Input
         

@@ -169,16 +169,18 @@ public class GemPurifierBlockEntity extends AbstractGemMachineryBlockEntity {
     }
     
     @Override
-    protected void saveAdditional(ValueOutput output) {
+    public void saveAdditional(ValueOutput output) {
         super.saveAdditional(output);
         output.store("GemType", PurificationGemstones.CODEC, gemstone());
         output.store("FluidState", FluidMode.CODEC, fluidMode);
+        fluidHandler.serialize(output);
     }
 
     @Override
-    protected void loadAdditional(ValueInput input) {
+    public void loadAdditional(ValueInput input) {
         super.loadAdditional(input);
         gem = input.read("GemType", PurificationGemstones.CODEC).orElse(PurificationGemstones.EMPTY);
+        fluidHandler.deserialize(input);
         fluidMode = input.read("FluidState", FluidMode.CODEC).orElse(FluidMode.NONE);
     }
 

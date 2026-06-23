@@ -1,12 +1,16 @@
 package org.cobra.moreores.block.entity.gem;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.ContainerHelper;
+import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.transfer.energy.SimpleEnergyHandler;
 import net.neoforged.neoforge.transfer.item.ItemStacksResourceHandler;
 import net.neoforged.neoforge.transfer.transaction.Transaction;
@@ -49,6 +53,26 @@ public abstract class AbstractGemMachineryBlockEntity extends BlockEntity implem
 
     protected boolean hasEnergySource() {
         return !energyStack().isEmpty() && (energyStack().is(ModItems.ENERGY_INGOT) || energyStack().is(ModBlocks.ENERGY_BLOCK.asItem()));
+    }
+
+    @Override
+    public void saveAdditional(ValueOutput output) {
+        super.saveAdditional(output);
+        ContainerHelper.saveAllItems(output, main.copyToList());
+        output.putInt("Progress", initialProgressTicks);
+        energyHandler.serialize(output);
+        output.store("PolishingState", MachineStatus.CODEC, machineStatus);
+        output.store("EnergyState", EnergyActivity.CODEC, energyActivity);
+    }
+
+    @Override
+    public void loadAdditional(ValueInput input) {
+        super.loadAdditional(input);
+        ContainerHelper.loadAllItems(input, main.copyToList());
+        initialProgressTicks = input.getIntOr("Progress", 0);
+        energyHandler.deserialize(input);
+        machineStatus = input.read("PolishingState", MachineStatus.CODEC).orElse(MachineStatus.STOPPED);
+        energyActivity = input.read("EnergyState", EnergyActivity.CODEC).orElse(EnergyActivity.OFF);
     }
     
     protected void insertEnergy() {

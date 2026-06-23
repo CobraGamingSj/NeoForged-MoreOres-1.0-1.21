@@ -4,6 +4,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import org.cobra.moreores.MoreOresModLoader;
 import org.cobra.moreores.block.ModBlocks;
+import org.cobra.moreores.block.entity.gem.GemCrystallizerBlockEntity;
 import org.cobra.moreores.block.entity.gem.GemPurifierBlockEntity;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -16,6 +17,9 @@ public class ModBlockEntityType {
     
     public static final Supplier<BlockEntityType<GemPurifierBlockEntity>> GEM_PURIFIER = BLOCK_ENTITIES.register(
             "gem_purifier", () -> new BlockEntityType<>(GemPurifierBlockEntity::new, ModBlocks.GEM_PURIFIER_BLOCK.get())
+    );
+    public static final Supplier<BlockEntityType<GemCrystallizerBlockEntity>> GEM_CRYSTALLIZER = BLOCK_ENTITIES.register(
+            "gem-crystallizer", () -> new BlockEntityType<>(GemCrystallizerBlockEntity::new, ModBlocks.GEM_CRYSTALLIZER_BLOCK.get())
     );
     
     public static void register(IEventBus schoolBus) {
