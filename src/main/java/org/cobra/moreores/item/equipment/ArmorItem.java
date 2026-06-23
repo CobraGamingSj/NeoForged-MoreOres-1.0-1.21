@@ -51,7 +51,7 @@ public class ArmorItem extends Item {
                         player.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, duration, 2, false, false, false));
                         if (slot == EquipmentSlot.FEET) {
                             ItemStack boots = player.getItemBySlot(EquipmentSlot.FEET);
-                            boots.consume((int) player.fallDistance / 3, player);
+                            boots.hurtAndBreak((int) player.fallDistance / 3, player, slot);
                         }
                     }
                     isFalling = true;
@@ -115,8 +115,7 @@ public class ArmorItem extends Item {
         Equippable equippableComponentBreastplate = chestplate.getComponents().get(DataComponents.EQUIPPABLE);
         Equippable equippableComponentHelmet = helmet.getComponents().get(DataComponents.EQUIPPABLE);
 
-        if((equippableComponentHelmet == null || equippableComponentBreastplate == null || equippableComponentLeggings == null || equippableComponentBoots == null || (
-                equippableComponentHelmet.assetId().isPresent() || equippableComponentBreastplate.assetId().isPresent() || equippableComponentLeggings.assetId().isPresent() || equippableComponentBoots.assetId().isPresent()))) {
+        if(equippableComponentHelmet == null || equippableComponentBreastplate == null || equippableComponentLeggings == null || equippableComponentBoots == null) {
             return false;
         }
         

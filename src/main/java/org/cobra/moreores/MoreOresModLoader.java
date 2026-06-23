@@ -103,6 +103,7 @@ public class MoreOresModLoader {
             ItemStack blue_garnet = new ItemStack(ModItems.BLUE_GARNET.get());
             ItemStack pink_garnet = new ItemStack(ModItems.PINK_GARNET.get());
             ItemStack green_garnet = new ItemStack(ModItems.GREEN_GARNET.get());
+            ItemStack kyawthuite = new ItemStack(ModItems.KYAWTHUITE.get());
             ItemStack topaz = new ItemStack(ModItems.TOPAZ.get());
             ItemStack white_topaz = new ItemStack(ModItems.WHITE_TOPAZ.get());
             ItemStack peridot = new ItemStack(ModItems.PERIDOT.get());
@@ -116,7 +117,8 @@ public class MoreOresModLoader {
             event.insertAfter(green_sapphire, blue_garnet, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
             event.insertAfter(blue_garnet, pink_garnet, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
             event.insertAfter(pink_garnet, green_garnet, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-            event.insertAfter(green_garnet, topaz, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(green_garnet, kyawthuite, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(kyawthuite, topaz, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
             event.insertAfter(topaz, white_topaz, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
             event.insertAfter(white_topaz, peridot, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
             event.insertAfter(peridot, jade, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
