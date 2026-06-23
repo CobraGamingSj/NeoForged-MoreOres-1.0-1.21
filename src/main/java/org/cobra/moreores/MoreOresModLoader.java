@@ -1,10 +1,14 @@
 package org.cobra.moreores;
 
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.util.datafix.fixes.StriderGravityFix;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.block.Blocks;
 import org.cobra.moreores.block.ModBlocks;
 import org.cobra.moreores.block.client.menu.GemPurifierScreen;
@@ -41,6 +45,27 @@ public class MoreOresModLoader {
         return Identifier.fromNamespaceAndPath(MOD_ID, id);
     }
 
+    public static String formatName(String path) {
+        String[] words = path.split("_");
+        StringBuilder builder = new StringBuilder();
+
+        for(int i = 0; i < words.length; i++) {
+            String word = words[i];
+
+            builder.append(Character.toUpperCase(word.charAt(0)))
+                    .append(word.substring(1));
+
+            if(i < words.length - 1) {
+                builder.append(" ");
+            }
+        }
+        return builder.toString();
+    }
+    
+    public static ResourceKey<Recipe<?>> recipeKey(String id) {
+        return ResourceKey.create(Registries.RECIPE, id(id));
+    }
+    
     public MoreOresModLoader(IEventBus schoolBus, ModContainer modContainer) {
         schoolBus.addListener(this::commonSetup);
 

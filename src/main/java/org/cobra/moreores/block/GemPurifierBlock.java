@@ -1,8 +1,10 @@
 package org.cobra.moreores.block;
 
 import com.mojang.serialization.MapCodec;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.player.Player;
@@ -58,10 +60,13 @@ public class GemPurifierBlock extends BaseEntityBlock {
         if(level.isClientSide()) {
             return InteractionResult.CONSUME;
         }
-        if(level.getBlockEntity(pos) instanceof GemPurifierBlockEntity be){
-            player.openMenu(new SimpleMenuProvider(be, be.getDisplayName()), pos);
-        }
-        return super.useWithoutItem(state, level, pos, player, hitResult);
+        
+//        if(level.getBlockEntity(pos) instanceof GemPurifierBlockEntity be) {
+//            player.openMenu(new SimpleMenuProvider(be, be.getDisplayName()), pos);
+//            return InteractionResult.SUCCESS;
+//        }
+        player.sendSystemMessage(Component.literal("[MoreOres+] ").withStyle(ChatFormatting.DARK_PURPLE, ChatFormatting.BOLD).append(Component.literal("This feature will be added soon.").withStyle(ChatFormatting.RED)));
+        return InteractionResult.SUCCESS;
     }
 
     @Override
