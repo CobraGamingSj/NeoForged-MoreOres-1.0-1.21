@@ -4,7 +4,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
-import org.cobra.moreores.MoreOres;
+import org.cobra.moreores.MoreOresModLoader;
 
 public class ModBlockTags {
 
@@ -29,7 +29,7 @@ public class ModBlockTags {
     public static final TagKey<Block> PYROPE_ORES = ofVanilla("pyrope_ores");
 
     private static TagKey<Block> of(String id) {
-        return TagKey.create(Registries.BLOCK, MoreOres.id(id));
+        return TagKey.create(Registries.BLOCK, MoreOresModLoader.id(id));
     }
     private static TagKey<Block> ofVanilla(String id) {
         return TagKey.create(Registries.BLOCK, Identifier.withDefaultNamespace(id));

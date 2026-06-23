@@ -5,7 +5,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
-import org.cobra.moreores.MoreOres;
+import org.cobra.moreores.MoreOresModLoader;
 
 public class ModItemTags {
 
@@ -26,7 +26,7 @@ public class ModItemTags {
     public static final TagKey<Item> ARCSHAPERS = ofVanilla("arcshapers");
 
     private static TagKey<Item> of(String id) {
-        return TagKey.create(Registries.ITEM, MoreOres.id(id));
+        return TagKey.create(Registries.ITEM, MoreOresModLoader.id(id));
     }
     private static TagKey<Item> ofVanilla(String id) {
         return TagKey.create(Registries.ITEM, Identifier.withDefaultNamespace(id));

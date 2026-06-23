@@ -1,0 +1,394 @@
+{
+  "variants": {
+    "facing=east,is_polishing=blue_garnet,redstone_powered=false": {
+      "model": "moreores:block/gem_purifier_block_blue",
+      "y": 270
+    },
+    "facing=east,is_polishing=blue_garnet,redstone_powered=true": {
+      "model": "moreores:block/gem_purifier_block_rp_blue",
+      "y": 270
+    },
+    "facing=east,is_polishing=empty,redstone_powered=false": {
+      "model": "moreores:block/gem_purifier_block",
+      "y": 270
+    },
+    "facing=east,is_polishing=empty,redstone_powered=true": {
+      "model": "moreores:block/gem_purifier_block_rp",
+      "y": 270
+    },
+    "facing=east,is_polishing=green_garnet,redstone_powered=false": {
+      "model": "moreores:block/gem_purifier_block_green",
+      "y": 270
+    },
+    "facing=east,is_polishing=green_garnet,redstone_powered=true": {
+      "model": "moreores:block/gem_purifier_block_rp_green",
+      "y": 270
+    },
+    "facing=east,is_polishing=green_sapphire,redstone_powered=false": {
+      "model": "moreores:block/gem_purifier_block_green",
+      "y": 270
+    },
+    "facing=east,is_polishing=green_sapphire,redstone_powered=true": {
+      "model": "moreores:block/gem_purifier_block_rp_green",
+      "y": 270
+    },
+    "facing=east,is_polishing=jade,redstone_powered=false": {
+      "model": "moreores:block/gem_purifier_block_green",
+      "y": 270
+    },
+    "facing=east,is_polishing=jade,redstone_powered=true": {
+      "model": "moreores:block/gem_purifier_block_rp_green",
+      "y": 270
+    },
+    "facing=east,is_polishing=kyawthuite,redstone_powered=false": {
+      "model": "moreores:block/gem_purifier_block_orange",
+      "y": 270
+    },
+    "facing=east,is_polishing=kyawthuite,redstone_powered=true": {
+      "model": "moreores:block/gem_purifier_block_rp_orange",
+      "y": 270
+    },
+    "facing=east,is_polishing=peridot,redstone_powered=false": {
+      "model": "moreores:block/gem_purifier_block_green",
+      "y": 270
+    },
+    "facing=east,is_polishing=peridot,redstone_powered=true": {
+      "model": "moreores:block/gem_purifier_block_rp_green",
+      "y": 270
+    },
+    "facing=east,is_polishing=pink_garnet,redstone_powered=false": {
+      "model": "moreores:block/gem_purifier_block_pink_garnet",
+      "y": 270
+    },
+    "facing=east,is_polishing=pink_garnet,redstone_powered=true": {
+      "model": "moreores:block/gem_purifier_block_rp_pink_garnet",
+      "y": 270
+    },
+    "facing=east,is_polishing=pyrope,redstone_powered=false": {
+      "model": "moreores:block/gem_purifier_block_red",
+      "y": 270
+    },
+    "facing=east,is_polishing=pyrope,redstone_powered=true": {
+      "model": "moreores:block/gem_purifier_block_rp_red",
+      "y": 270
+    },
+    "facing=east,is_polishing=ruby,redstone_powered=false": {
+      "model": "moreores:block/gem_purifier_block_red",
+      "y": 270
+    },
+    "facing=east,is_polishing=ruby,redstone_powered=true": {
+      "model": "moreores:block/gem_purifier_block_rp_red",
+      "y": 270
+    },
+    "facing=east,is_polishing=sapphire,redstone_powered=false": {
+      "model": "moreores:block/gem_purifier_block_blue",
+      "y": 270
+    },
+    "facing=east,is_polishing=sapphire,redstone_powered=true": {
+      "model": "moreores:block/gem_purifier_block_rp_blue",
+      "y": 270
+    },
+    "facing=east,is_polishing=topaz,redstone_powered=false": {
+      "model": "moreores:block/gem_purifier_block_orange",
+      "y": 270
+    },
+    "facing=east,is_polishing=topaz,redstone_powered=true": {
+      "model": "moreores:block/gem_purifier_block_rp_orange",
+      "y": 270
+    },
+    "facing=east,is_polishing=white_topaz,redstone_powered=false": {
+      "model": "moreores:block/gem_purifier_block_white_topaz",
+      "y": 270
+    },
+    "facing=east,is_polishing=white_topaz,redstone_powered=true": {
+      "model": "moreores:block/gem_purifier_block_rp_white_topaz",
+      "y": 270
+    },
+    "facing=north,is_polishing=blue_garnet,redstone_powered=false": {
+      "model": "moreores:block/gem_purifier_block_blue",
+      "y": 180
+    },
+    "facing=north,is_polishing=blue_garnet,redstone_powered=true": {
+      "model": "moreores:block/gem_purifier_block_rp_blue",
+      "y": 180
+    },
+    "facing=north,is_polishing=empty,redstone_powered=false": {
+      "model": "moreores:block/gem_purifier_block",
+      "y": 180
+    },
+    "facing=north,is_polishing=empty,redstone_powered=true": {
+      "model": "moreores:block/gem_purifier_block_rp",
+      "y": 180
+    },
+    "facing=north,is_polishing=green_garnet,redstone_powered=false": {
+      "model": "moreores:block/gem_purifier_block_green",
+      "y": 180
+    },
+    "facing=north,is_polishing=green_garnet,redstone_powered=true": {
+      "model": "moreores:block/gem_purifier_block_rp_green",
+      "y": 180
+    },
+    "facing=north,is_polishing=green_sapphire,redstone_powered=false": {
+      "model": "moreores:block/gem_purifier_block_green",
+      "y": 180
+    },
+    "facing=north,is_polishing=green_sapphire,redstone_powered=true": {
+      "model": "moreores:block/gem_purifier_block_rp_green",
+      "y": 180
+    },
+    "facing=north,is_polishing=jade,redstone_powered=false": {
+      "model": "moreores:block/gem_purifier_block_green",
+      "y": 180
+    },
+    "facing=north,is_polishing=jade,redstone_powered=true": {
+      "model": "moreores:block/gem_purifier_block_rp_green",
+      "y": 180
+    },
+    "facing=north,is_polishing=kyawthuite,redstone_powered=false": {
+      "model": "moreores:block/gem_purifier_block_orange",
+      "y": 180
+    },
+    "facing=north,is_polishing=kyawthuite,redstone_powered=true": {
+      "model": "moreores:block/gem_purifier_block_rp_orange",
+      "y": 180
+    },
+    "facing=north,is_polishing=peridot,redstone_powered=false": {
+      "model": "moreores:block/gem_purifier_block_green",
+      "y": 180
+    },
+    "facing=north,is_polishing=peridot,redstone_powered=true": {
+      "model": "moreores:block/gem_purifier_block_rp_green",
+      "y": 180
+    },
+    "facing=north,is_polishing=pink_garnet,redstone_powered=false": {
+      "model": "moreores:block/gem_purifier_block_pink_garnet",
+      "y": 180
+    },
+    "facing=north,is_polishing=pink_garnet,redstone_powered=true": {
+      "model": "moreores:block/gem_purifier_block_rp_pink_garnet",
+      "y": 180
+    },
+    "facing=north,is_polishing=pyrope,redstone_powered=false": {
+      "model": "moreores:block/gem_purifier_block_red",
+      "y": 180
+    },
+    "facing=north,is_polishing=pyrope,redstone_powered=true": {
+      "model": "moreores:block/gem_purifier_block_rp_red",
+      "y": 180
+    },
+    "facing=north,is_polishing=ruby,redstone_powered=false": {
+      "model": "moreores:block/gem_purifier_block_red",
+      "y": 180
+    },
+    "facing=north,is_polishing=ruby,redstone_powered=true": {
+      "model": "moreores:block/gem_purifier_block_rp_red",
+      "y": 180
+    },
+    "facing=north,is_polishing=sapphire,redstone_powered=false": {
+      "model": "moreores:block/gem_purifier_block_blue",
+      "y": 180
+    },
+    "facing=north,is_polishing=sapphire,redstone_powered=true": {
+      "model": "moreores:block/gem_purifier_block_rp_blue",
+      "y": 180
+    },
+    "facing=north,is_polishing=topaz,redstone_powered=false": {
+      "model": "moreores:block/gem_purifier_block_orange",
+      "y": 180
+    },
+    "facing=north,is_polishing=topaz,redstone_powered=true": {
+      "model": "moreores:block/gem_purifier_block_rp_orange",
+      "y": 180
+    },
+    "facing=north,is_polishing=white_topaz,redstone_powered=false": {
+      "model": "moreores:block/gem_purifier_block_white_topaz",
+      "y": 180
+    },
+    "facing=north,is_polishing=white_topaz,redstone_powered=true": {
+      "model": "moreores:block/gem_purifier_block_rp_white_topaz",
+      "y": 180
+    },
+    "facing=south,is_polishing=blue_garnet,redstone_powered=false": {
+      "model": "moreores:block/gem_purifier_block_blue"
+    },
+    "facing=south,is_polishing=blue_garnet,redstone_powered=true": {
+      "model": "moreores:block/gem_purifier_block_rp_blue"
+    },
+    "facing=south,is_polishing=empty,redstone_powered=false": {
+      "model": "moreores:block/gem_purifier_block"
+    },
+    "facing=south,is_polishing=empty,redstone_powered=true": {
+      "model": "moreores:block/gem_purifier_block_rp"
+    },
+    "facing=south,is_polishing=green_garnet,redstone_powered=false": {
+      "model": "moreores:block/gem_purifier_block_green"
+    },
+    "facing=south,is_polishing=green_garnet,redstone_powered=true": {
+      "model": "moreores:block/gem_purifier_block_rp_green"
+    },
+    "facing=south,is_polishing=green_sapphire,redstone_powered=false": {
+      "model": "moreores:block/gem_purifier_block_green"
+    },
+    "facing=south,is_polishing=green_sapphire,redstone_powered=true": {
+      "model": "moreores:block/gem_purifier_block_rp_green"
+    },
+    "facing=south,is_polishing=jade,redstone_powered=false": {
+      "model": "moreores:block/gem_purifier_block_green"
+    },
+    "facing=south,is_polishing=jade,redstone_powered=true": {
+      "model": "moreores:block/gem_purifier_block_rp_green"
+    },
+    "facing=south,is_polishing=kyawthuite,redstone_powered=false": {
+      "model": "moreores:block/gem_purifier_block_orange"
+    },
+    "facing=south,is_polishing=kyawthuite,redstone_powered=true": {
+      "model": "moreores:block/gem_purifier_block_rp_orange"
+    },
+    "facing=south,is_polishing=peridot,redstone_powered=false": {
+      "model": "moreores:block/gem_purifier_block_green"
+    },
+    "facing=south,is_polishing=peridot,redstone_powered=true": {
+      "model": "moreores:block/gem_purifier_block_rp_green"
+    },
+    "facing=south,is_polishing=pink_garnet,redstone_powered=false": {
+      "model": "moreores:block/gem_purifier_block_pink_garnet"
+    },
+    "facing=south,is_polishing=pink_garnet,redstone_powered=true": {
+      "model": "moreores:block/gem_purifier_block_rp_pink_garnet"
+    },
+    "facing=south,is_polishing=pyrope,redstone_powered=false": {
+      "model": "moreores:block/gem_purifier_block_red"
+    },
+    "facing=south,is_polishing=pyrope,redstone_powered=true": {
+      "model": "moreores:block/gem_purifier_block_rp_red"
+    },
+    "facing=south,is_polishing=ruby,redstone_powered=false": {
+      "model": "moreores:block/gem_purifier_block_red"
+    },
+    "facing=south,is_polishing=ruby,redstone_powered=true": {
+      "model": "moreores:block/gem_purifier_block_rp_red"
+    },
+    "facing=south,is_polishing=sapphire,redstone_powered=false": {
+      "model": "moreores:block/gem_purifier_block_blue"
+    },
+    "facing=south,is_polishing=sapphire,redstone_powered=true": {
+      "model": "moreores:block/gem_purifier_block_rp_blue"
+    },
+    "facing=south,is_polishing=topaz,redstone_powered=false": {
+      "model": "moreores:block/gem_purifier_block_orange"
+    },
+    "facing=south,is_polishing=topaz,redstone_powered=true": {
+      "model": "moreores:block/gem_purifier_block_rp_orange"
+    },
+    "facing=south,is_polishing=white_topaz,redstone_powered=false": {
+      "model": "moreores:block/gem_purifier_block_white_topaz"
+    },
+    "facing=south,is_polishing=white_topaz,redstone_powered=true": {
+      "model": "moreores:block/gem_purifier_block_rp_white_topaz"
+    },
+    "facing=west,is_polishing=blue_garnet,redstone_powered=false": {
+      "model": "moreores:block/gem_purifier_block_blue",
+      "y": 90
+    },
+    "facing=west,is_polishing=blue_garnet,redstone_powered=true": {
+      "model": "moreores:block/gem_purifier_block_rp_blue",
+      "y": 90
+    },
+    "facing=west,is_polishing=empty,redstone_powered=false": {
+      "model": "moreores:block/gem_purifier_block",
+      "y": 90
+    },
+    "facing=west,is_polishing=empty,redstone_powered=true": {
+      "model": "moreores:block/gem_purifier_block_rp",
+      "y": 90
+    },
+    "facing=west,is_polishing=green_garnet,redstone_powered=false": {
+      "model": "moreores:block/gem_purifier_block_green",
+      "y": 90
+    },
+    "facing=west,is_polishing=green_garnet,redstone_powered=true": {
+      "model": "moreores:block/gem_purifier_block_rp_green",
+      "y": 90
+    },
+    "facing=west,is_polishing=green_sapphire,redstone_powered=false": {
+      "model": "moreores:block/gem_purifier_block_green",
+      "y": 90
+    },
+    "facing=west,is_polishing=green_sapphire,redstone_powered=true": {
+      "model": "moreores:block/gem_purifier_block_rp_green",
+      "y": 90
+    },
+    "facing=west,is_polishing=jade,redstone_powered=false": {
+      "model": "moreores:block/gem_purifier_block_green",
+      "y": 90
+    },
+    "facing=west,is_polishing=jade,redstone_powered=true": {
+      "model": "moreores:block/gem_purifier_block_rp_green",
+      "y": 90
+    },
+    "facing=west,is_polishing=kyawthuite,redstone_powered=false": {
+      "model": "moreores:block/gem_purifier_block_orange",
+      "y": 90
+    },
+    "facing=west,is_polishing=kyawthuite,redstone_powered=true": {
+      "model": "moreores:block/gem_purifier_block_rp_orange",
+      "y": 90
+    },
+    "facing=west,is_polishing=peridot,redstone_powered=false": {
+      "model": "moreores:block/gem_purifier_block_green",
+      "y": 90
+    },
+    "facing=west,is_polishing=peridot,redstone_powered=true": {
+      "model": "moreores:block/gem_purifier_block_rp_green",
+      "y": 90
+    },
+    "facing=west,is_polishing=pink_garnet,redstone_powered=false": {
+      "model": "moreores:block/gem_purifier_block_pink_garnet",
+      "y": 90
+    },
+    "facing=west,is_polishing=pink_garnet,redstone_powered=true": {
+      "model": "moreores:block/gem_purifier_block_rp_pink_garnet",
+      "y": 90
+    },
+    "facing=west,is_polishing=pyrope,redstone_powered=false": {
+      "model": "moreores:block/gem_purifier_block_red",
+      "y": 90
+    },
+    "facing=west,is_polishing=pyrope,redstone_powered=true": {
+      "model": "moreores:block/gem_purifier_block_rp_red",
+      "y": 90
+    },
+    "facing=west,is_polishing=ruby,redstone_powered=false": {
+      "model": "moreores:block/gem_purifier_block_red",
+      "y": 90
+    },
+    "facing=west,is_polishing=ruby,redstone_powered=true": {
+      "model": "moreores:block/gem_purifier_block_rp_red",
+      "y": 90
+    },
+    "facing=west,is_polishing=sapphire,redstone_powered=false": {
+      "model": "moreores:block/gem_purifier_block_blue",
+      "y": 90
+    },
+    "facing=west,is_polishing=sapphire,redstone_powered=true": {
+      "model": "moreores:block/gem_purifier_block_rp_blue",
+      "y": 90
+    },
+    "facing=west,is_polishing=topaz,redstone_powered=false": {
+      "model": "moreores:block/gem_purifier_block_orange",
+      "y": 90
+    },
+    "facing=west,is_polishing=topaz,redstone_powered=true": {
+      "model": "moreores:block/gem_purifier_block_rp_orange",
+      "y": 90
+    },
+    "facing=west,is_polishing=white_topaz,redstone_powered=false": {
+      "model": "moreores:block/gem_purifier_block_white_topaz",
+      "y": 90
+    },
+    "facing=west,is_polishing=white_topaz,redstone_powered=true": {
+      "model": "moreores:block/gem_purifier_block_rp_white_topaz",
+      "y": 90
+    }
+  }
+}

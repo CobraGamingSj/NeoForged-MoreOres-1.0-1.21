@@ -5,7 +5,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.saveddata.SavedData;
 import net.minecraft.world.level.saveddata.SavedDataType;
-import org.cobra.moreores.MoreOres;
+import org.cobra.moreores.MoreOresModLoader;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -29,7 +29,7 @@ public class RewardState extends SavedData {
 
     public static final SavedDataType<RewardState> TYPE =
             new SavedDataType<>(
-                    MoreOres.id("moreores_birthday_rewards"),
+                    MoreOresModLoader.id("moreores_birthday_rewards"),
                     RewardState::new,
                     CODEC,
                     null // Not required

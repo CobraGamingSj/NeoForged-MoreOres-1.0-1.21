@@ -3,7 +3,7 @@ package org.cobra.moreores.block.client.menu;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
-import org.cobra.moreores.MoreOres;
+import org.cobra.moreores.MoreOresModLoader;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.common.extensions.IMenuTypeExtension;
 import net.neoforged.neoforge.network.IContainerFactory;
@@ -12,7 +12,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class ModMenuType {
     
-    public static final DeferredRegister<MenuType<?>> MENUS = DeferredRegister.create(Registries.MENU, MoreOres.MOD_ID);
+    public static final DeferredRegister<MenuType<?>> MENUS = DeferredRegister.create(Registries.MENU, MoreOresModLoader.MOD_ID);
     
     public static final DeferredHolder<MenuType<?>, MenuType<GemPurifierMenu>> GEM_PURIFIER = registerMenuType(
             "gem_purifier", GemPurifierMenu::new

@@ -30,12 +30,12 @@ import net.neoforged.neoforge.transfer.fluid.FluidStacksResourceHandler;
 import net.neoforged.neoforge.transfer.item.ItemResource;
 import net.neoforged.neoforge.transfer.item.ItemStacksResourceHandler;
 import net.neoforged.neoforge.transfer.transaction.Transaction;
-import org.cobra.moreores.MoreOres;
+import org.cobra.moreores.MoreOresModLoader;
 import org.cobra.moreores.block.ModBlocks;
 import org.cobra.moreores.block.client.menu.GemPurifierMenu;
 import org.cobra.moreores.block.entity.ModBlockEntityType;
 import org.cobra.moreores.item.util.impl.IGemstone;
-import org.cobra.moreores.item.util.impl.PurifyingGemstones;
+import org.cobra.moreores.item.util.impl.PurificationGemstones;
 import org.cobra.moreores.recipe.GemPurifierRecipe;
 import org.cobra.moreores.recipe.ModRecipeType;
 import org.cobra.moreores.recipe.input.GemPurifyingRecipeInput;
@@ -78,7 +78,7 @@ public class GemPurifierBlockEntity extends AbstractGemBlockEntity {
     
     public GemPurifierBlockEntity(BlockPos pos, BlockState blockState) {
         super(ModBlockEntityType.GEM_PURIFIER.get(), pos, blockState);
-        this.gem = PurifyingGemstones.EMPTY;
+        this.gem = PurificationGemstones.EMPTY;
         this.containerData = new ContainerData() {
             @Override
             public int get(int index) {
@@ -108,7 +108,7 @@ public class GemPurifierBlockEntity extends AbstractGemBlockEntity {
     protected boolean hasRecipe() {
         Optional<RecipeHolder<GemPurifierRecipe>> recipe = getCurrentRecipe();
         if(recipe.isEmpty()) {
-            MoreOres.LOGGER.info("No recipe found: {}", recipe.get().id());
+            MoreOresModLoader.LOGGER.info("No recipe found: {}", recipe.get().id());
             return false;
         }
 
@@ -168,24 +168,24 @@ public class GemPurifierBlockEntity extends AbstractGemBlockEntity {
     @Override
     protected void saveAdditional(ValueOutput output) {
         super.saveAdditional(output);
-        output.store("GemType", PurifyingGemstones.CODEC, gemstone());
+        output.store("GemType", PurificationGemstones.CODEC, gemstone());
         output.store("FluidState", FluidState.CODEC, fluidState);
     }
 
     @Override
     protected void loadAdditional(ValueInput input) {
         super.loadAdditional(input);
-        gem = input.read("GemType", PurifyingGemstones.CODEC).orElse(PurifyingGemstones.EMPTY);
+        gem = input.read("GemType", PurificationGemstones.CODEC).orElse(PurificationGemstones.EMPTY);
         fluidState = input.read("FluidState", FluidState.CODEC).orElse(FluidState.IDLE);
     }
 
     @Override
-    public PurifyingGemstones gemstone() {
+    public PurificationGemstones gemstone() {
         IGemstone gemstone = super.gemstone();
-        if(gemstone instanceof PurifyingGemstones c) {
+        if(gemstone instanceof PurificationGemstones c) {
             return c;
         }
-        return PurifyingGemstones.EMPTY;
+        return PurificationGemstones.EMPTY;
     }
     
     @Override

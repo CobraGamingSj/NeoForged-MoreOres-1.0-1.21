@@ -3,7 +3,6 @@ package org.cobra.moreores.block;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.player.Player;
@@ -19,14 +18,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
-import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.cobra.moreores.block.entity.ModBlockEntityType;
 import org.cobra.moreores.block.entity.gem.GemPurifierBlockEntity;
-import org.cobra.moreores.item.util.impl.PurifyingGemstones;
+import org.cobra.moreores.item.util.impl.PurificationGemstones;
 import org.jspecify.annotations.Nullable;
 
 public class GemPurifierBlock extends BaseEntityBlock {
@@ -34,7 +32,7 @@ public class GemPurifierBlock extends BaseEntityBlock {
     public static final VoxelShape SHAPE = Block.box(0, 0, 0, 16, 14, 16);
     public static final EnumProperty<Direction> FACING = HorizontalDirectionalBlock.FACING;
     public static final BooleanProperty REDSTONE_POWERED = BooleanProperty.create("redstone_powered");
-    public static final EnumProperty<PurifyingGemstones> IS_POLISHING = EnumProperty.create("is_polishing", PurifyingGemstones.class);
+    public static final EnumProperty<PurificationGemstones> IS_POLISHING = EnumProperty.create("is_polishing", PurificationGemstones.class);
     
     public GemPurifierBlock(Properties properties) {
         super(properties);
@@ -82,7 +80,7 @@ public class GemPurifierBlock extends BaseEntityBlock {
     @Override
     public @Nullable BlockState getStateForPlacement(BlockPlaceContext ctx) {
         return this.defaultBlockState().setValue(FACING, ctx.getHorizontalDirection().getClockWise()).setValue(REDSTONE_POWERED, ctx.getLevel().hasNeighborSignal(ctx.getClickedPos()))
-                .setValue(IS_POLISHING, PurifyingGemstones.EMPTY);
+                .setValue(IS_POLISHING, PurificationGemstones.EMPTY);
     }
 
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {

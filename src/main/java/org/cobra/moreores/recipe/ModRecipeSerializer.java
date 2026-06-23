@@ -5,12 +5,12 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import org.cobra.moreores.MoreOres;
+import org.cobra.moreores.MoreOresModLoader;
 
 public class ModRecipeSerializer {
 
     public static final DeferredRegister<RecipeSerializer<?>> SERIALIZERS =
-            DeferredRegister.create(Registries.RECIPE_SERIALIZER, MoreOres.MOD_ID);
+            DeferredRegister.create(Registries.RECIPE_SERIALIZER, MoreOresModLoader.MOD_ID);
 
     public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<GemPurifierRecipe>> GEM_PURIFIER =
             SERIALIZERS.register("crystallizing", () -> new RecipeSerializer<>(GemPurifierRecipe.CODEC, GemPurifierRecipe.STREAM_CODEC));
