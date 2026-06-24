@@ -27,14 +27,15 @@ import org.cobra.moreores.block.entity.ModBlockEntityType;
 import org.cobra.moreores.block.entity.gem.GemCrystallizerBlockEntity;
 import org.cobra.moreores.block.entity.gem.GemPurifierBlockEntity;
 import org.cobra.moreores.item.util.impl.CrystallizationGemstones;
+import org.cobra.moreores.item.util.impl.PurificationGemstones;
 import org.jspecify.annotations.Nullable;
 
 public class GemCrystallizerBlock extends BaseEntityBlock {
+    public static final MapCodec<GemCrystallizerBlock> CODEC = GemCrystallizerBlock.simpleCodec(GemCrystallizerBlock::new);
     private static final VoxelShape SHAPE = Block.box(0, 0, 0, 16, 14, 16);
     public static final EnumProperty<Direction> FACING = HorizontalDirectionalBlock.FACING;
     public static final BooleanProperty REDSTONE_POWERED = BooleanProperty.create("redstone_powered");
     public static final EnumProperty<CrystallizationGemstones> IS_CRYSTALLIZING = EnumProperty.create("is_crystallizing", CrystallizationGemstones.class);
-    public static final MapCodec<GemCrystallizerBlock> CODEC = GemCrystallizerBlock.simpleCodec(GemCrystallizerBlock::new);
     
     public GemCrystallizerBlock(Properties properties) {
         super(properties);
@@ -77,7 +78,7 @@ public class GemCrystallizerBlock extends BaseEntityBlock {
         }
         return super.onDestroyedByPlayer(state, level, pos, player, toolStack, willHarvest, fluid);
     }
-    
+
     protected BlockState rotate(BlockState state, Rotation rotation) {
         return state.setValue(FACING, rotation.rotate(state.getValue(FACING)));
     }

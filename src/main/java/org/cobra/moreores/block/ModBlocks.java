@@ -74,11 +74,25 @@ public class ModBlocks {
     public static final DeferredBlock<Block> PYROPE_BLOCK = registerBlock("pyrope_block",
             p -> new Block(p
                     .strength(5f).strength(5f, 5f).mapColor(MapColor.COLOR_LIGHT_GREEN).requiresCorrectToolForDrops()));
+
+    public static final DeferredBlock<Block> CRIMSON_GARNET_BLOCK = registerBlockWithStrength("crimson_garnet_block", Block::new);
+    public static final DeferredBlock<Block> CRYSTALLITE_BLOCK = registerBlockWithStrength("crystallite_block", Block::new);
+    public static final DeferredBlock<Block> RADIANT_AMETHYST_BLOCK = registerBlockWithStrength("radiant_amethyst_block", Block::new);
+    public static final DeferredBlock<Block> MOONSTONE_BLOCK = registerBlockWithStrength("moonstone_block", Block::new);
+    public static final DeferredBlock<Block> LIMESTONE_BLOCK = registerBlockWithStrength("limestone_block", Block::new);
+    public static final DeferredBlock<Block> QUARTSIDIAN_BLOCK = registerBlockWithStrength("quartsidian_block", Block::new);
+    public static final DeferredBlock<Block> ALEXANDRITE_BLOCK = registerBlockWithStrength("alexandrite_block", Block::new);
+    public static final DeferredBlock<Block> ORANGE_ZIRCON_BLOCK = registerBlockWithStrength("orange_zircon_block", Block::new);
+    public static final DeferredBlock<Block> OPAL_BLOCK = registerBlockWithStrength("opal_block", Block::new);
+    public static final DeferredBlock<Block> GRANDIDIERITE_BLOCK = registerBlockWithStrength("grandidierite_block", Block::new);
+    public static final DeferredBlock<Block> RED_BERYL_BLOCK = registerBlockWithStrength("red_beryl_block", Block::new);
+    public static final DeferredBlock<Block> KASHMIR_SAPPHIRE_BLOCK = registerBlockWithStrength("kashmir_sapphire_block", Block::new);
     
     public static final DeferredBlock<Block> GEM_PURIFIER_BLOCK = registerBlock("gem_purifier_block",
             p -> new GemPurifierBlock(p.requiresCorrectToolForDrops().noOcclusion()));
 
-    public static final DeferredBlock<Block> GEM_CRYSTALLIZER_BLOCK = registerBlock("gem_crystallizer_block", Block::new);
+    public static final DeferredBlock<Block> GEM_CRYSTALLIZER_BLOCK = registerBlock("gem_crystallizer_block", 
+            p -> new GemCrystallizerBlock(p.requiresCorrectToolForDrops().noOcclusion()));
     
     public static final DeferredBlock<Block> RUBY_ORE = registerBlock("ruby_ore", p -> new DropExperienceBlock(UniformInt.of(2, 3), p.requiresCorrectToolForDrops().strength(6.0f, 6.0f).sound(SoundType.STONE).mapColor(MapColor.STONE)));
     public static final DeferredBlock<Block> DEEPSLATE_RUBY_ORE = registerBlock("deepslate_ruby_ore", p -> new DropExperienceBlock(UniformInt.of(2, 3), p.requiresCorrectToolForDrops().strength(6.5f, 6.5f).strength(6.5f).sound(SoundType.STONE).mapColor(MapColor.STONE)));
@@ -117,6 +131,12 @@ public class ModBlocks {
         ModItems.ITEMS.registerItem(name, (properties) -> new BlockItem(block.get(), properties.useBlockDescriptionPrefix()));
     }
 
+    public static <T extends Block> DeferredBlock<T> registerBlockWithStrength(String id, Function<BlockBehaviour.Properties, T> blockFactory) {
+        DeferredBlock<T> returnBlock = BLOCKS.registerBlock(id, blockFactory, () -> BlockBehaviour.Properties.of().strength(7f, 7f));
+        registerBlockItem(id, returnBlock);
+        return returnBlock;
+    }
+    
     public static void register(IEventBus eventBus) {
         BLOCKS.register(eventBus);
         int count = 0;

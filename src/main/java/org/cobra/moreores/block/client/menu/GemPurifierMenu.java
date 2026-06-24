@@ -99,6 +99,7 @@ public class GemPurifierMenu extends AbstractContainerMenu {
             this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 173));
         }
     }
+    
     @Override
     public ItemStack quickMoveStack(Player player, int i) {
         return ItemStack.EMPTY;
