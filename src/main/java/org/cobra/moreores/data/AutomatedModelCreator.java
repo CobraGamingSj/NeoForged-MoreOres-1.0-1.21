@@ -9,7 +9,6 @@ import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
 import net.minecraft.client.data.models.blockstates.PropertyDispatch;
 import net.minecraft.client.data.models.model.ModelTemplates;
 import net.minecraft.client.renderer.block.dispatch.VariantMutator;
-import net.minecraft.client.resources.model.cuboid.ItemModelGenerator;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.Identifier;
@@ -19,17 +18,19 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.equipment.EquipmentAsset;
 import net.minecraft.world.level.block.Block;
 import org.cobra.moreores.MoreOresModLoader;
+import org.cobra.moreores.block.GemCrystallizerBlock;
 import org.cobra.moreores.block.GemPurifierBlock;
 import org.cobra.moreores.block.ModBlocks;
 import org.cobra.moreores.item.equipment.ModEquipmentAssetKeys;
+import org.cobra.moreores.item.util.impl.CrystallizationGemstones;
 import org.cobra.moreores.item.util.impl.PurificationGemstones;
 
-public class AutomaticModelCreator extends ModelProvider {
+public class AutomatedModelCreator extends ModelProvider {
     public static final VariantMutator Y_ROT_90 = VariantMutator.Y_ROT.withValue(Quadrant.R90);
     public static final VariantMutator Y_ROT_180 = VariantMutator.Y_ROT.withValue(Quadrant.R180);
     public static final VariantMutator Y_ROT_270 = VariantMutator.Y_ROT.withValue(Quadrant.R270);
     
-    public AutomaticModelCreator(PackOutput output) {
+    public AutomatedModelCreator(PackOutput output) {
         super(output, MoreOresModLoader.MOD_ID);
     }
 
@@ -115,7 +116,7 @@ public class AutomaticModelCreator extends ModelProvider {
                                                     GemPurifierBlock.IS_POLISHING
                                             ).generate((direction, redstonePowered, gemstone) -> {
 
-                                                String modelName = defineModelName(redstonePowered, gemstone);
+                                                String modelName = defineModelNameForPurificationGemstones(redstonePowered, gemstone);
 
                                                 MultiVariant variant =
                                                         BlockModelGenerators.plainVariant(
@@ -133,37 +134,33 @@ public class AutomaticModelCreator extends ModelProvider {
                     );
                     
                     continue;
-                } else if(block == ModBlocks.GEM_CRYSTALLIZER_BLOCK.get()) {
-//                    if(block == ModBlocks.GEM_PURIFIER_BLOCK.get()) {
-//
-//                        blockModels.blockStateOutput.accept(
-//                                MultiVariantGenerator.dispatch(ModBlocks.GEM_CRYSTALLIZER_BLOCK.get())
-//                                        .with(
-//                                                PropertyDispatch.initial(
-//                                                        GemPurifierBlock.FACING,
-//                                                        GemPurifierBlock.REDSTONE_POWERED,
-//                                                        GemPurifierBlock.IS_POLISHING
-//                                                ).generate((direction, redstonePowered, gemstone) -> {
-//
-//                                                    String modelName = defineModelName(redstonePowered, gemstone);
-//
-//                                                    MultiVariant variant =
-//                                                            BlockModelGenerators.plainVariant(
-//                                                                    MoreOresModLoader.id("block/" + modelName)
-//                                                            );
-//
-//                                                    return switch (direction) {
-//                                                        case NORTH -> variant.with(Y_ROT_180);
-//                                                        case EAST  -> variant.with(Y_ROT_270);
-//                                                        case WEST  -> variant.with(Y_ROT_90);
-//                                                        default    -> variant;
-//                                                    };
-//                                                })
-//                                        )
-//                        );
-//
-//                        continue;
-//                    }
+                }
+                
+                if(block == ModBlocks.GEM_CRYSTALLIZER_BLOCK.get()) {
+
+                    blockModels.blockStateOutput.accept(
+                            MultiVariantGenerator.dispatch(ModBlocks.GEM_CRYSTALLIZER_BLOCK.get())
+                                    .with(
+                                            PropertyDispatch.initial(
+                                                    GemCrystallizerBlock.FACING,
+                                                    GemCrystallizerBlock.REDSTONE_POWERED,
+                                                    GemCrystallizerBlock.IS_CRYSTALLIZING
+                                            ).generate((direction, redstonePowered, gemstone) -> {
+                                                String modelName = defineModelNameForCrystallizationGemstones(redstonePowered, gemstone);
+                                                MultiVariant variant =
+                                                        BlockModelGenerators.plainVariant(
+                                                                MoreOresModLoader.id("block/" + modelName)
+                                                        );
+                                                return switch (direction) {
+                                                    case NORTH -> variant.with(Y_ROT_180);
+                                                    case EAST -> variant.with(Y_ROT_270);
+                                                    case WEST -> variant.with(Y_ROT_90);
+                                                    default -> variant;
+                                                };
+                                            })
+                                    )
+                    );
+                    
                     continue;
                 }
                 blockModels.createTrivialCube(block);
@@ -171,7 +168,7 @@ public class AutomaticModelCreator extends ModelProvider {
         }
     }
 
-    private static String defineModelName(boolean powered, PurificationGemstones gemstone) {
+    private static String defineModelNameForPurificationGemstones(boolean powered, PurificationGemstones gemstone) {
         String prefix = powered
                 ? "gem_purifier_block_rp"
                 : "gem_purifier_block";
@@ -184,6 +181,28 @@ public class AutomaticModelCreator extends ModelProvider {
             case PINK_GARNET -> prefix + "_pink_garnet";
             case KYAWTHUITE, TOPAZ -> prefix + "_orange";
             case WHITE_TOPAZ -> prefix + "_white_topaz";
+        };
+    }
+
+    private static String defineModelNameForCrystallizationGemstones(boolean powered, CrystallizationGemstones gemstone) {
+        String prefix = powered
+                ? "gem_crystallizer_block_rp"
+                : "gem_crystallizer_block";
+
+        return switch (gemstone) {
+            case EMPTY -> prefix;
+            case CRIMSON_GARNET -> prefix + "_crimson_garnet";
+            case RADIANT_AMETHYST -> prefix + "_radiant_amethyst";
+            case CRYSTALLITE -> prefix + "_crystallite";
+            case ALEXANDRITE -> prefix + "_alexandrite";
+            case LIMESTONE -> prefix + "_limestone";
+            case MOONSTONE -> prefix + "_moonstone";
+            case QUARTSIDIAN -> prefix + "_quartsidian";
+            case ORANGE_ZIRCON -> prefix + "_orange_zircon";
+            case OPAL -> prefix + "_opal";
+            case GRANDIDIERITE -> prefix + "_c";
+            case RED_BERYL -> prefix + "_red_beryl";
+            case KASHMIR_SAPPHIRE -> prefix + "_kashmir_sapphire";
         };
     }
 }

@@ -10,8 +10,8 @@ import org.cobra.moreores.block.ModBlocks;
 import org.cobra.moreores.item.GemItem;
 import org.cobra.moreores.item.ModItems;
 
-public class AutomaticTranslationCreator extends LanguageProvider {
-    public AutomaticTranslationCreator(PackOutput output) {
+public class AutomatedTranslationKeyCreator extends LanguageProvider {
+    public AutomatedTranslationKeyCreator(PackOutput output) {
         super(output, MoreOresModLoader.MOD_ID, "en_us");
     }
 

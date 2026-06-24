@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
-public class AutomaticRecipeCreator extends RecipeProvider {
+public class AutomatedRecipeCreator extends RecipeProvider {
     
     private static final Map<Item, Item> SMELTABLES = Map.ofEntries(
             Map.entry(ModBlocks.RUBY_ORE.get().asItem(), ModItems.RUBY.get()),
@@ -123,7 +123,7 @@ public class AutomaticRecipeCreator extends RecipeProvider {
             Map.entry(ModItems.RUBY_NAUTILUS_ARMOR.get(), ModItems.SAPPHIRE_NAUTILUS_ARMOR.get())
     );
     
-    public AutomaticRecipeCreator(HolderLookup.Provider registries, RecipeOutput output) {
+    public AutomatedRecipeCreator(HolderLookup.Provider registries, RecipeOutput output) {
         super(registries, output);
     }
 
@@ -165,7 +165,7 @@ public class AutomaticRecipeCreator extends RecipeProvider {
 
         @Override
         protected RecipeProvider createRecipeProvider(HolderLookup.Provider provider, RecipeOutput recipeOutput) {
-            return new AutomaticRecipeCreator(provider, recipeOutput);
+            return new AutomatedRecipeCreator(provider, recipeOutput);
         }
 
         @Override
