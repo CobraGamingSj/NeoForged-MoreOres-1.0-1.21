@@ -26,6 +26,10 @@ public class MoreOresDataGenerator {
         generator.addProvider(true, new DataPackCreator(output, providerCompletableFuture));
         generator.addProvider(true, new AutomatedTranslationKeyCreator(output));
         generator.addProvider(true, new AutomatedRecipeCreator.Runner(output, providerCompletableFuture));
+        generator.addProvider(true, new ItemTagGen(output, providerCompletableFuture));
+        generator.addProvider(true, new BlockTagGen(output, providerCompletableFuture));
+        generator.addProvider(true, new VillagerTradeTagGen(output, providerCompletableFuture));
+        generator.addProvider(true, new PointOfInterestTypeTagGen(output, providerCompletableFuture));
         generator.addProvider(true, new LootTableProvider(output, Collections.emptySet(), 
                 List.of(new LootTableProvider.SubProviderEntry(AutomatedBlockLootCreator::new, LootContextParamSets.BLOCK)), providerCompletableFuture));
     }
