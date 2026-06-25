@@ -95,7 +95,7 @@ public record GemPurifierRecipe(Ingredient ingredient, ItemStackTemplate output)
 
     @Override
     public RecipeBookCategory recipeBookCategory() {
-        return ModRecipeBookCategories.GEM_POLISHING;
+        return ModRecipeBookCategories.GEM_POLISHING.get();
     }
 
     public Ingredient getIngredients() {

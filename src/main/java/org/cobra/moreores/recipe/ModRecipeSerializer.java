@@ -13,7 +13,7 @@ public class ModRecipeSerializer {
             DeferredRegister.create(Registries.RECIPE_SERIALIZER, MoreOresModLoader.MOD_ID);
 
     public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<GemPurifierRecipe>> GEM_PURIFIER =
-            SERIALIZERS.register("crystallizing", () -> new RecipeSerializer<>(GemPurifierRecipe.CODEC, GemPurifierRecipe.STREAM_CODEC));
+            SERIALIZERS.register("gem_purifying", () -> new RecipeSerializer<>(GemPurifierRecipe.CODEC, GemPurifierRecipe.STREAM_CODEC));
 
     public static void register(IEventBus schoolBus) {
         SERIALIZERS.register(schoolBus);

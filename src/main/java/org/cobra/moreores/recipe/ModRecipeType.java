@@ -12,7 +12,7 @@ public class ModRecipeType {
             DeferredRegister.create(Registries.RECIPE_TYPE, MoreOresModLoader.MOD_ID);
     
     public static final DeferredHolder<RecipeType<?>, RecipeType<GemPurifierRecipe>> GEM_PURIFIER =
-            TYPES.register("gem_purifying", () -> new RecipeType<GemPurifierRecipe>() {
+            TYPES.register("gem_purifying", () -> new RecipeType<>() {
                 @Override
                 public String toString() {
                     return "gem_purifying";

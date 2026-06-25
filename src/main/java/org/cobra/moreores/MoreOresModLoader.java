@@ -20,6 +20,7 @@ import org.cobra.moreores.item.ModItems;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import org.cobra.moreores.recipe.ModRecipeSerializer;
 import org.cobra.moreores.recipe.ModRecipeType;
+import org.cobra.moreores.recipe.book.ModRecipeBookCategories;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -84,6 +85,7 @@ public class MoreOresModLoader {
 
         ModRecipeSerializer.register(schoolBus);
         ModRecipeType.register(schoolBus);
+        ModRecipeBookCategories.register(schoolBus);
 
         schoolBus.addListener(this::addCreative);
 
