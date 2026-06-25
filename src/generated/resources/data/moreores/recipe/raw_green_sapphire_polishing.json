@@ -1,0 +1,7 @@
+{
+  "type": "moreores:crystallizing",
+  "ingredientGem": "moreores:raw_green_sapphire",
+  "resultGem": {
+    "id": "moreores:green_sapphire"
+  }
+}

@@ -2,21 +2,59 @@ package org.cobra.moreores.data;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.data.recipes.SmithingTransformRecipeBuilder;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.CookingBookCategory;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import org.cobra.moreores.MoreOresModLoader;
 import org.cobra.moreores.block.ModBlocks;
+import org.cobra.moreores.data.recipes.GemCrystallizerRecipeBuilder;
+import org.cobra.moreores.data.recipes.GemPurifyingRecipeBuilder;
 import org.cobra.moreores.item.ModItems;
+import org.cobra.moreores.registry.ModItemTags;
+import org.jspecify.annotations.Nullable;
 
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 public class AutomatedRecipeCreator extends RecipeProvider {
+    private static final Map<Item, SmithingData> SMITHING_DATA = Map.ofEntries(
+            Map.entry(Items.NETHERITE_SWORD, new SmithingData(ModItems.RUBY_UPGRADE_SMITHING_TEMPLATE.get(), ModItems.RUBY_SWORD.get(), ModItemTags.RUBY_TOOL_MATERIALS)),
+            Map.entry(Items.NETHERITE_PICKAXE, new SmithingData(ModItems.RUBY_UPGRADE_SMITHING_TEMPLATE.get(), ModItems.RUBY_PICKAXE.get(), ModItemTags.RUBY_TOOL_MATERIALS)),
+            Map.entry(Items.NETHERITE_AXE, new SmithingData(ModItems.RUBY_UPGRADE_SMITHING_TEMPLATE.get(), ModItems.RUBY_AXE.get(), ModItemTags.RUBY_TOOL_MATERIALS)),
+            Map.entry(Items.NETHERITE_HOE, new SmithingData(ModItems.RUBY_UPGRADE_SMITHING_TEMPLATE.get(), ModItems.RUBY_HOE.get(), ModItemTags.RUBY_TOOL_MATERIALS)),
+            Map.entry(Items.NETHERITE_SHOVEL, new SmithingData(ModItems.RUBY_UPGRADE_SMITHING_TEMPLATE.get(), ModItems.RUBY_SHOVEL.get(), ModItemTags.RUBY_TOOL_MATERIALS)),
+            Map.entry(Items.NETHERITE_HELMET, new SmithingData(ModItems.RUBY_UPGRADE_SMITHING_TEMPLATE.get(), ModItems.RUBY_HELMET.get(), ModItemTags.RUBY_TOOL_MATERIALS)),
+            Map.entry(Items.NETHERITE_CHESTPLATE, new SmithingData(ModItems.RUBY_UPGRADE_SMITHING_TEMPLATE.get(), ModItems.RUBY_CHESTPLATE.get(), ModItemTags.RUBY_TOOL_MATERIALS)),
+            Map.entry(Items.NETHERITE_LEGGINGS, new SmithingData(ModItems.RUBY_UPGRADE_SMITHING_TEMPLATE.get(), ModItems.RUBY_LEGGINGS.get(), ModItemTags.RUBY_TOOL_MATERIALS)),
+            Map.entry(Items.NETHERITE_BOOTS, new SmithingData(ModItems.RUBY_UPGRADE_SMITHING_TEMPLATE.get(), ModItems.RUBY_BOOTS.get(), ModItemTags.RUBY_TOOL_MATERIALS)),
+            Map.entry(Items.NETHERITE_NAUTILUS_ARMOR, new SmithingData(ModItems.RUBY_UPGRADE_SMITHING_TEMPLATE.get(), ModItems.RUBY_NAUTILUS_ARMOR.get(), ModItemTags.RUBY_TOOL_MATERIALS)),
+            Map.entry(Items.NETHERITE_SPEAR, new SmithingData(ModItems.RUBY_UPGRADE_SMITHING_TEMPLATE.get(), ModItems.RUBY_SPEAR.get(), ModItemTags.RUBY_TOOL_MATERIALS)),
+            Map.entry(ModItems.SAPPHIRE_SWORD.get(), new SmithingData(ModItems.RADIANT_UPGRADE_SMITHING_TEMPLATE.get(), ModItems.RADIANT_SWORD.get(), ModItemTags.RADIANT_TOOL_MATERIALS)),
+            Map.entry(ModItems.SAPPHIRE_PICKAXE.get(), new SmithingData(ModItems.RADIANT_UPGRADE_SMITHING_TEMPLATE.get(), ModItems.RADIANT_PICKAXE.get(), ModItemTags.RADIANT_TOOL_MATERIALS)),
+            Map.entry(ModItems.SAPPHIRE_AXE.get(), new SmithingData(ModItems.RADIANT_UPGRADE_SMITHING_TEMPLATE.get(), ModItems.RADIANT_AXE.get(), ModItemTags.RADIANT_TOOL_MATERIALS)),
+            Map.entry(ModItems.SAPPHIRE_HOE.get(), new SmithingData(ModItems.RADIANT_UPGRADE_SMITHING_TEMPLATE.get(), ModItems.RADIANT_HOE.get(), ModItemTags.RADIANT_TOOL_MATERIALS)),
+            Map.entry(ModItems.SAPPHIRE_SHOVEL.get(), new SmithingData(ModItems.RADIANT_UPGRADE_SMITHING_TEMPLATE.get(), ModItems.RADIANT_SHOVEL.get(), ModItemTags.RADIANT_TOOL_MATERIALS)),
+            Map.entry(ModItems.SAPPHIRE_HELMET.get(), new SmithingData(ModItems.RADIANT_UPGRADE_SMITHING_TEMPLATE.get(), ModItems.RADIANT_HELMET.get(), ModItemTags.RADIANT_TOOL_MATERIALS)),
+            Map.entry(ModItems.SAPPHIRE_CHESTPLATE.get(), new SmithingData(ModItems.RADIANT_UPGRADE_SMITHING_TEMPLATE.get(), ModItems.RADIANT_CHESTPLATE.get(), ModItemTags.RADIANT_TOOL_MATERIALS)),
+            Map.entry(ModItems.SAPPHIRE_LEGGINGS.get(), new SmithingData(ModItems.RADIANT_UPGRADE_SMITHING_TEMPLATE.get(), ModItems.RADIANT_LEGGINGS.get(), ModItemTags.RADIANT_TOOL_MATERIALS)),
+            Map.entry(ModItems.SAPPHIRE_BOOTS.get(), new SmithingData(ModItems.RADIANT_UPGRADE_SMITHING_TEMPLATE.get(), ModItems.RADIANT_BOOTS.get(), ModItemTags.RADIANT_TOOL_MATERIALS))
+    );
     
     private static final Map<Item, Item> SMELTABLES = Map.ofEntries(
             Map.entry(ModBlocks.RUBY_ORE.get().asItem(), ModItems.RUBY.get()),
@@ -57,56 +95,56 @@ public class AutomatedRecipeCreator extends RecipeProvider {
             Map.entry(ModItems.RAW_PYROPE.get(), ModItems.PYROPE.get())
     );
 
-//    private static final Map<Item, Item> GEM_POLISHABLES = Map.ofEntries(
-//            Map.entry(ModItems.RAW_RUBY, ModItems.RUBY),
-//            Map.entry(ModBlocks.RAW_RUBY_BLOCK.asItem(),  ModBlocks.RUBY_BLOCK.asItem()),
-//            Map.entry(ModItems.RAW_SAPPHIRE, ModItems.SAPPHIRE),
-//            Map.entry(ModBlocks.RAW_SAPPHIRE_BLOCK.asItem(), ModBlocks.SAPPHIRE_BLOCK.asItem()),
-//            Map.entry(ModItems.RAW_GREEN_SAPPHIRE, ModItems.GREEN_SAPPHIRE),
-//            Map.entry(ModBlocks.RAW_GREEN_SAPPHIRE_BLOCK.asItem(), ModBlocks.GREEN_SAPPHIRE_BLOCK.asItem()),
-//            Map.entry(ModItems.RAW_BLUE_GARNET, ModItems.BLUE_GARNET),
-//            Map.entry(ModBlocks.RAW_BLUE_GARNET_BLOCK.asItem(), ModBlocks.BLUE_GARNET_BLOCK.asItem()),
-//            Map.entry(ModItems.RAW_PINK_GARNET, ModItems.PINK_GARNET),
-//            Map.entry(ModBlocks.RAW_PINK_GARNET_BLOCK.asItem(), ModBlocks.PINK_GARNET_BLOCK.asItem()),
-//            Map.entry(ModItems.RAW_GREEN_GARNET, ModItems.GREEN_GARNET),
-//            Map.entry(ModBlocks.RAW_GREEN_GARNET_BLOCK.asItem(), ModBlocks.GREEN_GARNET_BLOCK.asItem()),
-//            Map.entry(ModItems.RAW_KYAWTHUITE, ModItems.KYAWTHUITE),
-//            Map.entry(ModBlocks.RAW_KYAWTHUITE_BLOCK.asItem(), ModBlocks.KYAWTHUITE_BLOCK.asItem()),
-//            Map.entry(ModItems.RAW_TOPAZ, ModItems.TOPAZ),
-//            Map.entry(ModBlocks.RAW_TOPAZ_BLOCK.asItem(), ModBlocks.TOPAZ_BLOCK.asItem()),
-//            Map.entry(ModItems.RAW_WHITE_TOPAZ, ModItems.WHITE_TOPAZ),
-//            Map.entry(ModBlocks.RAW_WHITE_TOPAZ_BLOCK.asItem(), ModBlocks.WHITE_TOPAZ_BLOCK.asItem()),
-//            Map.entry(ModItems.RAW_PERIDOT, ModItems.PERIDOT),
-//            Map.entry(ModBlocks.RAW_PERIDOT_BLOCK.asItem(), ModBlocks.PERIDOT_BLOCK.asItem()),
-//            Map.entry(ModItems.RAW_JADE, ModItems.JADE),
-//            Map.entry(ModBlocks.RAW_JADE_BLOCK.asItem(), ModBlocks.JADE_BLOCK.asItem()),
-//            Map.entry(ModItems.RAW_PYROPE, ModItems.PYROPE),
-//            Map.entry(ModBlocks.RAW_PYROPE_BLOCK.asItem(), ModBlocks.PYROPE_BLOCK.asItem())
-//    );
+    private static final Map<Item, Item> GEM_POLISHABLES = Map.ofEntries(
+            Map.entry(ModItems.RAW_RUBY.get(), ModItems.RUBY.get()),
+            Map.entry(ModBlocks.RAW_RUBY_BLOCK.get().asItem(), ModBlocks.RUBY_BLOCK.get().asItem()),
+            Map.entry(ModItems.RAW_SAPPHIRE.get(), ModItems.SAPPHIRE.get()),
+            Map.entry(ModBlocks.RAW_SAPPHIRE_BLOCK.get().asItem(), ModBlocks.SAPPHIRE_BLOCK.get().asItem()),
+            Map.entry(ModItems.RAW_GREEN_SAPPHIRE.get(), ModItems.GREEN_SAPPHIRE.get()),
+            Map.entry(ModBlocks.RAW_GREEN_SAPPHIRE_BLOCK.get().asItem(), ModBlocks.GREEN_SAPPHIRE_BLOCK.get().asItem()),
+            Map.entry(ModItems.RAW_BLUE_GARNET.get(), ModItems.BLUE_GARNET.get()),
+            Map.entry(ModBlocks.RAW_BLUE_GARNET_BLOCK.get().asItem(), ModBlocks.BLUE_GARNET_BLOCK.get().asItem()),
+            Map.entry(ModItems.RAW_PINK_GARNET.get(), ModItems.PINK_GARNET.get()),
+            Map.entry(ModBlocks.RAW_PINK_GARNET_BLOCK.get().asItem(), ModBlocks.PINK_GARNET_BLOCK.get().asItem()),
+            Map.entry(ModItems.RAW_GREEN_GARNET.get(), ModItems.GREEN_GARNET.get()),
+            Map.entry(ModBlocks.RAW_GREEN_GARNET_BLOCK.get().asItem(), ModBlocks.GREEN_GARNET_BLOCK.get().asItem()),
+            Map.entry(ModItems.RAW_KYAWTHUITE.get(), ModItems.KYAWTHUITE.get()),
+            Map.entry(ModBlocks.RAW_KYAWTHUITE_BLOCK.get().asItem(), ModBlocks.KYAWTHUITE_BLOCK.get().asItem()),
+            Map.entry(ModItems.RAW_TOPAZ.get(), ModItems.TOPAZ.get()),
+            Map.entry(ModBlocks.RAW_TOPAZ_BLOCK.get().asItem(), ModBlocks.TOPAZ_BLOCK.get().asItem()),
+            Map.entry(ModItems.RAW_WHITE_TOPAZ.get(), ModItems.WHITE_TOPAZ.get()),
+            Map.entry(ModBlocks.RAW_WHITE_TOPAZ_BLOCK.get().asItem(), ModBlocks.WHITE_TOPAZ_BLOCK.get().asItem()),
+            Map.entry(ModItems.RAW_PERIDOT.get(), ModItems.PERIDOT.get()),
+            Map.entry(ModBlocks.RAW_PERIDOT_BLOCK.get().asItem(), ModBlocks.PERIDOT_BLOCK.get().asItem()),
+            Map.entry(ModItems.RAW_JADE.get(), ModItems.JADE.get()),
+            Map.entry(ModBlocks.RAW_JADE_BLOCK.get().asItem(), ModBlocks.JADE_BLOCK.get().asItem()),
+            Map.entry(ModItems.RAW_PYROPE.get(), ModItems.PYROPE.get()),
+            Map.entry(ModBlocks.RAW_PYROPE_BLOCK.get().asItem(), ModBlocks.PYROPE_BLOCK.get().asItem())
+    );
 //
 //    private static final Map<Item, Item> GEM_INFUSES = Map.ofEntries(
 //            Map.entry(ModItems.RUBY, ModItems.ALEXANDRITE),
-//            Map.entry(ModBlocks.RUBY_BLOCK.asItem(),  ModBlocks.ALEXANDRITE_BLOCK.asItem()),
+//            Map.entry(ModBlocks.RUBY_BLOCK.get().asItem(),  ModBlocks.ALEXANDRITE_BLOCK.get().asItem()),
 //            Map.entry(ModItems.SAPPHIRE, ModItems.KASHMIR_SAPPHIRE),
-//            Map.entry(ModBlocks.SAPPHIRE_BLOCK.asItem(), ModBlocks.KASHMIR_SAPPHIRE_BLOCK.asItem()),
+//            Map.entry(ModBlocks.SAPPHIRE_BLOCK.get().asItem(), ModBlocks.KASHMIR_SAPPHIRE_BLOCK.get().asItem()),
 //            Map.entry(ModItems.GREEN_SAPPHIRE, ModItems.CRYSTALLITE),
-//            Map.entry(ModBlocks.GREEN_SAPPHIRE_BLOCK.asItem(), ModBlocks.CRYSTALLITE_BLOCK.asItem()),
+//            Map.entry(ModBlocks.GREEN_SAPPHIRE_BLOCK.get().asItem(), ModBlocks.CRYSTALLITE_BLOCK.get().asItem()),
 //            Map.entry(ModItems.BLUE_GARNET, ModItems.CRIMSON_GARNET),
-//            Map.entry(ModBlocks.BLUE_GARNET_BLOCK.asItem(), ModBlocks.CRIMSON_GARNET_BLOCK.asItem()),
+//            Map.entry(ModBlocks.BLUE_GARNET_BLOCK.get().asItem(), ModBlocks.CRIMSON_GARNET_BLOCK.get().asItem()),
 //            Map.entry(ModItems.PINK_GARNET, ModItems.RADIANT_AMETHYST),
-//            Map.entry(ModBlocks.PINK_GARNET_BLOCK.asItem(), ModBlocks.RADIANT_AMETHYST_BLOCK.asItem()),
+//            Map.entry(ModBlocks.PINK_GARNET_BLOCK.get().asItem(), ModBlocks.RADIANT_AMETHYST_BLOCK.get().asItem()),
 //            Map.entry(ModItems.GREEN_GARNET, ModItems.LIMESTONE),
-//            Map.entry(ModBlocks.GREEN_GARNET_BLOCK.asItem(), ModBlocks.LIMESTONE_BLOCK.asItem()),
+//            Map.entry(ModBlocks.GREEN_GARNET_BLOCK.get().asItem(), ModBlocks.LIMESTONE_BLOCK.get().asItem()),
 //            Map.entry(ModItems.KYAWTHUITE, ModItems.ORANGE_ZIRCON),
-//            Map.entry(ModBlocks.KYAWTHUITE_BLOCK.asItem(), ModBlocks.ORANGE_ZIRCON_BLOCK.asItem()),
+//            Map.entry(ModBlocks.KYAWTHUITE_BLOCK.get().asItem(), ModBlocks.ORANGE_ZIRCON_BLOCK.get().asItem()),
 //            Map.entry(ModItems.WHITE_TOPAZ, ModItems.MOONSTONE),
-//            Map.entry(ModBlocks.WHITE_TOPAZ_BLOCK.asItem(), ModBlocks.MOONSTONE_BLOCK.asItem()),
+//            Map.entry(ModBlocks.WHITE_TOPAZ_BLOCK.get().asItem(), ModBlocks.MOONSTONE_BLOCK.get().asItem()),
 //            Map.entry(ModItems.PERIDOT, ModItems.OPAL),
-//            Map.entry(ModBlocks.PERIDOT_BLOCK.asItem(), ModBlocks.OPAL_BLOCK.asItem()),
+//            Map.entry(ModBlocks.PERIDOT_BLOCK.get().asItem(), ModBlocks.OPAL_BLOCK.get().asItem()),
 //            Map.entry(ModItems.JADE, ModItems.GRANDIDIERITE),
-//            Map.entry(ModBlocks.JADE_BLOCK.asItem(), ModBlocks.GRANDIDIERITE_BLOCK.asItem()),
+//            Map.entry(ModBlocks.JADE_BLOCK.get().asItem(), ModBlocks.GRANDIDIERITE_BLOCK.get().asItem()),
 //            Map.entry(ModItems.PYROPE, ModItems.RED_BERYL),
-//            Map.entry(ModBlocks.PYROPE_BLOCK.asItem(), ModBlocks.RED_BERYL_BLOCK.asItem())
+//            Map.entry(ModBlocks.PYROPE_BLOCK.get().asItem(), ModBlocks.RED_BERYL_BLOCK.get().asItem())
 //    );
     
     private static final  Map<Item, Item> SAPPHIRE_MAP = Map.ofEntries(
@@ -132,16 +170,86 @@ public class AutomatedRecipeCreator extends RecipeProvider {
         int defaultSmeltingTime = 1500;
         int defaultBlastingTime = 750;
 
-        for (var entry: SMELTABLES.entrySet()) {
-            var input = entry.getKey();
+        for (Map.Entry<Item, Item> entry: SMELTABLES.entrySet()) {
+            var define = entry.getKey();
             var output = entry.getValue();
 
-            oreSmelting(List.of(input), RecipeCategory.MISC, CookingBookCategory.BLOCKS, output, .15f, defaultSmeltingTime, output.toString());
-            oreBlasting(List.of(input), RecipeCategory.MISC, CookingBookCategory.BLOCKS, output, .15f, defaultBlastingTime, output.toString());
+            oreSmelting(List.of(define), RecipeCategory.MISC, CookingBookCategory.BLOCKS, output, .15f, defaultSmeltingTime, output.toString());
+            oreBlasting(List.of(define), RecipeCategory.MISC, CookingBookCategory.BLOCKS, output, .15f, defaultBlastingTime, output.toString());
         }
 
+        for (Block block : BuiltInRegistries.BLOCK) {
+            Identifier id = BuiltInRegistries.BLOCK.getKey(block);
+
+            if(id.getNamespace().equals(MoreOresModLoader.MOD_ID)) {
+                if(block.defaultBlockState().is(ModBlocks.GEM_CRYSTALLIZER_BLOCK.get()) || block.defaultBlockState().is(ModBlocks.GEM_PURIFIER_BLOCK.get())) {
+                    continue;
+                }
+                String path = id.getPath();
+                if(path.endsWith("_block")) {
+                    String itemName = path.replace("_block", "");
+                    Item item = BuiltInRegistries.ITEM.getValue(MoreOresModLoader.id(itemName));
+                    if(block.defaultBlockState().is(ModBlocks.RADIANT_BLOCK.get())) {
+                        shaped(RecipeCategory.MISC, ModItems.RADIANT.get(), 1)
+                                .pattern("aaa")
+                                .pattern("aba")
+                                .pattern("aaa")
+                                .define('a', ModBlocks.RUBY_BLOCK.get())
+                                .define('b', Items.DIAMOND)
+                                .unlockedBy(getHasName(ModBlocks.RUBY_BLOCK.get()), has(ModBlocks.RUBY_BLOCK.get()))
+                                .unlockedBy(getHasName(Items.DIAMOND), has(Items.DIAMOND))
+                                .save(output, MoreOresModLoader.recipeKey(getSimpleRecipeName(ModItems.RADIANT) + "_from_ruby"));
+                        reversibleCompactingRecipe(RecipeCategory.MISC, ModItems.RADIANT.get(), RecipeCategory.MISC, ModBlocks.RADIANT_BLOCK.get());
+                        continue;
+                    }
+                    if(block.defaultBlockState().is(ModBlocks.ENERGY_BLOCK.get())) {
+                        shaped(RecipeCategory.MISC, ModBlocks.ENERGY_BLOCK.get(), 1)
+                                .pattern("aaa")
+                                .pattern("aba")
+                                .pattern("aaa")
+                                .define('a', ModItems.RADIANT.get())
+                                .define('b', Blocks.TNT)
+                                .unlockedBy(getHasName(ModItems.RADIANT.get()), has(ModItems.RADIANT.get()))
+                                .unlockedBy(getHasName(Blocks.TNT), has(Blocks.TNT))
+                                .save(output, MoreOresModLoader.recipeKey(getSimpleRecipeName(ModBlocks.ENERGY_BLOCK.get()) + "_from_radiant"));
+
+                        shapeless(RecipeCategory.MISC, ModItems.ENERGY_INGOT.get(), 9)
+                                .unlockedBy(getHasName(ModBlocks.ENERGY_BLOCK.get()), has(ModItems.ENERGY_INGOT.get()))
+                                .requires(ModItems.ENERGY_INGOT.get())
+                                .save(output, MoreOresModLoader.recipeKey(getSimpleRecipeName(ModItems.ENERGY_INGOT.get())));
+                        continue;
+                    }
+
+                    reversibleCompactingRecipe(RecipeCategory.BUILDING_BLOCKS, item, RecipeCategory.DECORATIONS, block);
+                }
+            }
+        }
+
+        for (Map.Entry<Item, Item> entry : GEM_POLISHABLES.entrySet()) {
+            var input = entry.getKey();
+            var result = entry.getValue();
+
+            gemPurification(Ingredient.of(input), result)
+                    .unlocks(getHasName(input), has(result))
+                    .save(output, getSimpleRecipeName(input));
+        }
+        
+        for (Map.Entry<Item, SmithingData> entry : SMITHING_DATA.entrySet()) {
+            Item baseItem = entry.getKey();
+            SmithingData data = entry.getValue();
+            Item result = data.result();
+            Item template = data.smithingTemplate();
+            TagKey<Item> tag = data.toolTag();
+            String path = BuiltInRegistries.ITEM.getKey(result).getPath();
+            RecipeCategory category = (path.contains("_pickaxe") || path.contains("hoe") || path.contains("_shovel"))
+                    ? RecipeCategory.TOOLS : RecipeCategory.COMBAT;
+            SmithingTransformRecipeBuilder.smithing(Ingredient.of(template), Ingredient.of(baseItem), tag(tag), category, result)
+                    .unlocks(getHasName(ModItems.RUBY.get()), has(tag))
+                    .save(output, MoreOresModLoader.recipeKey(getSimpleRecipeName(result) + "_smithing"));
+        }
+        
         for(Map.Entry<Item, Item> entry : SAPPHIRE_MAP.entrySet()) {
-            Item inputItem = entry.getKey();
+            Item defineItem = entry.getKey();
             Item outputItem = entry.getValue();
             String path = BuiltInRegistries.ITEM.getKey(outputItem).getPath();
             RecipeCategory category = (path.contains("_pickaxe") || path.contains("hoe") || path.contains("_shovel"))
@@ -151,11 +259,77 @@ public class AutomatedRecipeCreator extends RecipeProvider {
                     .pattern("aba")
                     .pattern("aaa")
                     .define('a', ModItems.SAPPHIRE.get())
-                    .define('b', inputItem)
+                    .define('b', defineItem)
                     .unlockedBy(getHasName(ModItems.SAPPHIRE.get()),  has(ModItems.SAPPHIRE.get()))
-                    .unlockedBy(getHasName(inputItem), has(inputItem))
+                    .unlockedBy(getHasName(defineItem), has(defineItem))
                     .save(output, MoreOresModLoader.recipeKey(getSimpleRecipeName(outputItem)));
         }
+        
+        oreBlasting(List.of(ModItems.RUBY), RecipeCategory.MISC, CookingBookCategory.MISC, Items.NETHERITE_INGOT, 0.15f, 450, "netherite");
+
+        shaped(RecipeCategory.MISC, ModBlocks.GEM_PURIFIER_BLOCK.get())
+                .pattern("III")
+                .pattern("III")
+                .pattern("B B")
+                .define('I', Blocks.IRON_BLOCK)
+                .define('B', Blocks.IRON_BARS)
+                .unlockedBy(getHasName(Blocks.IRON_BLOCK), has(Blocks.IRON_BLOCK))
+                .unlockedBy(getHasName(Blocks.IRON_BARS), has(Blocks.IRON_BARS))
+                .save(output, MoreOresModLoader.recipeKey(getSimpleRecipeName(ModBlocks.GEM_PURIFIER_BLOCK.get())));
+
+        shaped(
+                RecipeCategory.REDSTONE, ModBlocks.GEM_CRYSTALLIZER_BLOCK.get()
+        )
+                .pattern("aba")
+                .pattern("cdc")
+                .pattern("ccc")
+                .define('a', Items.REDSTONE)
+                .define('b', Ingredient.of(ModItems.ENERGY_INGOT.get(), ModBlocks.ENERGY_BLOCK.get().asItem()))
+                .define('c', Ingredient.of(Blocks.IRON_BLOCK.asItem()))
+                .define('d', Ingredient.of(ModBlocks.GEM_PURIFIER_BLOCK.get().asItem()))
+                .unlockedBy(getHasName(ModBlocks.GEM_PURIFIER_BLOCK.get().asItem()), has(ModBlocks.GEM_PURIFIER_BLOCK.get().asItem()))
+                .save(output, MoreOresModLoader.recipeKey(getSimpleRecipeName(ModBlocks.GEM_CRYSTALLIZER_BLOCK.get())));
+    }
+
+    public void reversibleCompactingRecipe(
+            RecipeCategory reverseCategory, ItemLike baseItem, RecipeCategory compactingCategory, ItemLike compactItem
+    ) {
+        this.reversibleCompactingRecipe(
+                reverseCategory, baseItem, compactingCategory, compactItem, getSimpleRecipeName(compactItem), null, getSimpleRecipeName(baseItem), null
+        );
+    }
+    
+    public final void reversibleCompactingRecipe(
+            RecipeCategory reverseCategory,
+            ItemLike baseItem,
+            RecipeCategory compactingCategory,
+            ItemLike compactItem,
+            String compactingId,
+            @Nullable String compactingGroup,
+            String reverseId,
+            @Nullable String reverseGroup
+    ) {
+        this.shapeless(reverseCategory, baseItem, 9)
+                .requires(compactItem)
+                .group(reverseGroup)
+                .unlockedBy(getHasName(compactItem), this.has(compactItem))
+                .save(this.output, ResourceKey.create(Registries.RECIPE, MoreOresModLoader.id(reverseId)));
+        this.shaped(compactingCategory, compactItem)
+                .define('#', baseItem)
+                .pattern("###")
+                .pattern("###")
+                .pattern("###")
+                .group(compactingGroup)
+                .unlockedBy(getHasName(baseItem), this.has(baseItem))
+                .save(this.output, ResourceKey.create(Registries.RECIPE, MoreOresModLoader.id(compactingId)));
+    }
+
+    public GemPurifyingRecipeBuilder gemPurification(Ingredient input, Item result) {
+        return GemPurifyingRecipeBuilder.create(input, new ItemStackTemplate(result), RecipeCategory.MISC);
+    }
+
+    public GemCrystallizerRecipeBuilder gemCrystallization(Ingredient inputBefore, ItemStack result) {
+        return GemCrystallizerRecipeBuilder.create(inputBefore, new ItemStackTemplate(result.getItem(), result.getCount()), RecipeCategory.MISC);
     }
     
     public static class Runner extends RecipeProvider.Runner {
@@ -172,5 +346,9 @@ public class AutomatedRecipeCreator extends RecipeProvider {
         public String getName() {
             return "ARC";
         }
+    }
+    
+    private record SmithingData(Item smithingTemplate, Item result, TagKey<Item> toolTag) {
+        
     }
 }

@@ -1,0 +1,7 @@
+{
+  "type": "moreores:crystallizing",
+  "ingredientGem": "moreores:raw_pyrope",
+  "resultGem": {
+    "id": "moreores:pyrope"
+  }
+}

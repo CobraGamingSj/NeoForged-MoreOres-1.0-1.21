@@ -1,0 +1,7 @@
+{
+  "type": "moreores:crystallizing",
+  "ingredientGem": "moreores:raw_kyawthuite",
+  "resultGem": {
+    "id": "moreores:kyawthuite"
+  }
+}

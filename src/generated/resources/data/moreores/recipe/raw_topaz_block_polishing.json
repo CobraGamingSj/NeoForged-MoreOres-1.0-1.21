@@ -1,0 +1,7 @@
+{
+  "type": "moreores:crystallizing",
+  "ingredientGem": "moreores:raw_topaz_block",
+  "resultGem": {
+    "id": "moreores:topaz_block"
+  }
+}

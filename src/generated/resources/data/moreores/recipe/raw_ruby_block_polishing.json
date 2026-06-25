@@ -1,0 +1,7 @@
+{
+  "type": "moreores:crystallizing",
+  "ingredientGem": "moreores:raw_ruby_block",
+  "resultGem": {
+    "id": "moreores:ruby_block"
+  }
+}

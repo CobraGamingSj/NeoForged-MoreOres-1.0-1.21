@@ -75,6 +75,20 @@ public class ModBlocks {
             p -> new Block(p
                     .strength(5f).strength(5f, 5f).mapColor(MapColor.COLOR_LIGHT_GREEN).requiresCorrectToolForDrops()));
 
+    public static final DeferredBlock<Block> RAW_RUBY_BLOCK = registerBlock("raw_ruby_block", p -> new Block(p.mapColor(MapColor.COLOR_RED).requiresCorrectToolForDrops().strength(6.0f, 6.0f).strength(6.0f)));
+    public static final DeferredBlock<Block> RAW_SAPPHIRE_BLOCK = registerBlock("raw_sapphire_block", p -> new Block(p.mapColor(MapColor.COLOR_BLUE).requiresCorrectToolForDrops().strength(5.0f, 5.0f).strength(5.0f)));
+    public static final DeferredBlock<Block> RAW_GREEN_SAPPHIRE_BLOCK = registerBlock("raw_green_sapphire_block", p -> new Block(p.mapColor(MapColor.COLOR_GREEN).requiresCorrectToolForDrops().strength(5.0f, 5.0f).strength(5.0f)));
+    public static final DeferredBlock<Block> RAW_BLUE_GARNET_BLOCK = registerBlock("raw_blue_garnet_block", p -> new Block(p.mapColor(MapColor.COLOR_BLUE).requiresCorrectToolForDrops().strength(7.0f, 7.5f).strength(8.0f).sound(SoundType.AMETHYST_CLUSTER)));
+    public static final DeferredBlock<Block> RAW_PINK_GARNET_BLOCK = registerBlock("raw_pink_garnet_block", p -> new Block(p.mapColor(MapColor.COLOR_PINK).requiresCorrectToolForDrops().strength(7.0f, 7.5f).strength(8.0f).sound(SoundType.AMETHYST_CLUSTER)));
+    public static final DeferredBlock<Block> RAW_GREEN_GARNET_BLOCK = registerBlock("raw_green_garnet_block", p -> new Block(p.mapColor(MapColor.COLOR_PINK).requiresCorrectToolForDrops().strength(7.0f, 7.5f).strength(8.0f).sound(SoundType.AMETHYST_CLUSTER)));
+    public static final DeferredBlock<Block> RAW_KYAWTHUITE_BLOCK = registerBlock("raw_kyawthuite_block", p -> new Block(p.mapColor(MapColor.COLOR_ORANGE).requiresCorrectToolForDrops().strength(9.5f, 10.0f).strength(10.0f)));
+    public static final DeferredBlock<Block> RAW_TOPAZ_BLOCK = registerBlock("raw_topaz_block", p -> new Block(p.mapColor(MapColor.COLOR_ORANGE).requiresCorrectToolForDrops().strength(9.0f, 9.0f).strength(10.0f)));
+    public static final DeferredBlock<Block> RAW_WHITE_TOPAZ_BLOCK = registerBlock("raw_white_topaz_block", p -> new Block(p.requiresCorrectToolForDrops().strength(7.0f, 7.5f).strength(8.0f)));
+    public static final DeferredBlock<Block> RAW_PERIDOT_BLOCK = registerBlock("raw_peridot_block", p -> new Block(p.mapColor(MapColor.COLOR_GREEN).requiresCorrectToolForDrops().strength(9.0f, 9.0f).strength(10.0f).sound(SoundType.METAL)));
+    public static final DeferredBlock<Block> RAW_JADE_BLOCK = registerBlock("raw_jade_block", p -> new Block(p.requiresCorrectToolForDrops().strength(7.0f, 7.5f).strength(8.0f)));
+    public static final DeferredBlock<Block> RAW_PYROPE_BLOCK = registerBlock("raw_pyrope_block", p -> new Block(p.requiresCorrectToolForDrops().strength(7.0f, 7.5f).strength(8.0f)));
+
+
     public static final DeferredBlock<Block> CRIMSON_GARNET_BLOCK = registerBlockWithStrength("crimson_garnet_block", Block::new);
     public static final DeferredBlock<Block> CRYSTALLITE_BLOCK = registerBlockWithStrength("crystallite_block", Block::new);
     public static final DeferredBlock<Block> RADIANT_AMETHYST_BLOCK = registerBlockWithStrength("radiant_amethyst_block", Block::new);

@@ -1,0 +1,7 @@
+{
+  "type": "moreores:crystallizing",
+  "ingredientGem": "moreores:raw_green_garnet_block",
+  "resultGem": {
+    "id": "moreores:green_garnet_block"
+  }
+}
