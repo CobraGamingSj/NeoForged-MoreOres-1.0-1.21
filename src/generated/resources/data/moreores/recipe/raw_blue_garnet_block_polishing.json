@@ -1,5 +1,5 @@
 {
-  "type": "moreores:crystallizing",
+  "type": "moreores:gem_purifying",
   "ingredientGem": "moreores:raw_blue_garnet_block",
   "resultGem": {
     "id": "moreores:blue_garnet_block"

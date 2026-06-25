@@ -1,5 +1,5 @@
 {
-  "type": "moreores:crystallizing",
+  "type": "moreores:gem_purifying",
   "ingredientGem": "moreores:raw_green_sapphire",
   "resultGem": {
     "id": "moreores:green_sapphire"
