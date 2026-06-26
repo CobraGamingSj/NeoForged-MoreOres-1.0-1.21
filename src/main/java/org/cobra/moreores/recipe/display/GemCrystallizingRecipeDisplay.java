@@ -1,44 +1,45 @@
-//package org.cobra.moreores.recipe.display;
-//
-//import com.mojang.serialization.MapCodec;
-//import com.mojang.serialization.codecs.RecordCodecBuilder;
-//import net.minecraft.network.RegistryByteBuf;
-//import net.minecraft.network.codec.PacketCodec;
-//import net.minecraft.recipe.display.RecipeDisplay;
-//import net.minecraft.recipe.display.SlotDisplay;
-//
-//public record GemCrystallizingRecipeDisplay(SlotDisplay ingredientBefore, SlotDisplay ingredientAfter, SlotDisplay result, SlotDisplay workStation) implements RecipeDisplay {
-//
-//    @Override
-//    public SlotDisplay craftingStation() {
-//        return this.workStation;
-//    }
-//
-//    public static final MapCodec<GemCrystallizingRecipeDisplay> CODEC = RecordCodecBuilder.mapCodec(
-//            instance -> instance.group(
-//                            SlotDisplay.CODEC.fieldOf("ingredientBefore").forGetter(GemCrystallizingRecipeDisplay::ingredientBefore),
-//                            SlotDisplay.CODEC.fieldOf("ingredientAfter").forGetter(GemCrystallizingRecipeDisplay::ingredientAfter),
-//                            SlotDisplay.CODEC.fieldOf("result").forGetter(GemCrystallizingRecipeDisplay::result),
-//                            SlotDisplay.CODEC.fieldOf("work_station").forGetter(GemCrystallizingRecipeDisplay::workStation)
-//                    )
-//                    .apply(instance, GemCrystallizingRecipeDisplay::new)
-//    );
-//    public static final PacketCodec<RegistryByteBuf, GemCrystallizingRecipeDisplay> PACKET_CODEC = PacketCodec.tuple(
-//            SlotDisplay.PACKET_CODEC,
-//            GemCrystallizingRecipeDisplay::ingredientBefore,
-//            SlotDisplay.PACKET_CODEC,
-//            GemCrystallizingRecipeDisplay::ingredientAfter,
-//            SlotDisplay.PACKET_CODEC,
-//            GemCrystallizingRecipeDisplay::result,
-//            SlotDisplay.PACKET_CODEC,
-//            GemCrystallizingRecipeDisplay::workStation,
-//            GemCrystallizingRecipeDisplay::new
-//    );
-//
-//    public static final Serializer<GemCrystallizingRecipeDisplay> SERIALIZER = new Serializer<>(CODEC, PACKET_CODEC);
-//
-//    @Override
-//    public Serializer<GemCrystallizingRecipeDisplay> serializer() {
-//        return SERIALIZER;
-//    }
-//}
+package org.cobra.moreores.recipe.display;
+
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.world.item.crafting.display.RecipeDisplay;
+import net.minecraft.world.item.crafting.display.SlotDisplay;
+
+public record GemCrystallizingRecipeDisplay(SlotDisplay ingredientBefore, SlotDisplay ingredientAfter, SlotDisplay result, SlotDisplay workStation) implements RecipeDisplay {
+
+    @Override
+    public SlotDisplay craftingStation() {
+        return this.workStation;
+    }
+
+    public static final MapCodec<GemCrystallizingRecipeDisplay> CODEC = RecordCodecBuilder.mapCodec(
+            instance -> instance.group(
+                            SlotDisplay.CODEC.fieldOf("ingredientBefore").forGetter(GemCrystallizingRecipeDisplay::ingredientBefore),
+                            SlotDisplay.CODEC.fieldOf("ingredientAfter").forGetter(GemCrystallizingRecipeDisplay::ingredientAfter),
+                            SlotDisplay.CODEC.fieldOf("result").forGetter(GemCrystallizingRecipeDisplay::result),
+                            SlotDisplay.CODEC.fieldOf("work_station").forGetter(GemCrystallizingRecipeDisplay::workStation)
+                    )
+                    .apply(instance, GemCrystallizingRecipeDisplay::new)
+    );
+    public static final StreamCodec<RegistryFriendlyByteBuf, GemCrystallizingRecipeDisplay> PACKET_CODEC = StreamCodec.composite(
+            SlotDisplay.STREAM_CODEC,
+            GemCrystallizingRecipeDisplay::ingredientBefore,
+            SlotDisplay.STREAM_CODEC,
+            GemCrystallizingRecipeDisplay::ingredientAfter,
+            SlotDisplay.STREAM_CODEC,
+            GemCrystallizingRecipeDisplay::result,
+            SlotDisplay.STREAM_CODEC,
+            GemCrystallizingRecipeDisplay::workStation,
+            GemCrystallizingRecipeDisplay::new
+    );
+
+    public static final Type<GemCrystallizingRecipeDisplay> SERIALIZER = new Type<>(CODEC, PACKET_CODEC);
+
+    @Override
+    public Type<GemCrystallizingRecipeDisplay> type() {
+        return SERIALIZER;
+    }
+}

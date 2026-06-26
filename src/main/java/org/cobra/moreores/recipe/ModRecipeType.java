@@ -18,6 +18,13 @@ public class ModRecipeType {
                     return "gem_purifying";
                 }
             });
+    public static final DeferredHolder<RecipeType<?>, RecipeType<GemCrystallizerRecipe>> GEM_CRYSTALLIZER =
+            TYPES.register("gem_crystallizing", () -> new RecipeType<>() {
+                @Override
+                public String toString() {
+                    return "gem_crystallizing";
+                }
+            });
 
     public static void register(IEventBus schoolBus) {
         TYPES.register(schoolBus);
