@@ -201,7 +201,7 @@ public class ModItems {
     public static final DeferredItem<Item> ECLIPSE_GEM = ITEMS.registerItem("eclipse_gem", settings -> new Item(settings.rarity(Rarity.EPIC).fireResistant()));
     
     private static DeferredItem<Item> registerGem(String name) {
-        return ITEMS.registerItem(name, GemItem::new);
+        return ITEMS.registerItem(name, p -> new GemItem(p, name));
     }
     
     public static void register(IEventBus eventBus) {
