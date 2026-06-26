@@ -1,23 +1,28 @@
-//package org.cobra.moreores.enchantment.entity.effect;
-//
-//import com.mojang.serialization.MapCodec;
-//import net.minecraft.enchantment.effect.EnchantmentEntityEffect;
-//import net.minecraft.registry.Registries;
-//import net.minecraft.registry.Registry;
-//import net.minecraft.util.Identifier;
-//import org.cobra.moreores.MoreOresModInitializer;
-//
-//import static org.cobra.moreores.MoreOresModInitializer.LOGGER;
-//
-//public class EnchantmentEffects {
-//
-//    public static final MapCodec<? extends EnchantmentEntityEffect> THUNDER_STRIKER = register("thunder_striker", ThunderSummonEnchantmentEffect.CODEC);
-//
-//    private static MapCodec<? extends EnchantmentEntityEffect> register(String id, MapCodec<? extends EnchantmentEntityEffect> codec) {
-//        return Registry.register(Registries.ENCHANTMENT_ENTITY_EFFECT_TYPE, Identifier.of(MoreOresModInitializer.MOD_ID, id), codec);
-//    }
-//
-//    public static void register() {
-//        LOGGER.info("Loading EnchantmentEffects for " + MoreOresModInitializer.MOD_ID + " mod.");
-//    }
-//}
+package org.cobra.moreores.enchantment.entity.effect;
+
+import com.mojang.serialization.MapCodec;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.world.item.enchantment.effects.EnchantmentEntityEffect;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.registries.DeferredRegister;
+import org.cobra.moreores.MoreOresModLoader;
+
+import java.util.function.Supplier;
+
+import static org.cobra.moreores.MoreOresModLoader.LOGGER;
+
+public class EnchantmentEffects {
+
+    public static final DeferredRegister<MapCodec<? extends EnchantmentEntityEffect>> ENCHANTMENTS = DeferredRegister.create(Registries.ENCHANTMENT_ENTITY_EFFECT_TYPE, MoreOresModLoader.MOD_ID);
+    
+    public static final Supplier<MapCodec<? extends EnchantmentEntityEffect>> THUNDER_STRIKER = register("thunder_striker", () -> ThunderSummonEnchantmentEffect.CODEC);
+    
+    private static Supplier<MapCodec<? extends EnchantmentEntityEffect>> register(String id, Supplier<MapCodec<? extends EnchantmentEntityEffect>> codec) {
+        return ENCHANTMENTS.register(id, codec);
+    }
+
+    public static void register(IEventBus schoolBus) {
+        ENCHANTMENTS.register(schoolBus);
+        LOGGER.info("Loading EnchantmentEffects for " + MoreOresModLoader.MOD_ID + " mod.");
+    }
+}

@@ -11,6 +11,7 @@ import org.cobra.moreores.data.village.TradeSets;
 import org.cobra.moreores.data.worldgen.placement.BiomeModifications;
 import org.cobra.moreores.data.worldgen.placement.ModConfiguredFeatures;
 import org.cobra.moreores.data.worldgen.placement.ModPlacedFeatures;
+import org.cobra.moreores.enchantment.ModEnchantments;
 import org.cobra.moreores.item.equipment.trim.ModTrimMaterials;
 import org.cobra.moreores.item.equipment.trim.ModTrimPatterns;
 import org.cobra.moreores.item.trading.ModVillagerTrades;
@@ -27,6 +28,7 @@ public class DataPackCreator extends DatapackBuiltinEntriesProvider {
             .add(Registries.TRADE_SET, TradeSets::bootstrap)
             .add(Registries.TRIM_MATERIAL, ModTrimMaterials::bootstrap)
             .add(Registries.TRIM_PATTERN, ModTrimPatterns::bootstrap)
+            .add(Registries.ENCHANTMENT, ModEnchantments::bootstrap)
             .add(NeoForgeRegistries.Keys.BIOME_MODIFIERS, BiomeModifications::bootstrap);
     
     public DataPackCreator(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {

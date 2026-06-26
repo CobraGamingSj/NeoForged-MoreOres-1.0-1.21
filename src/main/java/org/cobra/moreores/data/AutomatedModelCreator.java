@@ -8,11 +8,15 @@ import net.minecraft.client.data.models.MultiVariant;
 import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
 import net.minecraft.client.data.models.blockstates.PropertyDispatch;
 import net.minecraft.client.data.models.model.ModelTemplates;
+import net.minecraft.client.data.models.model.TextureMapping;
+import net.minecraft.client.data.models.model.TexturedModel;
+import net.minecraft.client.renderer.block.dispatch.Variant;
 import net.minecraft.client.renderer.block.dispatch.VariantMutator;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.util.random.WeightedList;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.equipment.EquipmentAsset;
@@ -21,6 +25,7 @@ import org.cobra.moreores.MoreOresModLoader;
 import org.cobra.moreores.block.GemCrystallizerBlock;
 import org.cobra.moreores.block.GemPurifierBlock;
 import org.cobra.moreores.block.ModBlocks;
+import org.cobra.moreores.block.RubyLampBlock;
 import org.cobra.moreores.item.equipment.ModEquipmentAssetKeys;
 import org.cobra.moreores.item.util.impl.CrystallizationGemstones;
 import org.cobra.moreores.item.util.impl.PurificationGemstones;
@@ -133,6 +138,16 @@ public class AutomatedModelCreator extends ModelProvider {
                                     )
                     );
                     
+                    continue;
+                }
+
+                if(block == ModBlocks.RUBY_LAMP.get()) {
+                    Identifier lampOffIdentifier = TexturedModel.CUBE.create(ModBlocks.RUBY_LAMP.get(), blockModels.modelOutput);
+                    Identifier lampOnIdentifier = blockModels.createSuffixedVariant(ModBlocks.RUBY_LAMP.get(), "_on", ModelTemplates.CUBE_ALL, TextureMapping::cube);
+                    blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(ModBlocks.RUBY_LAMP.get())
+                            .with(BlockModelGenerators.createBooleanModelDispatch(RubyLampBlock.LIT,
+                                    new MultiVariant(WeightedList.<Variant>builder().add(new Variant(lampOnIdentifier)).build()),
+                                    new MultiVariant(WeightedList.<Variant>builder().add(new Variant(lampOffIdentifier)).build()))));
                     continue;
                 }
                 

@@ -1,0 +1,43 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_radiant": {
+      "conditions": {
+        "items": [
+          {
+            "items": "moreores:radiant"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_ruby_block": {
+      "conditions": {
+        "items": [
+          {
+            "items": "moreores:ruby_block"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "moreores:ruby_block_crystallizing"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_ruby_block",
+      "has_radiant"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "moreores:ruby_block_crystallizing"
+    ]
+  }
+}

@@ -88,6 +88,7 @@ public class ModBlocks {
     public static final DeferredBlock<Block> RAW_JADE_BLOCK = registerBlock("raw_jade_block", p -> new Block(p.requiresCorrectToolForDrops().strength(7.0f, 7.5f).strength(8.0f)));
     public static final DeferredBlock<Block> RAW_PYROPE_BLOCK = registerBlock("raw_pyrope_block", p -> new Block(p.requiresCorrectToolForDrops().strength(7.0f, 7.5f).strength(8.0f)));
 
+    public static final DeferredBlock<Block> RUBY_LAMP = registerBlock("ruby_lamp", p -> new RubyLampBlock(p.strength(5f, 5f)));
 
     public static final DeferredBlock<Block> CRIMSON_GARNET_BLOCK = registerBlockWithStrength("crimson_garnet_block", Block::new);
     public static final DeferredBlock<Block> CRYSTALLITE_BLOCK = registerBlockWithStrength("crystallite_block", Block::new);

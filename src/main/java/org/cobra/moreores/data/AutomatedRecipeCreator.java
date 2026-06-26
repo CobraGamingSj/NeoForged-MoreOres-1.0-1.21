@@ -1,15 +1,15 @@
 package org.cobra.moreores.data;
 
+import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
-import net.minecraft.data.recipes.RecipeCategory;
-import net.minecraft.data.recipes.RecipeOutput;
-import net.minecraft.data.recipes.RecipeProvider;
-import net.minecraft.data.recipes.SmithingTransformRecipeBuilder;
+import net.minecraft.data.recipes.*;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -17,6 +17,8 @@ import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.CookingBookCategory;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.equipment.trim.TrimPattern;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -25,12 +27,15 @@ import org.cobra.moreores.block.ModBlocks;
 import org.cobra.moreores.data.recipes.GemCrystallizerRecipeBuilder;
 import org.cobra.moreores.data.recipes.GemPurifyingRecipeBuilder;
 import org.cobra.moreores.item.ModItems;
+import org.cobra.moreores.item.equipment.trim.ModTrimPatterns;
 import org.cobra.moreores.registry.ModItemTags;
 import org.jspecify.annotations.Nullable;
 
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+
+import static net.minecraft.data.recipes.packs.VanillaRecipeProvider.smithingTrims;
 
 public class AutomatedRecipeCreator extends RecipeProvider {
     private static final Map<Item, SmithingData> SMITHING_DATA = Map.ofEntries(
@@ -122,30 +127,30 @@ public class AutomatedRecipeCreator extends RecipeProvider {
             Map.entry(ModBlocks.RAW_PYROPE_BLOCK.get().asItem(), ModBlocks.PYROPE_BLOCK.get().asItem())
     );
 //
-//    private static final Map<Item, Item> GEM_INFUSES = Map.ofEntries(
-//            Map.entry(ModItems.RUBY, ModItems.ALEXANDRITE),
-//            Map.entry(ModBlocks.RUBY_BLOCK.get().asItem(),  ModBlocks.ALEXANDRITE_BLOCK.get().asItem()),
-//            Map.entry(ModItems.SAPPHIRE, ModItems.KASHMIR_SAPPHIRE),
-//            Map.entry(ModBlocks.SAPPHIRE_BLOCK.get().asItem(), ModBlocks.KASHMIR_SAPPHIRE_BLOCK.get().asItem()),
-//            Map.entry(ModItems.GREEN_SAPPHIRE, ModItems.CRYSTALLITE),
-//            Map.entry(ModBlocks.GREEN_SAPPHIRE_BLOCK.get().asItem(), ModBlocks.CRYSTALLITE_BLOCK.get().asItem()),
-//            Map.entry(ModItems.BLUE_GARNET, ModItems.CRIMSON_GARNET),
-//            Map.entry(ModBlocks.BLUE_GARNET_BLOCK.get().asItem(), ModBlocks.CRIMSON_GARNET_BLOCK.get().asItem()),
-//            Map.entry(ModItems.PINK_GARNET, ModItems.RADIANT_AMETHYST),
-//            Map.entry(ModBlocks.PINK_GARNET_BLOCK.get().asItem(), ModBlocks.RADIANT_AMETHYST_BLOCK.get().asItem()),
-//            Map.entry(ModItems.GREEN_GARNET, ModItems.LIMESTONE),
-//            Map.entry(ModBlocks.GREEN_GARNET_BLOCK.get().asItem(), ModBlocks.LIMESTONE_BLOCK.get().asItem()),
-//            Map.entry(ModItems.KYAWTHUITE, ModItems.ORANGE_ZIRCON),
-//            Map.entry(ModBlocks.KYAWTHUITE_BLOCK.get().asItem(), ModBlocks.ORANGE_ZIRCON_BLOCK.get().asItem()),
-//            Map.entry(ModItems.WHITE_TOPAZ, ModItems.MOONSTONE),
-//            Map.entry(ModBlocks.WHITE_TOPAZ_BLOCK.get().asItem(), ModBlocks.MOONSTONE_BLOCK.get().asItem()),
-//            Map.entry(ModItems.PERIDOT, ModItems.OPAL),
-//            Map.entry(ModBlocks.PERIDOT_BLOCK.get().asItem(), ModBlocks.OPAL_BLOCK.get().asItem()),
-//            Map.entry(ModItems.JADE, ModItems.GRANDIDIERITE),
-//            Map.entry(ModBlocks.JADE_BLOCK.get().asItem(), ModBlocks.GRANDIDIERITE_BLOCK.get().asItem()),
-//            Map.entry(ModItems.PYROPE, ModItems.RED_BERYL),
-//            Map.entry(ModBlocks.PYROPE_BLOCK.get().asItem(), ModBlocks.RED_BERYL_BLOCK.get().asItem())
-//    );
+    private static final Map<Item, Item> GEM_CRYSTALLIZABLES = Map.ofEntries(
+            Map.entry(ModItems.RUBY.get(), ModItems.ALEXANDRITE.get()),
+            Map.entry(ModBlocks.RUBY_BLOCK.get().asItem(),  ModBlocks.ALEXANDRITE_BLOCK.get().asItem()),
+            Map.entry(ModItems.SAPPHIRE.get(), ModItems.KASHMIR_SAPPHIRE.get()),
+            Map.entry(ModBlocks.SAPPHIRE_BLOCK.get().asItem(), ModBlocks.KASHMIR_SAPPHIRE_BLOCK.get().asItem()),
+            Map.entry(ModItems.GREEN_SAPPHIRE.get(), ModItems.CRYSTALLITE.get()),
+            Map.entry(ModBlocks.GREEN_SAPPHIRE_BLOCK.get().asItem(), ModBlocks.CRYSTALLITE_BLOCK.get().asItem()),
+            Map.entry(ModItems.BLUE_GARNET.get(), ModItems.CRIMSON_GARNET.get()),
+            Map.entry(ModBlocks.BLUE_GARNET_BLOCK.get().asItem(), ModBlocks.CRIMSON_GARNET_BLOCK.get().asItem()),
+            Map.entry(ModItems.PINK_GARNET.get(), ModItems.RADIANT_AMETHYST.get()),
+            Map.entry(ModBlocks.PINK_GARNET_BLOCK.get().asItem(), ModBlocks.RADIANT_AMETHYST_BLOCK.get().asItem()),
+            Map.entry(ModItems.GREEN_GARNET.get(), ModItems.LIMESTONE.get()),
+            Map.entry(ModBlocks.GREEN_GARNET_BLOCK.get().asItem(), ModBlocks.LIMESTONE_BLOCK.get().asItem()),
+            Map.entry(ModItems.KYAWTHUITE.get(), ModItems.ORANGE_ZIRCON.get()),
+            Map.entry(ModBlocks.KYAWTHUITE_BLOCK.get().asItem(), ModBlocks.ORANGE_ZIRCON_BLOCK.get().asItem()),
+            Map.entry(ModItems.WHITE_TOPAZ.get(), ModItems.MOONSTONE.get()),
+            Map.entry(ModBlocks.WHITE_TOPAZ_BLOCK.get().asItem(), ModBlocks.MOONSTONE_BLOCK.get().asItem()),
+            Map.entry(ModItems.PERIDOT.get(), ModItems.OPAL.get()),
+            Map.entry(ModBlocks.PERIDOT_BLOCK.get().asItem(), ModBlocks.OPAL_BLOCK.get().asItem()),
+            Map.entry(ModItems.JADE.get(), ModItems.GRANDIDIERITE.get()),
+            Map.entry(ModBlocks.JADE_BLOCK.get().asItem(), ModBlocks.GRANDIDIERITE_BLOCK.get().asItem()),
+            Map.entry(ModItems.PYROPE.get(), ModItems.RED_BERYL.get()),
+            Map.entry(ModBlocks.PYROPE_BLOCK.get().asItem(), ModBlocks.RED_BERYL_BLOCK.get().asItem())
+    );
     
     private static final  Map<Item, Item> SAPPHIRE_MAP = Map.ofEntries(
             Map.entry(ModItems.RUBY_SWORD.get(), ModItems.SAPPHIRE_SWORD.get()),
@@ -226,11 +231,21 @@ public class AutomatedRecipeCreator extends RecipeProvider {
         }
 
         for (Map.Entry<Item, Item> entry : GEM_POLISHABLES.entrySet()) {
-            var input = entry.getKey();
-            var result = entry.getValue();
+            Item input = entry.getKey();
+            Item result = entry.getValue();
 
             gemPurification(Ingredient.of(input), result)
-                    .unlocks(getHasName(input), has(result))
+                    .unlocks(getHasName(input), has(input))
+                    .save(output, getSimpleRecipeName(input));
+        }
+        
+        for (Map.Entry<Item, Item> entry : GEM_CRYSTALLIZABLES.entrySet()) {
+            Item input = entry.getKey();
+            Item result = entry.getValue();
+            
+            gemCrystallization(Ingredient.of(input), result)
+                    .unlocks(getHasName(input), has(input))
+                    .unlocks(getHasName(ModItems.RADIANT.get()), has(ModItems.RADIANT.get()))
                     .save(output, getSimpleRecipeName(input));
         }
         
@@ -289,6 +304,93 @@ public class AutomatedRecipeCreator extends RecipeProvider {
                 .define('d', Ingredient.of(ModBlocks.GEM_PURIFIER_BLOCK.get().asItem()))
                 .unlockedBy(getHasName(ModBlocks.GEM_PURIFIER_BLOCK.get().asItem()), has(ModBlocks.GEM_PURIFIER_BLOCK.get().asItem()))
                 .save(output, MoreOresModLoader.recipeKey(getSimpleRecipeName(ModBlocks.GEM_CRYSTALLIZER_BLOCK.get())));
+
+        trimSmithing(ModItems.GUARDIAN_ARMOR_TRIM_SMITHING_TEMPLATE.get(),
+                ModTrimPatterns.GUARDIAN, MoreOresModLoader.recipeKey(getItemName(ModItems.GUARDIAN_ARMOR_TRIM_SMITHING_TEMPLATE.get()) + "_smithing_trim"));
+        
+        GemCrystallizerRecipeBuilder.createQuartsidian()
+                .unlocks(getHasName(Items.QUARTZ), has(Items.QUARTZ))
+                .unlocks(getHasName(Blocks.OBSIDIAN), has(Blocks.OBSIDIAN))
+                .save(output, getSimpleRecipeName(ModItems.QUARTSIDIAN));
+
+        shaped(RecipeCategory.REDSTONE, ModBlocks.RUBY_LAMP.get(), 1)
+                .pattern("aba")
+                .pattern("bcb")
+                .pattern("aba")
+                .define('a', Items.REDSTONE)
+                .define('b', ModItems.RUBY.get())
+                .define('c', Blocks.GLOWSTONE)
+                .unlockedBy(getHasName(Items.REDSTONE), has(Items.REDSTONE))
+                .unlockedBy(getHasName(ModItems.RUBY.get()), has(ModItems.RUBY.get()))
+                .unlockedBy(getHasName(Blocks.GLOWSTONE), has(Blocks.GLOWSTONE))
+                .save(output, MoreOresModLoader.recipeKey(getSimpleRecipeName(ModBlocks.RUBY_LAMP.get())));
+
+        shaped(RecipeCategory.MISC, ModItems.RUBY_UPGRADE_SMITHING_TEMPLATE.get(), 2)
+                .pattern("aba")
+                .pattern("aca")
+                .pattern("aaa")
+                .define('a', ModItems.RUBY.get())
+                .define('b', ModItems.RUBY_UPGRADE_SMITHING_TEMPLATE.get())
+                .define('c', Blocks.STONE)
+                .unlockedBy(getHasName(ModItems.RUBY.get()), has(ModItems.RUBY.get()))
+                .save(output, MoreOresModLoader.recipeKey(getSimpleRecipeName(ModItems.RUBY_UPGRADE_SMITHING_TEMPLATE.get()) + "_duplication"));
+
+        shaped(RecipeCategory.MISC, ModItems.RADIANT_UPGRADE_SMITHING_TEMPLATE.get(), 2)
+                .pattern("aba")
+                .pattern("aca")
+                .pattern("aaa")
+                .define('a', ModItems.SAPPHIRE.get())
+                .define('b', ModItems.RADIANT_UPGRADE_SMITHING_TEMPLATE.get())
+                .define('c', ModBlocks.RUBY_BLOCK.get())
+                .unlockedBy(getHasName(ModItems.RUBY.get()), has(ModItems.RUBY.get()))
+                .save(output, MoreOresModLoader.recipeKey(getSimpleRecipeName(ModItems.RADIANT_UPGRADE_SMITHING_TEMPLATE.get()) + "_duplication"));
+
+        shaped(RecipeCategory.MISC, ModItems.RUBY_UPGRADE_SMITHING_TEMPLATE.get())
+                .pattern("aba")
+                .pattern("aca")
+                .pattern("aaa")
+                .define('a', Blocks.STONE)
+                .define('b', Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE)
+                .define('c', ModItems.RUBY.get())
+                .unlockedBy(getHasName(ModItems.RUBY.get()), has(ModItems.RUBY.get()))
+                .unlockedBy(getHasName(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE), has(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE))
+                .save(output, MoreOresModLoader.recipeKey(getSimpleRecipeName(ModItems.RUBY_UPGRADE_SMITHING_TEMPLATE.get())));
+
+        shaped(RecipeCategory.MISC, ModItems.RADIANT_UPGRADE_SMITHING_TEMPLATE.get())
+                .pattern("aba")
+                .pattern("aca")
+                .pattern("aaa")
+                .define('a', ModBlocks.RUBY_BLOCK.get())
+                .define('b', ModItems.RUBY_UPGRADE_SMITHING_TEMPLATE.get())
+                .define('c', ModItems.SAPPHIRE.get())
+                .unlockedBy(getHasName(ModItems.SAPPHIRE.get()), has(ModItems.SAPPHIRE.get()))
+                .unlockedBy(getHasName(ModItems.RUBY_UPGRADE_SMITHING_TEMPLATE.get()), has(ModItems.RUBY_UPGRADE_SMITHING_TEMPLATE.get()))
+                .save(output, MoreOresModLoader.recipeKey(getSimpleRecipeName(ModItems.RADIANT_UPGRADE_SMITHING_TEMPLATE.get())));
+
+        shaped(RecipeCategory.MISC, ModItems.ECLIPSE_GEM)
+                .pattern("abc")
+                .pattern("def")
+                .pattern("ghi")
+                .define('a', ModItems.RADIANT_AMETHYST)
+                .define('b', ModItems.MOONSTONE)
+                .define('c', ModItems.LIMESTONE)
+                .define('d', ModItems.QUARTSIDIAN)
+                .define('e', ModItems.CRYSTAL_OF_ECLIPSE)
+                .define('f', ModItems.ALEXANDRITE)
+                .define('g', ModItems.ORANGE_ZIRCON)
+                .define('h', ModItems.OPAL)
+                .define('i', ModItems.GRANDIDIERITE)
+                .unlockedBy(getHasName(ModItems.CRYSTAL_OF_ECLIPSE), has(ModItems.CRYSTAL_OF_ECLIPSE))
+                .save(output, MoreOresModLoader.recipeKey(getSimpleRecipeName(ModItems.ECLIPSE_GEM)));
+
+        shaped(RecipeCategory.MISC, ModItems.RADIANT.get())
+                .pattern("aaa")
+                .pattern("aba")
+                .pattern("aaa")
+                .define('a', ModItems.RUBY.get())
+                .define('b', Items.DIAMOND)
+                .unlockedBy(getHasName(ModItems.RUBY.get()), has(ModItems.RUBY.get()))
+                .save(output, getSimpleRecipeName(ModItems.RADIANT_DUST.get()) + "_from_ruby");
     }
 
     public void reversibleCompactingRecipe(
@@ -328,9 +430,18 @@ public class AutomatedRecipeCreator extends RecipeProvider {
         return GemPurifyingRecipeBuilder.create(input, new ItemStackTemplate(result), RecipeCategory.MISC);
     }
 
-    public GemCrystallizerRecipeBuilder gemCrystallization(Ingredient inputBefore, ItemStack result) {
-        return GemCrystallizerRecipeBuilder.create(inputBefore, new ItemStackTemplate(result.getItem(), result.getCount()), RecipeCategory.MISC);
+    public GemCrystallizerRecipeBuilder gemCrystallization(Ingredient inputBefore, Item result) {
+        return GemCrystallizerRecipeBuilder.create(inputBefore, new ItemStackTemplate(result), RecipeCategory.MISC);
     }
+
+//    public void trimSmithing(final Item trimTemplate, final ResourceKey<TrimPattern> patternId, final ResourceKey<Recipe<?>> id) {
+//        Holder.Reference<TrimPattern> pattern = this.registries.lookupOrThrow(Registries.TRIM_PATTERN).getOrThrow(patternId);
+//        SmithingTrimRecipeBuilder.smithingTrim(
+//                        Ingredient.of(trimTemplate), this.tag(ItemTags.TRIMMABLE_ARMOR), this.tag(ItemTags.TRIM_MATERIALS), pattern, RecipeCategory.MISC
+//                )
+//                .unlocks("has_smithing_trim_template", this.has(trimTemplate))
+//                .save(this.output, id);
+//    }
     
     public static class Runner extends RecipeProvider.Runner {
         public Runner(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> registries) {

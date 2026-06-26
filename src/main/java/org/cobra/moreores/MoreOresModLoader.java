@@ -15,6 +15,7 @@ import org.cobra.moreores.block.client.menu.GemCrystallizerScreen;
 import org.cobra.moreores.block.client.menu.GemPurifierScreen;
 import org.cobra.moreores.block.client.menu.ModMenuType;
 import org.cobra.moreores.block.entity.ModBlockEntityType;
+import org.cobra.moreores.enchantment.entity.effect.EnchantmentEffects;
 import org.cobra.moreores.item.ModCreativeModeTabs;
 import org.cobra.moreores.item.ModItems;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
@@ -90,6 +91,8 @@ public class MoreOresModLoader {
 
         ModVillagerProfession.register(schoolBus);
 
+        EnchantmentEffects.register(schoolBus);
+        
         schoolBus.addListener(this::addCreative);
 
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);

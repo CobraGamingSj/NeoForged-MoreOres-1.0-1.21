@@ -16,7 +16,7 @@ public class ModItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(MoreOresModLoader.MOD_ID);
 
     public static final DeferredItem<Item> RUBY = registerGem("ruby");
-    public static final DeferredItem<Item> RAW_RUBY = registerGem("raw_ruby");
+    public static final DeferredItem<Item> RAW_RUBY = ITEMS.registerItem("raw_ruby", Item::new);
     public static final DeferredItem<Item> RADIANT = registerGem("radiant");
     public static final DeferredItem<Item> RADIANT_DUST = ITEMS.registerItem("radiant_dust", s -> new Item(s.rarity(Rarity.EPIC).fireResistant()));
     public static final DeferredItem<Item> SAPPHIRE = registerGem("sapphire");

@@ -1,43 +1,42 @@
-//package org.cobra.moreores.enchantment;
-//
-//import net.minecraft.component.EnchantmentEffectComponentTypes;
-//import net.minecraft.component.type.AttributeModifierSlot;
-//import net.minecraft.enchantment.Enchantment;
-//import net.minecraft.enchantment.effect.EnchantmentEffectTarget;
-//import net.minecraft.registry.Registerable;
-//import net.minecraft.registry.RegistryKey;
-//import net.minecraft.registry.RegistryKeys;
-//import net.minecraft.registry.tag.ItemTags;
-//import net.minecraft.util.Identifier;
-//import org.cobra.moreores.MoreOresModInitializer;
-//import org.cobra.moreores.enchantment.entity.effect.ThunderSummonEnchantmentEffect;
-//
-//public class ModEnchantments {
-//
-//    public static final RegistryKey<Enchantment> THUNDER_STRIKER = of("thunder_striker");
-//
-//    public static void bootstrap(Registerable<Enchantment> registerable) {
-//        var enchantments = registerable.getRegistryLookup(RegistryKeys.ENCHANTMENT);
-//        var items = registerable.getRegistryLookup(RegistryKeys.ITEM);
-//
-//        register(registerable, THUNDER_STRIKER, Enchantment.builder(
-//                Enchantment.definition(
-//                        items.getOrThrow(ItemTags.SWORDS),
-//                        5,
-//                        3,
-//                        Enchantment.leveledCost(7, 10),
-//                        Enchantment.leveledCost(25, 9),
-//                        2,
-//                        AttributeModifierSlot.MAINHAND
-//                )
-//        ).addEffect(EnchantmentEffectComponentTypes.POST_ATTACK, EnchantmentEffectTarget.ATTACKER, EnchantmentEffectTarget.VICTIM, new ThunderSummonEnchantmentEffect()));
-//    }
-//
-//    private static void register(Registerable<Enchantment> registerable, RegistryKey<Enchantment> key, Enchantment.Builder builder) {
-//        registerable.register(key, builder.build(key.getValue()));
-//    }
-//
-//    private static RegistryKey<Enchantment> of(String id) {
-//        return RegistryKey.of(RegistryKeys.ENCHANTMENT, Identifier.of(MoreOresModInitializer.MOD_ID, id));
-//    }
-//}
+package org.cobra.moreores.enchantment;
+
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.worldgen.BootstrapContext;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.world.entity.EquipmentSlotGroup;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentEffectComponents;
+import net.minecraft.world.item.enchantment.EnchantmentTarget;
+import org.cobra.moreores.MoreOresModLoader;
+import org.cobra.moreores.enchantment.entity.effect.ThunderSummonEnchantmentEffect;
+
+public class ModEnchantments {
+
+    public static final ResourceKey<Enchantment> THUNDER_STRIKER = of("thunder_striker");
+
+    public static void bootstrap(BootstrapContext<Enchantment> context) {
+        var enchantments = context.lookup(Registries.ENCHANTMENT);
+        var items = context.lookup(Registries.ITEM);
+
+        register(context, THUNDER_STRIKER, Enchantment.enchantment(
+                Enchantment.definition(
+                        items.getOrThrow(ItemTags.SWORDS),
+                        5,
+                        4,
+                        Enchantment.dynamicCost(7, 10),
+                        Enchantment.dynamicCost(25, 9),
+                        2,
+                        EquipmentSlotGroup.MAINHAND
+                )
+        ).withEffect(EnchantmentEffectComponents.POST_ATTACK, EnchantmentTarget.ATTACKER, EnchantmentTarget.VICTIM, new ThunderSummonEnchantmentEffect()));
+    }
+
+    private static void register(BootstrapContext<Enchantment> context, ResourceKey<Enchantment> key, Enchantment.Builder builder) {
+        context.register(key, builder.build(key.identifier()));
+    }
+
+    private static ResourceKey<Enchantment> of(String id) {
+        return ResourceKey.create(Registries.ENCHANTMENT, MoreOresModLoader.id(id));
+    }
+}

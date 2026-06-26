@@ -17,7 +17,7 @@ public class ModTrimPatterns {
     }
 
     public static void register(BootstrapContext<TrimPattern> context, ResourceKey<TrimPattern> key) {
-        TrimPattern armorTrimPattern = new TrimPattern(getId(key), Component.translatable(Util.makeDescriptionId("trim_pattern", key.identifier())), false);
+        TrimPattern armorTrimPattern = new TrimPattern(getId(key), Component.translatable(Util.makeDescriptionId("trim_pattern", getId(key))), false);
         context.register(key, armorTrimPattern);
     }
 

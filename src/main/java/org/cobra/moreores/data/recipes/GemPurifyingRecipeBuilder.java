@@ -11,9 +11,6 @@ import net.minecraft.world.item.crafting.Recipe;
 import org.cobra.moreores.MoreOresModLoader;
 import org.cobra.moreores.recipe.GemPurifierRecipe;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 public class GemPurifyingRecipeBuilder {
     private final Ingredient ingredient;
     private final ItemStackTemplate output;
