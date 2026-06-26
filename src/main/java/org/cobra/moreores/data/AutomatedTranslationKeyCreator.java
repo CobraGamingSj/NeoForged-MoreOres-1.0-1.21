@@ -21,7 +21,7 @@ public class AutomatedTranslationKeyCreator extends LanguageProvider {
         add("gui.button.gp.pause", "Pause");
         add("gui.button.gp.resume", "Resume");
         add("gui.button.gp.stop", "Stop");
-        add("itemGroup.moreores.gemstones", "Gemstones");
+        add("creativeModeTab.moreores.gemstones", "Gemstones");
         add("upgrade.moreores.ruby_upgrade", "Smithing Template");
         add("upgrade.moreores.radiant_upgrade", "Smithing Template");
         add("item.moreores.smithing_template.applies_to", "Applies to:");
