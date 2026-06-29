@@ -7,6 +7,7 @@ import net.minecraft.world.item.ItemStack;
 import org.cobra.moreores.MoreOresModLoader;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import org.cobra.moreores.block.ModBlocks;
 
 import java.util.function.Supplier;
 
@@ -31,6 +32,43 @@ public class ModCreativeModeTabs {
                         output.accept(ModItems.PERIDOT);
                         output.accept(ModItems.JADE);
                         output.accept(ModItems.PYROPE);
+                        output.accept(ModItems.CRIMSON_GARNET);
+                        output.accept(ModItems.CRYSTALLITE);
+                        output.accept(ModItems.RADIANT_AMETHYST);
+                        output.accept(ModItems.MOONSTONE);
+                        output.accept(ModItems.LIMESTONE);
+                        output.accept(ModItems.QUARTSIDIAN);
+                        output.accept(ModItems.ALEXANDRITE);
+                        output.accept(ModItems.ORANGE_ZIRCON);
+                        output.accept(ModItems.OPAL);
+                        output.accept(ModItems.GRANDIDIERITE);
+                        output.accept(ModItems.RED_BERYL);
+                        output.accept(ModItems.KASHMIR_SAPPHIRE);
+                        output.accept(ModBlocks.RUBY_BLOCK);
+                        output.accept(ModBlocks.RADIANT_BLOCK);
+                        output.accept(ModBlocks.SAPPHIRE_BLOCK);
+                        output.accept(ModBlocks.GREEN_SAPPHIRE_BLOCK);
+                        output.accept(ModBlocks.BLUE_GARNET_BLOCK);
+                        output.accept(ModBlocks.PINK_GARNET_BLOCK);
+                        output.accept(ModBlocks.GREEN_GARNET_BLOCK);
+                        output.accept(ModBlocks.KYAWTHUITE_BLOCK);
+                        output.accept(ModBlocks.TOPAZ_BLOCK);
+                        output.accept(ModBlocks.WHITE_TOPAZ_BLOCK);
+                        output.accept(ModBlocks.PERIDOT_BLOCK);
+                        output.accept(ModBlocks.JADE_BLOCK);
+                        output.accept(ModBlocks.PYROPE_BLOCK);
+                        output.accept(ModBlocks.CRIMSON_GARNET_BLOCK);
+                        output.accept(ModBlocks.CRYSTALLITE_BLOCK);
+                        output.accept(ModBlocks.RADIANT_AMETHYST_BLOCK);
+                        output.accept(ModBlocks.MOONSTONE_BLOCK);
+                        output.accept(ModBlocks.LIMESTONE_BLOCK);
+                        output.accept(ModBlocks.QUARTSIDIAN_BLOCK);
+                        output.accept(ModBlocks.ALEXANDRITE_BLOCK);
+                        output.accept(ModBlocks.ORANGE_ZIRCON_BLOCK);
+                        output.accept(ModBlocks.OPAL_BLOCK);
+                        output.accept(ModBlocks.GRANDIDIERITE_BLOCK);
+                        output.accept(ModBlocks.RED_BERYL_BLOCK);
+                        output.accept(ModBlocks.KASHMIR_SAPPHIRE_BLOCK);
                     }).build());
 
     public static void register(IEventBus eventBus) {
