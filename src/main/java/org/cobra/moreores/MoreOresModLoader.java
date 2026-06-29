@@ -3,7 +3,6 @@ package org.cobra.moreores;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.util.datafix.fixes.StriderGravityFix;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.ItemStack;
@@ -22,6 +21,7 @@ import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import org.cobra.moreores.recipe.ModRecipeSerializer;
 import org.cobra.moreores.recipe.ModRecipeType;
 import org.cobra.moreores.recipe.book.ModRecipeBookCategories;
+import org.cobra.moreores.recipe.display.ModRecipeDisplays;
 import org.cobra.moreores.village.ModVillagerProfession;
 import org.slf4j.Logger;
 
@@ -88,6 +88,7 @@ public class MoreOresModLoader {
         ModRecipeSerializer.register(schoolBus);
         ModRecipeType.register(schoolBus);
         ModRecipeBookCategories.register(schoolBus);
+        ModRecipeDisplays.register(schoolBus);
 
         ModVillagerProfession.register(schoolBus);
 
@@ -95,7 +96,7 @@ public class MoreOresModLoader {
         
         schoolBus.addListener(this::addCreative);
 
-        modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
+        modContainer.registerConfig(ModConfig.Type.COMMON, MoreOresConfig.SPEC);
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {

@@ -2,7 +2,6 @@ package org.cobra.moreores.recipe.display;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.crafting.display.RecipeDisplay;
@@ -24,7 +23,8 @@ public record GemCrystallizingRecipeDisplay(SlotDisplay ingredientBefore, SlotDi
                     )
                     .apply(instance, GemCrystallizingRecipeDisplay::new)
     );
-    public static final StreamCodec<RegistryFriendlyByteBuf, GemCrystallizingRecipeDisplay> PACKET_CODEC = StreamCodec.composite(
+    
+    public static final StreamCodec<RegistryFriendlyByteBuf, GemCrystallizingRecipeDisplay> STREAM_CODEC = StreamCodec.composite(
             SlotDisplay.STREAM_CODEC,
             GemCrystallizingRecipeDisplay::ingredientBefore,
             SlotDisplay.STREAM_CODEC,
@@ -36,10 +36,10 @@ public record GemCrystallizingRecipeDisplay(SlotDisplay ingredientBefore, SlotDi
             GemCrystallizingRecipeDisplay::new
     );
 
-    public static final Type<GemCrystallizingRecipeDisplay> SERIALIZER = new Type<>(CODEC, PACKET_CODEC);
+    public static final Type<GemCrystallizingRecipeDisplay> TYPE = new Type<>(CODEC, STREAM_CODEC);
 
     @Override
     public Type<GemCrystallizingRecipeDisplay> type() {
-        return SERIALIZER;
+        return ModRecipeDisplays.GEM_CRYSTALLIZING.get();
     }
 }

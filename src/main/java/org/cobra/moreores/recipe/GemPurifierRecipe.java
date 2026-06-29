@@ -12,7 +12,7 @@ import net.minecraft.world.item.crafting.display.SlotDisplay;
 import net.minecraft.world.level.Level;
 import org.cobra.moreores.block.ModBlocks;
 import org.cobra.moreores.recipe.book.ModRecipeBookCategories;
-import org.cobra.moreores.recipe.display.GemPolishingRecipeDisplay;
+import org.cobra.moreores.recipe.display.GemPurifyingRecipeDisplay;
 import org.cobra.moreores.recipe.input.GemPurifyingRecipeInput;
 import org.jetbrains.annotations.Nullable;
 
@@ -77,7 +77,7 @@ public record GemPurifierRecipe(Ingredient ingredient, ItemStackTemplate output)
     @Override
     public List<RecipeDisplay> display() {
         return List.of(
-                new GemPolishingRecipeDisplay(
+                new GemPurifyingRecipeDisplay(
                         Ingredient.optionalIngredientToDisplay(Optional.of(this.ingredient)),
                         new SlotDisplay.ItemStackSlotDisplay(this.output),
                         new SlotDisplay.ItemSlotDisplay(ModBlocks.GEM_PURIFIER_BLOCK.asItem())
