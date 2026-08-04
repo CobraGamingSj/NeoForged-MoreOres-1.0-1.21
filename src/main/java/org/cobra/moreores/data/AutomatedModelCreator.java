@@ -20,15 +20,19 @@ import net.minecraft.util.random.WeightedList;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.equipment.EquipmentAsset;
+import net.minecraft.world.item.equipment.EquipmentAssets;
 import net.minecraft.world.level.block.Block;
 import org.cobra.moreores.MoreOresModLoader;
 import org.cobra.moreores.block.GemCrystallizerBlock;
 import org.cobra.moreores.block.GemPurifierBlock;
 import org.cobra.moreores.block.ModBlocks;
 import org.cobra.moreores.block.RubyLampBlock;
-import org.cobra.moreores.item.equipment.ModEquipmentAssetKeys;
+import org.cobra.moreores.item.equipment.ModEquipmentAssets;
 import org.cobra.moreores.item.util.impl.CrystallizationGemstones;
 import org.cobra.moreores.item.util.impl.PurificationGemstones;
+
+import java.util.List;
+import java.util.Map;
 
 public class AutomatedModelCreator extends ModelProvider {
     public static final VariantMutator Y_ROT_90 = VariantMutator.Y_ROT.withValue(Quadrant.R90);
@@ -41,11 +45,65 @@ public class AutomatedModelCreator extends ModelProvider {
 
     @Override
     public void registerModels(BlockModelGenerators blockModels, ItemModelGenerators itemModels) {
+        Map<String, Identifier> trimPrefixes = Map.of(
+                "_helmet", ItemModelGenerators.TRIM_PREFIX_HELMET,
+                "_chestplate", ItemModelGenerators.TRIM_PREFIX_CHESTPLATE,
+                "_leggings", ItemModelGenerators.TRIM_PREFIX_LEGGINGS,
+                "_boots", ItemModelGenerators.TRIM_PREFIX_BOOTS
+        );
+
+        List<String> armorSuffixes = List.of("_chestplate", "_helmet", "_leggings", "_boots");
+
+        Map<String, ResourceKey<EquipmentAsset>> vanillaAssets = Map.of(
+                "iron_", EquipmentAssets.IRON,
+                "gold_", EquipmentAssets.GOLD,
+                "diamond_", EquipmentAssets.DIAMOND,
+                "netherite_", EquipmentAssets.NETHERITE,
+                "copper_", EquipmentAssets.COPPER,
+                "leather_", EquipmentAssets.LEATHER,
+                "chainmail_", EquipmentAssets.CHAINMAIL
+        );
+
+        Map<String, ResourceKey<EquipmentAsset>> modAssets = Map.of(
+                "ruby_", ModEquipmentAssets.RUBY,
+                "sapphire_", ModEquipmentAssets.SAPPHIRE,
+                "radiant_", ModEquipmentAssets.RADIANT
+        );
+        
         for(Item item : BuiltInRegistries.ITEM) {
-            Identifier identifier = BuiltInRegistries.ITEM.getKey(item);
-            if(identifier.getNamespace().equals(MoreOresModLoader.MOD_ID)) {
-                ResourceKey<EquipmentAsset> assetKey = null;
-                String path = identifier.getPath();
+            Identifier id = BuiltInRegistries.ITEM.getKey(item);
+
+            ResourceKey<EquipmentAsset> assetKey = null;
+            String path = id.getPath();
+            
+            if(id.getNamespace().equals("minecraft")) {
+                for(Map.Entry<String, ResourceKey<EquipmentAsset>> entry : vanillaAssets.entrySet()) {
+                    for (String armorSuffix : armorSuffixes) {
+                        if (path.startsWith(entry.getKey()) && path.endsWith(armorSuffix)) {
+                            assetKey = entry.getValue();
+                            break;
+                        }
+                    }
+                }
+
+                if (assetKey != null) {
+                    boolean generated = false;
+                    for (Map.Entry<String, Identifier> entry : trimPrefixes.entrySet()) {
+                        String suffix = entry.getKey();
+                        Identifier prefix = entry.getValue();
+                        if(path.endsWith(suffix)) {
+                            itemModels.generateTrimmableItem(item, assetKey, prefix, false);
+                            generated = true;
+                        }
+                    }
+                    if(generated) {
+                        continue;
+                    }
+                }
+                continue;
+            }
+            
+            if(id.getNamespace().equals(MoreOresModLoader.MOD_ID)) {
                 boolean handheld = false;
                 
                 if(item instanceof BlockItem) {
@@ -53,52 +111,35 @@ public class AutomatedModelCreator extends ModelProvider {
                 }
 
                 if(path.endsWith("_sword") || path.endsWith("_shovel") ||
-                        path.endsWith("_axe") || path.endsWith("_hoe") ||  path.endsWith("_pickaxe")) {
+                        path.endsWith("_axe") || path.endsWith("_hoe") ||
+                        path.endsWith("_pickaxe")) {
                     itemModels.generateFlatItem(item, ModelTemplates.FLAT_HANDHELD_ITEM);
                     handheld = true;
                 } else if (path.endsWith("_spear")) {
                     itemModels.generateSpear(item);
                     handheld = true;
-                } else if (path.startsWith("ruby_")) {
-                    assetKey = ModEquipmentAssetKeys.RUBY;
-                } else if (path.startsWith("sapphire_")) {
-                    assetKey = ModEquipmentAssetKeys.SAPPHIRE;
-                } else if (path.startsWith("radiant_")) {
-                    assetKey = ModEquipmentAssetKeys.RADIANT;
                 }
 
-                if (assetKey != null) {
-                    if(path.endsWith("_helmet")) {
-                        itemModels.generateTrimmableItem(
-                                item,
-                                assetKey,
-                                ItemModelGenerators.TRIM_PREFIX_HELMET,
-                                false
-                        );
-                        continue;
-                    } else if (path.endsWith("_chestplate")) {
-                        itemModels.generateTrimmableItem(
-                                item,
-                                assetKey,
-                                ItemModelGenerators.TRIM_PREFIX_CHESTPLATE,
-                                false
-                        );
-                        continue;
-                    } else if (path.endsWith("_leggings")) {
-                        itemModels.generateTrimmableItem(
-                                item,
-                                assetKey,
-                                ItemModelGenerators.TRIM_PREFIX_LEGGINGS,
-                                false
-                        );
-                        continue;
-                    } else if (path.endsWith("_boots")) {
-                        itemModels.generateTrimmableItem(
-                                item,
-                                assetKey,
-                                ItemModelGenerators.TRIM_PREFIX_BOOTS,
-                                false
-                        );
+                for (Map.Entry<String, ResourceKey<EquipmentAsset>> entry : modAssets.entrySet()) {
+                    for (String armorSuffix : armorSuffixes) {
+                        if (path.startsWith(entry.getKey()) && path.endsWith(armorSuffix)) {
+                            assetKey = entry.getValue();
+                            break;
+                        }
+                    }
+                }
+                
+                if(assetKey != null) {
+                    boolean generated = false;
+                    for (Map.Entry<String, Identifier> entry : trimPrefixes.entrySet()) {
+                        String suffix = entry.getKey();
+                        Identifier prefix = entry.getValue();
+                        if(path.endsWith(suffix)) {
+                            itemModels.generateTrimmableItem(item, assetKey, prefix, false);
+                            generated = true;
+                        }
+                    }
+                    if(generated) {
                         continue;
                     }
                 }

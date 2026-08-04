@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "a": "minecraft:stone",
+    "b": "minecraft:netherite_upgrade_smithing_template",
+    "c": "moreores:ruby"
+  },
+  "pattern": [
+    "aba",
+    "aca",
+    "aaa"
+  ],
+  "result": {
+    "id": "moreores:ruby_upgrade_smithing_template"
+  }
+}

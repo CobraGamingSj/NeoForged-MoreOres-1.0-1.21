@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "a": "minecraft:redstone",
+    "b": "moreores:ruby",
+    "c": "minecraft:glowstone"
+  },
+  "pattern": [
+    "aba",
+    "bcb",
+    "aba"
+  ],
+  "result": {
+    "id": "moreores:ruby_lamp"
+  }
+}

@@ -3,12 +3,16 @@ package org.cobra.moreores;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SandBlock;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
+import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import org.cobra.moreores.block.ModBlocks;
 import org.cobra.moreores.block.client.menu.GemCrystallizerScreen;
 import org.cobra.moreores.block.client.menu.GemPurifierScreen;
@@ -18,6 +22,7 @@ import org.cobra.moreores.enchantment.entity.effect.EnchantmentEffects;
 import org.cobra.moreores.item.ModCreativeModeTabs;
 import org.cobra.moreores.item.ModItems;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
+import org.cobra.moreores.networking.item.EnergyIngotC2SPayload;
 import org.cobra.moreores.recipe.ModRecipeSerializer;
 import org.cobra.moreores.recipe.ModRecipeType;
 import org.cobra.moreores.recipe.book.ModRecipeBookCategories;
@@ -72,6 +77,7 @@ public class MoreOresModLoader {
     
     public MoreOresModLoader(IEventBus schoolBus, ModContainer modContainer) {
         schoolBus.addListener(this::commonSetup);
+        schoolBus.addListener(this::registerPayloads);
 
         NeoForge.EVENT_BUS.register(this);
 
@@ -109,6 +115,8 @@ public class MoreOresModLoader {
             ItemStack netIngot = new ItemStack(Items.NETHERITE_INGOT);
             ItemStack ruby = new ItemStack(ModItems.RUBY.get());
             ItemStack radiant = new ItemStack(ModItems.RADIANT.get());
+            ItemStack glowstoneDust = new ItemStack(Items.GLOWSTONE_DUST);
+            ItemStack radiantDust = new ItemStack(ModItems.RADIANT_DUST.get());
             ItemStack sapphire = new ItemStack(ModItems.SAPPHIRE.get());
             ItemStack green_sapphire = new ItemStack(ModItems.GREEN_SAPPHIRE.get());
             ItemStack blue_garnet = new ItemStack(ModItems.BLUE_GARNET.get());
@@ -135,6 +143,7 @@ public class MoreOresModLoader {
             event.insertAfter(white_topaz, peridot, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
             event.insertAfter(peridot, jade, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
             event.insertAfter(jade, pyrope, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(glowstoneDust, radiantDust, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
         }
 
         if (event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS) {
@@ -193,7 +202,7 @@ public class MoreOresModLoader {
             event.insertAfter(grandidierite_block, redBeryl_block, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
             event.insertAfter(redBeryl_block, kashmirSapphire_block, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
         }
-        
+
         if (event.getTabKey() == CreativeModeTabs.NATURAL_BLOCKS) {
             ItemStack deepslateDiamondOre = new ItemStack(Blocks.DEEPSLATE_DIAMOND_ORE);
             ItemStack rubyOre = new ItemStack(ModBlocks.RUBY_ORE);
@@ -249,7 +258,57 @@ public class MoreOresModLoader {
             event.insertAfter(deepslatePyropeOre, eclipseOre, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
         }
 
+        if(event.getTabKey() == CreativeModeTabs.FUNCTIONAL_BLOCKS) {
+            ItemStack blastFurnace = new ItemStack(Blocks.SMITHING_TABLE);
+            ItemStack energyBlock = new ItemStack(ModBlocks.ENERGY_BLOCK.get());
+            ItemStack redstoneLamp = new ItemStack(Blocks.REDSTONE_LAMP);
+            ItemStack rubyLamp = new ItemStack(ModBlocks.RUBY_LAMP.get());
+            ItemStack smithingTable = new ItemStack(Blocks.SMITHING_TABLE);
+            ItemStack gemPurifier = new ItemStack(ModBlocks.GEM_PURIFIER_BLOCK.get());
+            ItemStack gemCrystallizer = new ItemStack(ModBlocks.CRYSTALLITE_BLOCK.get());
+            
+            event.insertAfter(blastFurnace, energyBlock, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(redstoneLamp, rubyLamp, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(smithingTable, gemPurifier, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(gemPurifier, gemCrystallizer, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+        }
+        
+        if(event.getTabKey() == CreativeModeTabs.REDSTONE_BLOCKS) {
+            ItemStack redstoneLamp = new ItemStack(Blocks.REDSTONE_LAMP);
+            ItemStack rubyLamp = new ItemStack(ModBlocks.RUBY_LAMP.get());
+            
+            event.insertAfter(redstoneLamp, rubyLamp, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+        }
 
+        if(event.getTabKey() == CreativeModeTabs.TOOLS_AND_UTILITIES) {
+            ItemStack netheriteHoe = new ItemStack(Items.NETHERITE_HOE);
+            ItemStack rubyShovel = new ItemStack(ModItems.RUBY_SHOVEL.get());
+            ItemStack rubyPickaxe = new ItemStack(ModItems.RUBY_PICKAXE.get());
+            ItemStack rubyAxe = new ItemStack(ModItems.RUBY_AXE.get());
+            ItemStack rubyHoe = new ItemStack(ModItems.RUBY_HOE.get());
+            ItemStack sapShovel = new ItemStack(ModItems.SAPPHIRE_SHOVEL.get());
+            ItemStack sapPickaxe = new ItemStack(ModItems.SAPPHIRE_PICKAXE.get());
+            ItemStack sapAxe = new ItemStack(ModItems.SAPPHIRE_AXE.get());
+            ItemStack sapHoe = new ItemStack(ModItems.SAPPHIRE_HOE.get());
+            ItemStack radShovel = new ItemStack(ModItems.RADIANT_SHOVEL.get());
+            ItemStack radPickaxe = new ItemStack(ModItems.RADIANT_PICKAXE.get());
+            ItemStack radAxe = new ItemStack(ModItems.RADIANT_AXE.get());
+            ItemStack radHoe = new ItemStack(ModItems.RADIANT_HOE.get());
+            
+            event.insertAfter(netheriteHoe, rubyShovel, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(rubyShovel, rubyPickaxe, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(rubyPickaxe, rubyAxe, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(rubyAxe, rubyHoe, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(rubyHoe, sapShovel, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(sapShovel, sapPickaxe, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(sapPickaxe, sapAxe, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(sapAxe, sapHoe, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(sapHoe, radShovel, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(radShovel, radPickaxe, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(radPickaxe, radAxe, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(radAxe, radHoe, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+        }
+        
         if(event.getTabKey() == CreativeModeTabs.COMBAT) {
             ItemStack netSword = new ItemStack(Items.NETHERITE_SWORD);
             ItemStack rubySword = new ItemStack(ModItems.RUBY_SWORD.get());
@@ -271,7 +330,7 @@ public class MoreOresModLoader {
             ItemStack radPlate = new ItemStack(ModItems.RADIANT_CHESTPLATE.get());
             ItemStack radLgg = new ItemStack(ModItems.RADIANT_LEGGINGS.get());
             ItemStack radBoots = new ItemStack(ModItems.RADIANT_BOOTS.get());
-            
+
             event.insertAfter(netSword, rubySword, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
             event.insertAfter(rubySword, sapphireSword, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
             event.insertAfter(sapphireSword, radSword, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
@@ -291,7 +350,16 @@ public class MoreOresModLoader {
             event.insertAfter(radLgg, radBoots, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
         }
     }
-
+    
+    public void registerPayloads(RegisterPayloadHandlersEvent event) {
+        PayloadRegistrar registrar = event.registrar(MOD_ID);
+        
+        registrar.playToServer(EnergyIngotC2SPayload.TYPE, EnergyIngotC2SPayload.PACKET_CODEC, (payload, context) -> {
+            ServerPlayer player = (ServerPlayer) context.player();
+            EnergyIngotC2SPayload.handle(payload, player);
+        });
+    }
+    
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event) {
 

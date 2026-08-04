@@ -433,15 +433,6 @@ public class AutomatedRecipeCreator extends RecipeProvider {
     public GemCrystallizerRecipeBuilder gemCrystallization(Ingredient inputBefore, Item result) {
         return GemCrystallizerRecipeBuilder.create(inputBefore, new ItemStackTemplate(result), RecipeCategory.MISC);
     }
-
-//    public void trimSmithing(final Item trimTemplate, final ResourceKey<TrimPattern> patternId, final ResourceKey<Recipe<?>> id) {
-//        Holder.Reference<TrimPattern> pattern = this.registries.lookupOrThrow(Registries.TRIM_PATTERN).getOrThrow(patternId);
-//        SmithingTrimRecipeBuilder.smithingTrim(
-//                        Ingredient.of(trimTemplate), this.tag(ItemTags.TRIMMABLE_ARMOR), this.tag(ItemTags.TRIM_MATERIALS), pattern, RecipeCategory.MISC
-//                )
-//                .unlocks("has_smithing_trim_template", this.has(trimTemplate))
-//                .save(this.output, id);
-//    }
     
     public static class Runner extends RecipeProvider.Runner {
         public Runner(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> registries) {

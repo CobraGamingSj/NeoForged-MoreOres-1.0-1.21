@@ -9,7 +9,7 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentEffectComponents;
 import net.minecraft.world.item.enchantment.EnchantmentTarget;
 import org.cobra.moreores.MoreOresModLoader;
-import org.cobra.moreores.enchantment.entity.effect.ThunderSummonEnchantmentEffect;
+import org.cobra.moreores.enchantment.entity.effect.ThunderStrikerEnchantmentEffect;
 
 public class ModEnchantments {
 
@@ -29,7 +29,7 @@ public class ModEnchantments {
                         2,
                         EquipmentSlotGroup.MAINHAND
                 )
-        ).withEffect(EnchantmentEffectComponents.POST_ATTACK, EnchantmentTarget.ATTACKER, EnchantmentTarget.VICTIM, new ThunderSummonEnchantmentEffect()));
+        ).withEffect(EnchantmentEffectComponents.POST_ATTACK, EnchantmentTarget.ATTACKER, EnchantmentTarget.VICTIM, new ThunderStrikerEnchantmentEffect()));
     }
 
     private static void register(BootstrapContext<Enchantment> context, ResourceKey<Enchantment> key, Enchantment.Builder builder) {

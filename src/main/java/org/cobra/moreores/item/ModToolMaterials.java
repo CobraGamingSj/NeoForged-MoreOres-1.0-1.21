@@ -9,4 +9,3 @@ public class ModToolMaterials{
     public static final ToolMaterial SAPPHIRE = new ToolMaterial(ModBlockTags.INCORRECT_FOR_SAPPHIRE_TOOL, 3021, 16f, 10.0f, 16, ModItemTags.SAPPHIRE_TOOL_MATERIALS);
     public static final ToolMaterial RADIANT = new ToolMaterial(ModBlockTags.INCORRECT_FOR_RADIANT_TOOL, 5031, 25.0f, 72.0f, 30, ModItemTags.RADIANT_TOOL_MATERIALS);
 }
-

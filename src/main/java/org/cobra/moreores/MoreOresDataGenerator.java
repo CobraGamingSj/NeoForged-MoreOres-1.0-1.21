@@ -21,16 +21,17 @@ public class MoreOresDataGenerator {
         DataGenerator generator = event.getGenerator();
         PackOutput output = generator.getPackOutput();
         CompletableFuture<HolderLookup.Provider> providerCompletableFuture = event.getLookupProvider();
-        
+
+        providerCompletableFuture = generator.addProvider(true, new DataPackCreator(output, providerCompletableFuture)).getRegistryProvider();
+        generator.addProvider(true, new EquipmentAssetsProvider(output, providerCompletableFuture));
         generator.addProvider(true, new AutomatedModelCreator(output));
-        generator.addProvider(true, new DataPackCreator(output, providerCompletableFuture));
         generator.addProvider(true, new AutomatedTranslationKeyCreator(output));
         generator.addProvider(true, new AutomatedRecipeCreator.Runner(output, providerCompletableFuture));
         generator.addProvider(true, new ItemTagGen(output, providerCompletableFuture));
         generator.addProvider(true, new BlockTagGen(output, providerCompletableFuture));
         generator.addProvider(true, new VillagerTradeTagGen(output, providerCompletableFuture));
         generator.addProvider(true, new PointOfInterestTypeTagGen(output, providerCompletableFuture));
-        generator.addProvider(true, new LootTableProvider(output, Collections.emptySet(), 
+        generator.addProvider(true, new LootTableProvider(output, Collections.emptySet(),
                 List.of(new LootTableProvider.SubProviderEntry(AutomatedBlockLootCreator::new, LootContextParamSets.BLOCK)), providerCompletableFuture));
     }
 }

@@ -15,7 +15,7 @@ public class EnchantmentEffects {
 
     public static final DeferredRegister<MapCodec<? extends EnchantmentEntityEffect>> ENCHANTMENTS = DeferredRegister.create(Registries.ENCHANTMENT_ENTITY_EFFECT_TYPE, MoreOresModLoader.MOD_ID);
     
-    public static final Supplier<MapCodec<? extends EnchantmentEntityEffect>> THUNDER_STRIKER = register("thunder_striker", () -> ThunderSummonEnchantmentEffect.CODEC);
+    public static final Supplier<MapCodec<? extends EnchantmentEntityEffect>> THUNDER_STRIKER = register("thunder_striker", () -> ThunderStrikerEnchantmentEffect.CODEC);
     
     private static Supplier<MapCodec<? extends EnchantmentEntityEffect>> register(String id, Supplier<MapCodec<? extends EnchantmentEntityEffect>> codec) {
         return ENCHANTMENTS.register(id, codec);
