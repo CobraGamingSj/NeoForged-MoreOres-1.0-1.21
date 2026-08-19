@@ -21,12 +21,12 @@ import net.neoforged.neoforge.transfer.item.ItemResource;
 import net.neoforged.neoforge.transfer.item.ItemStacksResourceHandler;
 import org.cobra.moreores.block.ModBlocks;
 import org.cobra.moreores.block.entity.ModBlockEntityType;
+import org.cobra.moreores.item.util.GemCategory;
 import org.cobra.moreores.item.util.impl.CrystallizationGemstones;
 import org.cobra.moreores.item.util.impl.IGemstone;
-import org.cobra.moreores.item.util.impl.PurificationGemstones;
 import org.jspecify.annotations.Nullable;
 
-public class GemCrystallizerBlockEntity extends AbstractGemMachineryBlockEntity {
+public class GemCrystallizerBlockEntity extends AbstractGemMachineBlockEntity {
     public final ItemStacksResourceHandler stack = new ItemStacksResourceHandler(17) {
         @Override
         protected void onContentsChanged(int index, ItemStack previousContents) {
@@ -140,6 +140,11 @@ public class GemCrystallizerBlockEntity extends AbstractGemMachineryBlockEntity 
         dustParticleCount = view.getIntOr("DustCount", 0);
         dustTick = view.getIntOr("DustTick", 0);
         gem = view.read("GemType", CrystallizationGemstones.CODEC).orElse(CrystallizationGemstones.EMPTY);
+    }
+
+    @Override
+    public GemCategory category() {
+        return GemCategory.CRYSTALLIZATION;
     }
 
     @Override

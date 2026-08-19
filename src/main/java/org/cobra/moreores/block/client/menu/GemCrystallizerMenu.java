@@ -119,7 +119,7 @@ public class GemCrystallizerMenu extends AbstractContainerMenu {
     }
 
     public float getEnergyPercent() {
-        SimpleEnergyHandler energyHandler = this.blockEntity.energyHandler;
+        SimpleEnergyHandler energyHandler = this.blockEntity.energyHandler();
         int energy = energyHandler.getAmountAsInt();
         int maxEnergy = energyHandler.getCapacityAsInt();
         if (maxEnergy == 0 || energy == 0)

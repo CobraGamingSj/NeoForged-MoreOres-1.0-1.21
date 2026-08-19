@@ -265,7 +265,7 @@ public class MoreOresModLoader {
             ItemStack rubyLamp = new ItemStack(ModBlocks.RUBY_LAMP.get());
             ItemStack smithingTable = new ItemStack(Blocks.SMITHING_TABLE);
             ItemStack gemPurifier = new ItemStack(ModBlocks.GEM_PURIFIER_BLOCK.get());
-            ItemStack gemCrystallizer = new ItemStack(ModBlocks.CRYSTALLITE_BLOCK.get());
+            ItemStack gemCrystallizer = new ItemStack(ModBlocks.GEM_CRYSTALLIZER_BLOCK.get());
             
             event.insertAfter(blastFurnace, energyBlock, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
             event.insertAfter(redstoneLamp, rubyLamp, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);

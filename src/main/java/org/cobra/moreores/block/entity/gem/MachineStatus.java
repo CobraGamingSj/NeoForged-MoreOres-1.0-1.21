@@ -32,4 +32,23 @@ public enum MachineStatus implements StringRepresentable {
     public String getSerializedName() {
         return this.name;
     }
+
+    public enum EnergyState implements StringRepresentable {
+        OFF("off"),
+        INSERTING("inserting"),
+        EXTRACTING("extracting");
+
+        private final String name;
+
+        EnergyState(String name) {
+            this.name = name;
+        }
+
+        public static final Codec<EnergyState> CODEC = StringRepresentable.fromValues(EnergyState::values);
+
+        @Override
+        public String getSerializedName() {
+            return this.name;
+        }
+    }
 }
