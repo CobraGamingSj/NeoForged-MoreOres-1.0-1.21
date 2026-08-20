@@ -1,15 +1,15 @@
 package org.cobra.moreores.block.client.menu;
 
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.*;
+import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.inventory.ContainerLevelAccess;
+import net.minecraft.world.inventory.SimpleContainerData;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.neoforged.neoforge.transfer.energy.SimpleEnergyHandler;
 import net.neoforged.neoforge.transfer.item.ItemStacksResourceHandler;
 import net.neoforged.neoforge.transfer.item.ResourceHandlerSlot;
 import org.cobra.moreores.block.ModBlocks;
@@ -17,19 +17,16 @@ import org.cobra.moreores.block.entity.gem.GemCrystallizerBlockEntity;
 import org.cobra.moreores.item.ModItems;
 import org.cobra.moreores.registry.ModItemTags;
 
-public class GemCrystallizerMenu extends AbstractContainerMenu {
-
-    public final GemCrystallizerBlockEntity blockEntity;
+public class GemCrystallizerMenu extends AbstractGemMachineMenu<GemCrystallizerBlockEntity> {
     private final Level level;
     private final ContainerData containerData;
-    
+
     public GemCrystallizerMenu(int containerId, Inventory inventory, FriendlyByteBuf extra) {
-        this(containerId, inventory, inventory.player.level().getBlockEntity(extra.readBlockPos()), new ItemStacksResourceHandler(17), new SimpleContainerData(3));
+        this(containerId, inventory, inventory.player.level().getBlockEntity(extra.readBlockPos()), new ItemStacksResourceHandler(17), new SimpleContainerData(4));
     }
 
     public GemCrystallizerMenu(int containerId, Inventory inventory, BlockEntity blockEntity, ItemStacksResourceHandler handler, ContainerData containerData) {
-        super(ModMenuType.GEM_PURIFIER.get(), containerId);
-        this.blockEntity = ((GemCrystallizerBlockEntity) blockEntity);
+        super(ModMenuType.GEM_PURIFIER.get(), containerId, blockEntity.getBlockPos(), (GemCrystallizerBlockEntity) blockEntity);
         this.level = inventory.player.level();
         this.containerData = containerData;
 
@@ -78,7 +75,11 @@ public class GemCrystallizerMenu extends AbstractContainerMenu {
         addDataSlots(containerData);
     }
 
-    public boolean isPolishing() {
+    public int getRedstoneDust() {
+        return this.containerData.get(3);
+    }
+
+    public boolean isCrystallizing() {
         return containerData.get(0) > 0;
     }
 
@@ -93,38 +94,70 @@ public class GemCrystallizerMenu extends AbstractContainerMenu {
 
         return maxProgress != 0 && progress != 0 ? progress * progressArrowSize/ maxProgress : 0;
     }
-    
-    public void addPlayerGenericInventory(Inventory playerInventory) {
-        for (int i = 0; i < 3; ++i) {
-            for (int l = 0; l < 9; ++l) {
-                this.addSlot(new Slot(playerInventory, l + i * 9 + 9, 8 + l * 18, 115 + i * 18));
+
+    @Override
+    public ItemStack quickMoveStack(Player player, int invSlot) {
+        ItemStack stack = ItemStack.EMPTY;
+        Slot slot = this.slots.get(invSlot);
+
+        if(slot.hasItem()) {
+            ItemStack originalStack = slot.getItem();
+            stack = originalStack.copy();
+
+            if(invSlot == 2) {
+                if(!this.moveItemStackTo(originalStack, 18, 54, true)) {
+                    return ItemStack.EMPTY;
+                }
+                slot.onQuickCraft(originalStack, stack);
+            } else if(invSlot >= 18 && invSlot < 54) {
+                if(isValidInput(originalStack)) {
+                    if(!this.moveItemStackTo(originalStack, 0, 1, false)) {
+                        return ItemStack.EMPTY;
+                    }
+                } else if (isValidEnergyItem(originalStack)) {
+                    if(!this.moveItemStackTo(originalStack, 2, 3, false)) {
+                        return ItemStack.EMPTY;
+                    }
+                } else if (isRadiantDust(originalStack)) {
+                    if(!this.moveItemStackTo(originalStack, 4, 5, false)) {
+                        return ItemStack.EMPTY;
+                    }
+                }
+                else {
+                    if(!this.moveItemStackTo(originalStack, 6, 18, false)) {
+                        return ItemStack.EMPTY;
+                    }
+                }
+            } else {
+                if(!this.moveItemStackTo(originalStack, 18, 54, false)) {
+                    return ItemStack.EMPTY;
+                }
+            }
+
+            if(originalStack.isEmpty()) {
+                slot.setByPlayer(ItemStack.EMPTY);
+            } else {
+                slot.setChanged();
             }
         }
+        return stack;
     }
 
-    public void addPlayerHotbarInventory(Inventory playerInventory) {
-        for (int i = 0; i < 9; ++i) {
-            this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 173));
-        }
+    private boolean isValidInput(ItemStack stack) {
+        return stack.is(ModItemTags.GEMSTONE_BLOCKS) || stack.is(ModItemTags.RAW_GEMSTONE_BLOCKS) ||
+                stack.is(ModItemTags.RAW_GEMSTONE) || stack.is(ModItemTags.GEMSTONE);
     }
-    
-    @Override
-    public ItemStack quickMoveStack(Player player, int i) {
-        return ItemStack.EMPTY;
+
+    private boolean isValidEnergyItem(ItemStack stack) {
+        return stack.is(ModItems.ENERGY_INGOT) || stack.is(ModBlocks.ENERGY_BLOCK.asItem());
+    }
+
+    private boolean isRadiantDust(ItemStack stack) {
+        return stack.is(ModItems.RADIANT_DUST);
     }
 
     @Override
     public boolean stillValid(Player player) {
         return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()), player, ModBlocks.GEM_CRYSTALLIZER_BLOCK.get());
-    }
-
-    public float getEnergyPercent() {
-        SimpleEnergyHandler energyHandler = this.blockEntity.energyHandler();
-        int energy = energyHandler.getAmountAsInt();
-        int maxEnergy = energyHandler.getCapacityAsInt();
-        if (maxEnergy == 0 || energy == 0)
-            return 0.0F;
-
-        return Mth.clamp((float) energy / (float) maxEnergy, 0.0F, 1.0F);
     }
 }

@@ -1,42 +1,182 @@
 package org.cobra.moreores.block.client.menu;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.gui.screens.inventory.CyclingSlotBackground;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
+import net.minecraft.util.CommonColors;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import org.cobra.moreores.MoreOresModLoader;
+import org.cobra.moreores.block.entity.gem.GemPurifierBlockEntity;
 
-public class GemPurifierScreen extends AbstractContainerScreen<GemPurifierMenu> {
-    public static final Identifier THIS_IS_GUI_TEXTURE_FOR_MY_BLOCK_XD = MoreOresModLoader.id("textures/gui/container/gem_purifier/gem_purifier_gui.png");
+import java.util.List;
+
+public class GemPurifierScreen extends AbstractGemMachineScreen<GemPurifierBlockEntity, GemPurifierMenu> {
+    public static final Identifier BACKGROUND = MoreOresModLoader.id("textures/gui/container/gem_purifier/gem_purifier_gui.png");
+    private static final Identifier TEXTURE = MoreOresModLoader.id("textures/gui/container/gem_purifier/gem_purifier_gui_test.png");
+    private static final Identifier START_BUTTON = MoreOresModLoader.id("textures/gui/container/button/start.png");
+    private static final Identifier PAUSE_BUTTON = MoreOresModLoader.id("textures/gui/container/button/pause.png");
+    private static final Identifier RESUME_BUTTON = MoreOresModLoader.id("textures/gui/container/button/resume.png");
+    private static final Identifier STOP_BUTTON = MoreOresModLoader.id("textures/gui/container/button/stop.png");
+
+    private final CyclingSlotBackground energyIngotSlotIcon = new CyclingSlotBackground(2);
+    private final CyclingSlotBackground inputSlotIcon = new CyclingSlotBackground(0);
     
     public GemPurifierScreen(GemPurifierMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title, 207, 196);
     }
-    
+
     @Override
-    public void extractBackground(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float a) {
-        int x = (width - imageWidth) / 2;
-        int y = (height - imageHeight) / 2;
+    protected void init() {
+        super.init();
         
-        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, THIS_IS_GUI_TEXTURE_FOR_MY_BLOCK_XD, x, y, 0, 0, imageWidth, imageHeight, 256, 256);
-        renderProgressArrow(guiGraphics, x, y);
-        renderEnergyStorageHandler(guiGraphics, x, y);
+//        addRenderableOnly(FluidWidget.creator(menu.getBlockEntity().fluidHandler).bounds(this.leftPos + 10, this.topPos + 42, 20, 44).posSupplier(menu.getBlockEntity()::getBlockPos).create());
+
     }
 
-    private void renderProgressArrow(GuiGraphicsExtractor guiGraphics, int x, int y) {
-        if(menu.isPurifying()) {
-            guiGraphics.blit(RenderPipelines.GUI_TEXTURED, THIS_IS_GUI_TEXTURE_FOR_MY_BLOCK_XD, x + 83, y + 31, 207, 0,
-                    10, menu.progressGetter(), BACKGROUND_TEXTURE_WIDTH, BACKGROUND_TEXTURE_HEIGHT);
+    @Override
+    protected Identifier getBackgroundTexture() {
+        return TEXTURE;
+    }
+
+    @Override
+    protected Identifier getStartButtonTexture() {
+        return START_BUTTON;
+    }
+
+    @Override
+    protected Identifier getPauseButtonTexture() {
+        return PAUSE_BUTTON;
+    }
+
+    @Override
+    protected Identifier getResumeButtonTexture() {
+        return RESUME_BUTTON;
+    }
+
+    @Override
+    protected Identifier getStopButtonTexture() {
+        return STOP_BUTTON;
+    }
+
+    @Override
+    protected int getStartButtonPosX() {
+        return 32;
+    }
+
+    @Override
+    protected int getStartButtonPosY() {
+        return 92;
+    }
+
+    @Override
+    protected int getPauseButtonPosX() {
+        return 80;
+    }
+
+    @Override
+    protected int getPauseButtonPosY() {
+        return 92;
+    }
+
+    @Override
+    protected int getResumeButtonPosX() {
+        return 32;
+    }
+
+    @Override
+    protected int getResumeButtonPosY() {
+        return 140;
+    }
+
+    @Override
+    protected int getStopButtonPosX() {
+        return 80;
+    }
+
+    @Override
+    protected int getStopButtonPosY() {
+        return 140;
+    }
+
+    @Override
+    protected void containerTick() {
+        super.containerTick();
+        this.energyIngotSlotIcon.tick(getEnergyIngotSlotTexture());
+        this.inputSlotIcon.tick(getInputSlotTexture());
+    }
+
+    private List<Identifier> getEnergyIngotSlotTexture() {
+        return List.of(MoreOresModLoader.id("container/slot/empty_ingot"), MoreOresModLoader.id("container/slot/energy_ingot_faded"));
+    }
+
+    private List<Identifier> getInputSlotTexture() {
+        return List.of(MoreOresModLoader.id("container/slot/empty_raw_gem"));
+    }
+
+    @Override
+    public void renderProgressArrow(GuiGraphicsExtractor context, int x, int y) {
+        if(this.menu.isPurifying()) {
+            context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x + 83, y + 31, 226, 0, 10, this.menu.progressGetter(), TEXTURE_WIDTH, TEXTURE_HEIGHT);
         }
     }
 
-    private void renderEnergyStorageHandler(GuiGraphicsExtractor context, int x, int y) {
+    @Override
+    protected void renderRedstoneDust(GuiGraphicsExtractor graphics, int leftPos, int topPos) {
+        int k = menu.getRedstoneDust();
+        int l = Mth.clamp((k * 16 + 10000 - 1) / 10000, 0, 16);
+
+        int startX = leftPos + 109;
+        int startY = topPos + 53;
+        int endY = topPos + 57;
+
+        graphics.fillGradient(startX, startY, startX + l, endY, CommonColors.RED, -7667712);
+    }
+
+    @Override
+    public void renderEnergyHandler(GuiGraphicsExtractor context, int x, int y) {
         int energyBarSize = Mth.ceil(this.menu.getEnergyPercent() * 44);
-        int gradientStart = -16776961;
-        int gradientEnd = -16711936;
+        int gradientStart = CommonColors.BLUE;
+        int gradientEnd = CommonColors.GREEN;
         context.fillGradient(x + 40, y + 42 + 44 - energyBarSize, x + 40 + 16, y + 42 + 44, gradientStart, gradientEnd);
     }
+
+    @Override
+    public void extractLabels(GuiGraphicsExtractor context, int mouseX, int mouseY) {
+        super.extractLabels(context, mouseX, mouseY);
+        String name = this.menu.blockEntity.getDisplayName().getString();
+        int x = 8;
+        int y = 8;
+        context.text(this.font, name, x, y, CommonColors.BLACK, false);
+    }
+
+    @Override
+    public void extractBackground(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta) {
+        super.extractBackground(context, mouseX, mouseY, delta);
+        if(this.menu.getBlockEntity().energyStack().isEmpty()) {
+            this.energyIngotSlotIcon.extractRenderState(this.menu, context, delta, this.leftPos, this.topPos);
+        }
+        if(this.menu.getBlockEntity().ingredientStack().isEmpty()) {
+            this.inputSlotIcon.extractRenderState(this.menu, context, delta, this.leftPos, this.topPos);
+        }
+    }
+
+    @Override
+    public void extractContents(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta) {
+        extractBackground(context, mouseX, mouseY, delta);
+        super.extractContents(context, mouseX, mouseY, delta);
+        extractTooltip(context, mouseX, mouseY);
+        int energyBarSize = Mth.ceil(this.menu.getEnergyPercent() * 44);
+        int redstoneBarWidth = Mth.clamp((menu.getRedstoneDust() * 16 + 10000 - 1) / 10000, 0, 16);
+        if (isHovering(40, 42 + 44 - energyBarSize, 16, energyBarSize, mouseX, mouseY)) {
+            context.setTooltipForNextFrame(this.font, Component.literal(this.menu.getEnergy() + " / " + this.menu.getEnergyCap() + " J").withStyle(ChatFormatting.DARK_AQUA, ChatFormatting.BOLD), mouseX, mouseY);
+        }
+        if (isHovering(109, 53, redstoneBarWidth, 4, mouseX, mouseY)) {
+            context.setTooltipForNextFrame(this.font, Component.literal(this.menu.getRedstoneDust() + " Particles").withStyle(ChatFormatting.RED), mouseX, mouseY);
+        }
+    }
+
 }

@@ -17,19 +17,16 @@ import org.cobra.moreores.registry.ModItemTags;
 import net.neoforged.neoforge.transfer.item.ItemStacksResourceHandler;
 import net.neoforged.neoforge.transfer.item.ResourceHandlerSlot;
 
-public class GemPurifierMenu extends AbstractContainerMenu {
-
-    public final GemPurifierBlockEntity blockEntity;
+public class GemPurifierMenu extends AbstractGemMachineMenu<GemPurifierBlockEntity> {
     private final Level level;
     private final ContainerData containerData;
     
     public GemPurifierMenu(int containerId, Inventory inventory, FriendlyByteBuf extra) {
-        this(containerId, inventory, inventory.player.level().getBlockEntity(extra.readBlockPos()), new ItemStacksResourceHandler(16), new SimpleContainerData(2));
+        this(containerId, inventory, inventory.player.level().getBlockEntity(extra.readBlockPos()), new ItemStacksResourceHandler(16), new SimpleContainerData(3));
     }
 
     public GemPurifierMenu(int containerId, Inventory inventory, BlockEntity blockEntity, ItemStacksResourceHandler handler, ContainerData containerData) {
-        super(ModMenuType.GEM_PURIFIER.get(), containerId);
-        this.blockEntity = ((GemPurifierBlockEntity) blockEntity);
+        super(ModMenuType.GEM_PURIFIER.get(), containerId, blockEntity.getBlockPos(), (GemPurifierBlockEntity) blockEntity);
         this.level = inventory.player.level();
         this.containerData = containerData;
 
@@ -74,6 +71,10 @@ public class GemPurifierMenu extends AbstractContainerMenu {
         addDataSlots(containerData);
     }
 
+    public int getRedstoneDust() {
+        return containerData.get(2);
+    }
+
     public boolean isPurifying() {
         return containerData.get(0) > 0;
     }
@@ -99,10 +100,60 @@ public class GemPurifierMenu extends AbstractContainerMenu {
             this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 173));
         }
     }
-    
+
     @Override
-    public ItemStack quickMoveStack(Player player, int i) {
-        return ItemStack.EMPTY;
+    public ItemStack quickMoveStack(Player player, int invSlot) {
+        ItemStack stack = ItemStack.EMPTY;
+        Slot slot = this.slots.get(invSlot);
+
+        if(slot.hasItem()) {
+            ItemStack originalStack = slot.getItem();
+            stack = originalStack.copy();
+
+            if(invSlot == 2) {
+                if(!this.moveItemStackTo(originalStack, 15, 51, true)) {
+                    return ItemStack.EMPTY;
+                }
+                slot.onQuickCraft(originalStack, stack);
+            } else if(invSlot >= 15 && invSlot < 51) {
+                if(isValidInput(originalStack)) {
+                    if(!this.moveItemStackTo(originalStack, 0, 1, false)) {
+                        return ItemStack.EMPTY;
+                    }
+                } else if (isValidEnergyItem(originalStack)) {
+                    if(!this.moveItemStackTo(originalStack, 2, 3, false)) {
+                        return ItemStack.EMPTY;
+                    }
+                } else {
+                    if(!this.moveItemStackTo(originalStack, 3, 15, false)) {
+                        return ItemStack.EMPTY;
+                    }
+                }
+            } else {
+                if(!this.moveItemStackTo(originalStack, 15, 51, false)) {
+                    return ItemStack.EMPTY;
+                }
+            }
+
+            if(originalStack.isEmpty()) {
+                slot.setByPlayer(ItemStack.EMPTY);
+            } else {
+                slot.setChanged();
+            }
+        }
+        return stack;
+    }
+
+    private boolean isValidInput(ItemStack stack) {
+        return stack.is(ModItemTags.RAW_GEMSTONE);
+    }
+
+    private boolean isValidEnergyItem(ItemStack stack) {
+        return stack.is(ModItems.ENERGY_INGOT) || stack.is(ModBlocks.ENERGY_BLOCK.asItem());
+    }
+
+    private boolean isWaterBucket(ItemStack stack) {
+        return stack.is(Items.WATER_BUCKET);
     }
 
     @Override
@@ -110,13 +161,4 @@ public class GemPurifierMenu extends AbstractContainerMenu {
         return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()), player, ModBlocks.GEM_PURIFIER_BLOCK.get());
     }
 
-    public float getEnergyPercent() {
-        SimpleEnergyHandler energyHandler = this.blockEntity.energyHandler();
-        int energy = energyHandler.getAmountAsInt();
-        int maxEnergy = energyHandler.getCapacityAsInt();
-        if (maxEnergy == 0 || energy == 0)
-            return 0.0F;
-
-        return Mth.clamp((float) energy / (float) maxEnergy, 0.0F, 1.0F);
-    }
 }

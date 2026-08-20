@@ -4,7 +4,7 @@ import com.mojang.serialization.Codec;
 import net.minecraft.util.StringRepresentable;
 
 public enum MachineStatus implements StringRepresentable {
-    STOPPED("stopped"),
+    IDLE("stopped"),
     RUNNING("running"),
     PAUSED("paused");
 
@@ -17,7 +17,7 @@ public enum MachineStatus implements StringRepresentable {
     public static final Codec<MachineStatus> CODEC = StringRepresentable.fromValues(MachineStatus::values);
 
     public boolean isIdle() {
-        return this == STOPPED;
+        return this == IDLE;
     }
 
     public boolean isRunning() {
@@ -34,7 +34,7 @@ public enum MachineStatus implements StringRepresentable {
     }
 
     public enum EnergyState implements StringRepresentable {
-        OFF("off"),
+        IDLE("off"),
         INSERTING("inserting"),
         EXTRACTING("extracting");
 

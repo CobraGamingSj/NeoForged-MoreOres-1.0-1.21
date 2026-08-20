@@ -12,7 +12,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.transfer.energy.SimpleEnergyHandler;
-import net.neoforged.neoforge.transfer.item.ItemResource;
 import net.neoforged.neoforge.transfer.item.ItemStacksResourceHandler;
 import net.neoforged.neoforge.transfer.transaction.Transaction;
 import org.cobra.moreores.block.ModBlocks;
@@ -26,8 +25,8 @@ public abstract class AbstractGemMachineBlockEntity extends BlockEntity implemen
 
     public final ItemStacksResourceHandler main;
 
-    protected MachineStatus machineStatus = MachineStatus.STOPPED;
-    protected MachineStatus.EnergyState energyState = MachineStatus.EnergyState.OFF;
+    protected MachineStatus machineStatus = MachineStatus.IDLE;
+    protected MachineStatus.EnergyState energyState = MachineStatus.EnergyState.IDLE;
     protected IGemstone gem = IGemstone.NONE;
 
     int energyExtracted = 0;
@@ -54,7 +53,7 @@ public abstract class AbstractGemMachineBlockEntity extends BlockEntity implemen
         }
     };
 
-    protected abstract boolean hasRecipe();
+    protected abstract boolean checkRecipe();
     public abstract int inventoryStackSize();
     public abstract int energyCapacity();
     public abstract int maxEnergyInsertable();
@@ -80,8 +79,8 @@ public abstract class AbstractGemMachineBlockEntity extends BlockEntity implemen
         ContainerHelper.loadAllItems(input, main.copyToList());
         initialProgressTicks = input.getIntOr("Progress", 0);
         energyHandler.deserialize(input);
-        machineStatus = input.read("PolishingState", MachineStatus.CODEC).orElse(MachineStatus.STOPPED);
-        energyState = input.read("EnergyState", MachineStatus.EnergyState.CODEC).orElse(MachineStatus.EnergyState.OFF);
+        machineStatus = input.read("PolishingState", MachineStatus.CODEC).orElse(MachineStatus.IDLE);
+        energyState = input.read("EnergyState", MachineStatus.EnergyState.CODEC).orElse(MachineStatus.EnergyState.IDLE);
     }
 
     public IGemstone detectGem(ItemStack stack) {
@@ -105,7 +104,7 @@ public abstract class AbstractGemMachineBlockEntity extends BlockEntity implemen
 
     protected void giveEnergy() {
         if(!hasEnergySource() || energyHandler.getAmountAsInt() >= 1_000_000) {
-            energyState = MachineStatus.EnergyState.OFF;
+            energyState = MachineStatus.EnergyState.IDLE;
             return;
         }
         int amount = energyStack().is(ModItems.ENERGY_INGOT) ? 102 : 154;
@@ -114,7 +113,7 @@ public abstract class AbstractGemMachineBlockEntity extends BlockEntity implemen
             long inserted = energyHandler().insert(amount, transaction);
             transaction.commit();
             if(inserted > 0) energyState = MachineStatus.EnergyState.INSERTING;
-            else energyState = MachineStatus.EnergyState.OFF;
+            else energyState = MachineStatus.EnergyState.IDLE;
         }
     }
 
@@ -158,15 +157,19 @@ public abstract class AbstractGemMachineBlockEntity extends BlockEntity implemen
         this.energyHandler.set(Math.min(energy, energyCapacity()));
     }
 
+    public void setRedstone(int redstone) {
+        this.redstone = redstone;
+    }
+
     protected boolean hasEnergySource() {
         return this.energyStack().is(ModItems.ENERGY_INGOT) || this.energyStack().is(ModBlocks.ENERGY_BLOCK.asItem());
     }
 
-    protected boolean hasRequiredEnergy() {
+    protected boolean hasRequiredEnergyAmount() {
         return this.energyHandler.getAmountAsInt() >= 13;
     }
 
-    protected void validateEnergyAmount() {
+    protected void validateEnergyAmount(int slot) {
         if(energyAmount() > 10000000) {
             energyHandler.set(10000000);
         }
@@ -177,12 +180,9 @@ public abstract class AbstractGemMachineBlockEntity extends BlockEntity implemen
 
         for(long milestone : milestones) {
             if(energy == milestone && previousRemovedEnergyMilestone < milestone) {
-                try(Transaction transaction = Transaction.openRoot()) {
-                    this.main.extract(ItemResource.of(energyStack()), 1, transaction);
-                    previousRemovedEnergyMilestone = milestone;
-                    transaction.commit();
-                    break;
-                }
+                ContainerHelper.removeItem(main.copyToList(), slot, 1);
+                previousRemovedEnergyMilestone = milestone;
+                break;
             }
         }
     }
@@ -198,13 +198,40 @@ public abstract class AbstractGemMachineBlockEntity extends BlockEntity implemen
 
         for(long milestone : milestones) {
             if(amount == milestone && previousRemovedRedstoneMilestone < milestone) {
-                try(Transaction transaction = Transaction.openRoot()) {
-                    this.main.extract(ItemResource.of(redstoneStack(slot)), 1, transaction);
-                    previousRemovedRedstoneMilestone = milestone;
-                    transaction.commit();
-                    break;
-                }
+                ContainerHelper.removeItem(main.copyToList(), slot, 1);
+                previousRemovedRedstoneMilestone = milestone;
+                break;
             }
+        }
+    }
+
+    public void startProcess() {
+        if(machineStatus.isIdle() && checkRecipe() && hasRequiredEnergyAmount()) {
+            machineStatus = MachineStatus.RUNNING;
+        }
+    }
+
+    public void pauseProcess() {
+        if(machineStatus.isRunning()) {
+            machineStatus = MachineStatus.PAUSED;
+        }
+    }
+
+    public void resumeProcess() {
+        if(machineStatus.isPaused()&& checkRecipe() && hasRequiredEnergyAmount()) {
+            machineStatus = MachineStatus.RUNNING;
+        }
+    }
+
+    public void stopProcess() {
+        if(!machineStatus.isIdle()) {
+            machineStatus = MachineStatus.IDLE;
+            clearProgress();
+            try(Transaction transaction = Transaction.openRoot()) {
+                this.energyHandler.insert(energyExtracted, transaction);
+                transaction.commit();
+            }
+            this.energyExtracted = 0;
         }
     }
 

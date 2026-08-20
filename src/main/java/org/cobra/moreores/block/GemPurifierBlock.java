@@ -61,10 +61,10 @@ public class GemPurifierBlock extends BaseEntityBlock {
             return InteractionResult.CONSUME;
         }
         
-//        if(level.getBlockEntity(pos) instanceof GemPurifierBlockEntity be) {
-//            player.openMenu(new SimpleMenuProvider(be, be.getDisplayName()), pos);
-//            return InteractionResult.SUCCESS;
-//        }
+        if(level.getBlockEntity(pos) instanceof GemPurifierBlockEntity be) {
+            player.openMenu(new SimpleMenuProvider(be, be.getDisplayName()), pos);
+            return InteractionResult.SUCCESS;
+        }
         player.sendSystemMessage(Component.literal("[MoreOres+] ").withStyle(ChatFormatting.DARK_PURPLE, ChatFormatting.BOLD).append(Component.literal("This feature will be added soon.").withStyle(ChatFormatting.RED)));
         return InteractionResult.SUCCESS;
     }
